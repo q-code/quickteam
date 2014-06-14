@@ -1,0 +1,1 @@
+U kunt hier onderwerpen per team verplaatsen, uitwissen of snoeien. Snoeien betekend: schrap niet-geantwoord onderwerpen ouder dan een aantal dagen. Het aantal onderwerpen dat kan worden gesnoeid, zoals getoond in de laatste colonne, hangt van het aantal dagen (hier onder) af.

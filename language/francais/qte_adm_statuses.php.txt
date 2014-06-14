@@ -1,0 +1,1 @@
+Vous pouvez g&eacute;rer ici les diff&eacute;rents statuts des membres. L'ordre d'affichage est d&eacute;fini par l'id et va de A &agrave; Z. Le dernier statut (Z) signifie "non membre" et ne peut &ecirc;tre effac&eacute;s. Cliquez sur Editer, pour renommer un statut ou d&eacute;finir l'ic&ocirc;ne associ&eacute;e.

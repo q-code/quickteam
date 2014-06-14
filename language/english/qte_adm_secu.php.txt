@@ -1,0 +1,1 @@
+This screen allows you tuning the system security rules. Registration mode with email checking is recommended. When using an external authority (like a LDAP/AD register) the back-office request will disable on-line registration.

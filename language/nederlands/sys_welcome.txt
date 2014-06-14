@@ -1,0 +1,1 @@
+Welkom in het QuickTeam systeem.<br />Klik hierboven de <a class="welcome" href="qte_register.php">registreer</a> verbinding om te beginnen. Voor de leden te bekijken, selecteer een groep hieronder.

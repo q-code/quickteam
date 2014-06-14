@@ -1,0 +1,1 @@
+You can here update the teams statistics. The numbers of members (and members with status Z) may be wrong if you import or delete members using external database query tools. You can here recompute the correct statistics.

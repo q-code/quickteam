@@ -1,0 +1,1 @@
+Il y a deux types de team : <b><i>Visible (publique)</i></b> o&ugrave; les membres sont visibles par tout le monde, et <b><i>Cach&eacute;</i></b> r&eacute;serv&eacute;s aux membres du staff. Lorsque vous passez au statut <b><i>Ferm&eacute;</i></b>, il ne sera plus possible d'y ajouter et d'enlever des membres (sauf pour les administrateurs).

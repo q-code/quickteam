@@ -1,0 +1,1 @@
+You can here manage the teams and the domains. A domain is nothing more than a group of teams. You can here change position of the domains or move team within a domain. Click <b>Edit</b> to manage the  settings of a team.

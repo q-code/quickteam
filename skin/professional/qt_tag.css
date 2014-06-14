@@ -1,0 +1,25 @@
+/* display tags */
+
+div.tags {margin:3px 0 4px 0; font-size:8pt; vertical-align:middle}
+img.tags {vertical-align:middle; width:14px; height:9px}
+span.tag {display:inline-block; margin:0 1px 1px 0; padding:1px 4px; background-color:#9EDDFF; color:#000000; font-size:8pt; border-radius:2px}
+
+div.tagbox {margin:10px 0}
+div.tagbox p.title {display:inline-block; margin:5px 5px 0 0; }
+div.tagbox p.content {display:inline-block; margin:5px 0; }
+div.tagbox a.tag {display:inline-block; margin:0 2px 1px 0; padding:1px 4px; background-color:#9EDDFF; color:#000000; text-decoration:none; font-size:8pt; border-radius:2px}
+div.tagbox a.tag:hover {color:#0000ff; text-decoration:underline}
+
+/* editor form */ 
+
+input#endedittags, input#tag, input#addtag, input#deltag {display:none; margin:0 2px 0 0; padding:1px}
+input#tag {outline:none; border-radius:3px; border:1px solid #888888;  } 
+input#edittags, input#endedittags, input#addtag, input#deltag {vertical-align:bottom; border:solid 1px #888888; border-radius:3px; width:18px; height:18px}
+input#addtag {background:#EEEEEE url(tagadd.png) no-repeat 1px 1px}
+input#deltag {background:#EEEEEE url(tagdel.png) no-repeat 1px 1px}
+input#edittags {background:#dfdfdf url(tagopen.png) no-repeat 1px 1px}
+input#endedittags {background:#dfdfdf url(tagclose.png) no-repeat 1px 1px}
+input#addtag:hover {background-color:#9EDDFF; background-position:1px -14px; cursor:pointer}
+input#deltag:hover {background-color:#FFCCCC; background-position:1px -14px; cursor:pointer}
+input#edittags:hover {background-color:#f1f1f1; background-position:1px -14px; cursor:pointer; border-color:#0000ff}
+input#endedittags:hover {background-color:#f1f1f1; background-position:1px -14px; cursor:pointer; border-color:#0000ff}

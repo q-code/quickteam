@@ -1,0 +1,1 @@
+Vous pouvez changer ici le style g&eacute;n&eacute;ral de l'application. Pour cr&eacute;er un nouveau style (skin), ajoutez votre feuille de style (css) et vos icones dans un r&eacute;pertoire sous skin. Le message de bienvenue est constitu&eacute; par le fichier language/francais/sys_welcome.txt

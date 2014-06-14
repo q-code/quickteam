@@ -1,0 +1,2 @@
+Dit scherm staat u toe die de informatie toegankelijk in de gebruikersprofielen (en in de teamlijst) bepalen.
+Uncheck de gene die u niet zal beheren. Om de informatie die in de teamlijst word getoont te bepalen, zie het menu 'Groepen beheren'. U kan een specifiek <b>formaat</b> toevoegen (php formaat). Als beschrikbaar is, u kan ook, in de formaat, een lijst maken.

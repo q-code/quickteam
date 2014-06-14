@@ -1,0 +1,1 @@
+<b>Fullname</b> The fullname is a computed information. It is the combination of the firstname, middlename and lastname. If the firstname or the middlename are not used, the fullname will correspond to the lastname. When the lastname is not used (or is empty) the fullname will be the login name.

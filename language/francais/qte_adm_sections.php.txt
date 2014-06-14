@@ -1,0 +1,1 @@
+Vous pouvez ici g&eacute;n&eacute;rer vos groupes et domaines. Un domaine n'est rien de plus qu'un ensemble de plusieurs groupes. Vous pouvez ici modifier l'ordre de vos domaines et des groupes dans les domaines. Cliquez <b>Editer</b> pour param&eacute;trer vos groupes.

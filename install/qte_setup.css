@@ -1,0 +1,48 @@
+body {margin:5px; padding:0; color:#000000; background-color:#EEEEEE; font-family:Verdana, Arial, sans-serif}
+form {display:inline}
+img {border-width:0}
+table {margin:0;width:100%;border-spacing:0;border-width:0}
+td {vertical-align:top}
+
+a,p,select,input,textarea,td {font-size:9pt}
+h1, h2 {margin:5px 0 10px 0;font-weight:bold}
+h1 {font-size:14pt}
+h2 {font-size:12pt}
+a {color:#0000FF; text-decoration:none}
+a.visited {color:#551A8B}
+a:hover {color:#0000FF;text-decoration:underline}
+
+.disabled {color:#888888;font-size:8pt}
+.small {font-size:8pt}
+.right {text-align:right}
+.error {color:#ff0000;font-size:8pt; font-weight:bold; font-style:italic}
+.warning {color:#ff0000}
+.help {font-size:8pt}
+
+table.hidden {margin:0; width:100%; border-width:0}
+table.hidden td {padding:4px}
+
+#topparticipants {}
+.pager-zt {text-align:right;clear:both; vertical-align:bottom}
+.pager-zb {text-align:right;clear:both;}
+
+div.page {margin:10px auto 0 auto; padding:0; width:750px;}
+div.banner {margin:0;padding:10px;background:#0C4C8C;background:linear-gradient(to bottom, #0C4C8C 20%, #156AC2)}
+#title {float:right;color:#ffffff}
+div.footer {margin:2px 0 2px 0; padding:0; width:100%; text-align:right; font-size:8pt}
+a.footer_menu {color:blue; background-color:inherit; font-size:8pt}
+
+div.setup_help {margin-left:10px; padding-left:10px; border-left:2px dotted #cccccc; font-size:8pt; color:#000099; background-color:inherit}
+div.setup_err {margin:5px auto 5px auto; padding:5px 10px 5px 10px; width:90%; color:inherit; background-color:#FFFFCC; border:1px solid #FF9900}
+div.setup_ok {margin:5px auto 5px auto; padding:5px 10px 5px 10px; width:90%; color:inherit; background-color:#CCFFCC; border:1px solid #99FF00}
+
+input.submit {padding: 10px 20px;color: #ffffff;font-family: Arial, Helvetica, sans-serif;font-size: 14px;
+background: linear-gradient(to bottom,#ff2819,#ab0000);
+border-radius: 0px;
+border: 1px solid #7d0000;
+box-shadow:0px 1px 3px rgba(000,000,000,0.5), inset 0px 0px 2px rgba(255,255,255,0.7);
+text-shadow: 0px -1px 0px rgba(000,000,000,0.4), 0px 1px 0px rgba(255,255,255,0.3)
+}
+input.submit:hover {cursor:pointer;background: linear-gradient(to top,#ff2819,#ab0000)}
+
+a.button {display:inline-block;margin:0 0 0 10px;padding:7px 15px;border:1px solid #AAAAAA;font-weight:bold;background-color:#d4d4d4;background:linear-gradient(to top,#ffffff 3px,#d4d4d4)}

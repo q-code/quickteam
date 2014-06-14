@@ -1,0 +1,69 @@
+div.dom-sep {height:15px}
+
+/* Table Section (used in qte_index and qte_search) */
+
+/* Common */
+
+table.t-sec {border-spacing:0}
+table.t-sec th,
+table.t-sec td {padding:5px;vertical-align:middle}
+table.t-sec th.c-icon,
+table.t-sec td.c-icon {width:40px;text-align:center}
+
+p.section, 
+p.sectiondesc {margin:3px 0;padding:0}
+p.section a.section {font-size:11pt;font-weight:bold}
+p.section a.section:hover {text-decoration:underline}
+
+/* Index */
+
+div.pg-index table.t-sec {background-color:#ffffff;border:1px solid #bbbbbb}
+div.pg-index table.t-sec th {background-color:#e2e2e2;background:linear-gradient(to bottom,#cfcfcf,#eeeeee)}
+div.pg-index table.t-sec td {border-top:solid 1px #eeeeee}
+div.pg-index table.t-sec th {font-size:8pt;font-weight:bold;color:#555555}
+div.pg-index table.t-sec th.c-logo,
+div.pg-index table.t-sec td.c-logo {width:120px;text-align:center}
+div.pg-index table.t-sec th.c-items,
+div.pg-index table.t-sec td.c-items {width:70px;text-align:center}
+
+td.c-logo img, td.c-icon img {display:block}
+
+/* compact table */
+
+div.pg-index.view-c table.t-sec th {padding:3px}
+div.pg-index.view-c table.t-sec td {padding:3px}
+div.pg-index.view-c table.t-sec th.c-logo,
+div.pg-index.view-c table.t-sec td.c-logo {width:80px}
+div.pg-index.view-c table.t-sec td.c-logo img {max-height:50px}
+
+/* Search */
+
+div.pg-search table.t-sec {margin:0 0 15px;padding:0;background-color:#f4f4f4;border:1px solid #dddddd;border-radius:5px}
+
+/* ==== MEDIA LARGE ==== */
+
+@media screen and (min-width:1024px)
+{
+div.dom-sep {height:25px}
+div.pg-index.view-c div.dom-sep {height:15px}
+}
+
+/* ==== MEDIA EXTRA SMALL ==== */
+
+@media screen and (min-width:501px) and (max-width:640px)
+{
+div.dom-sep {height:10px}
+div.pg-index table.t-sec th.c-logo,
+div.pg-index table.t-sec td.c-logo {width:80px}
+div.pg-index table.t-sec td.c-logo img {max-height:50px}
+}
+
+@media handheld,screen and (max-width:500px)
+{
+div.dom-sep {height:5px}
+th.c-items,td.c-items {display:none}
+span.sectiondesc {display:none}
+div.pg-index table.t-sec th.c-logo,
+div.pg-index table.t-sec td.c-logo {width:80px}
+div.pg-index table.t-sec td.c-logo img {max-height:50px}
+}

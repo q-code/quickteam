@@ -1,0 +1,1 @@
+Elke team kan twee niveaus van zicht hebben: het normale gedrag is <b><i>Zichtbaar (pupliek)</i></b> zichtbaar voor gebruikers, en de <b><i>Verborgen</i></b> teams zijn gereserveerd voor de beheerders en de moderatoren. Wanneer u tot het Gesloten statuut overgaat, zal het niet meer mogelijk zijn om er leden toe te voegen en weg te nemen (behalve voor de beheerders).

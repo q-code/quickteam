@@ -1,0 +1,80 @@
+/* CALENDAR add on*/
+
+#sectiondesc, #item_reference {margin:2px 0 8px 0; font-size:12pt; font-weight:bold; font-style:italic; color:#AAAAAA}
+#sectiondesc_sub {margin:0 0 10px 0; font-size:9pt; font-weight:bold; font-style:italic; color:#AAAAAA}
+h2 {font-size:11pt;font-weight:bold;color:#000000}
+#thismonth {display:inline-block;margin:10px 3px 10px 0;padding:3px 8px;background-color:#dfdfdf;border-style:solid;border-width:1px;border-color:#d8d7c0 #aaaaaa #aaaaaa #d8d7c0;border-radius:2px;font-size:11pt;font-weight:bold;color:#000000}
+#nextmonth {margin:10px 0;padding:0;font-size:11pt;font-weight:bold;color:#000000}
+a.button {display:inline-block;margin:10px 3px 10px 0;text-decoration:none;padding:3px 8px;background-color:#dfdfdf;border-style:solid;border-width:1px;border-color:#d8d7c0 #aaaaaa #aaaaaa #d8d7c0;border-radius:2px;font-size:11pt;font-weight:bold}
+a.button:hover {box-shadow:2px 2px 2px #cccccc}
+a.button.disabled {color:#888888}
+a.button.disabled:hover {color:#888888;box-shadow:none}
+
+div.optionscontainer {text-align:right}
+div.options {float:none;display:inline-block;height:30px;margin:0 0 5px 5px;padding:0;background-color:#f4f4f4;border:1px solid #b69c84;border-radius:5px}
+div.options p {margin:6px 4px 0 4px;font-size:8pt}
+div.options option {font-size:9pt}
+
+table.calendarheader {margin:0;width:700px}
+td.calendartitle {font-size:12pt;font-weight:bold;vertical-align:bottom}
+td.calendarcmd {text-align:right;vertical-align:middle}
+
+div#userinfo img.userimage {padding:5px;max-height:80px;max-width:100px;background-color:#ffffff;border:solid 1px #dddddd;border-radius:4px}
+div#userinfo p.username {margin:5px 0}
+
+/* CALENDAR */
+
+table.calendar {width:700px;border:solid 1px #90765E;box-shadow:2px 2px 4px #cccccc}
+table.calendarnext {width:100%;border:solid 1px #90765E;box-shadow:2px 2px 4px #cccccc}
+
+th.date {background-color:#D8D7C0;padding:4px;text-align:left;color:#444444;font-size:8pt;font-weight:bold}
+td.date {background-color:#E8E7D7;padding:4px;border-style:solid;border-width:1px;border-color:#D8D7C0;color:#444444;vertical-align:top}
+td.date_out {background-color:#EEEEEE;padding:4px;border-style:solid;border-width:1px;border-color:#D8D7C0;color:#AAAAAA;vertical-align:top}
+th.week {background-color:#D8D7C0;padding:4px;text-align:center;color:#444444;font-size:8pt;font-weight:bold;vertical-align:top;vertical-align:top}
+td.week {background-color:#D8D7C0;padding:4px;border-style:solid;border-width:1px;border-color:#D8D7C0;text-align:center;color:#444444;font-size:8pt;vertical-align:top}
+
+th.date_next {background-color:#D8D7C0;padding:4px;text-align:center;color:#444444;font-size:8pt;font-weight:bold;vertical-align:top}
+td.date_next {background-color:#E8E7D7;padding:4px;border-style:solid;border-width:1px;border-color:#D8D7C0;text-align:center;color:#444444;font-size:8pt;font-weight:bold;vertical-align:top}
+td.date_out_next {background-color:#EEEEEE;padding:4px;border-style:solid;border-width:1px;border-color:#D8D7C0;text-align:center;color:#AAAAAA;font-size:8pt;font-weight:bold;vertical-align:top}
+
+#zone_today {border-color:#900B09}
+
+p.datenumber {margin:0;text-align:left;font-size:12pt;font-weight:bold}
+p.dateicon {margin:0;text-align:right;font-size:8pt}
+p.dateicon a {font-size:8pt}
+a.date_next {font-size:8pt;font-weight:bold;color:#900B09;text-decoration:underline}
+
+/* table view */
+
+table.t-item {margin:3px 0;background-color:#FFFFFF;border:1px solid #AAAAAA}
+table.t-item th {padding:4px;vertical-align:middle;background-color:#e2e2e2;font-size:8pt;font-weight:bold;color:#555555}
+table.t-item td {padding:4px;vertical-align:middle;border-bottom:solid 1px #dddddd}
+
+table.t-item td.c-date {width:50px;background-color:#e2e2e2;text-align:center;font-size:12pt;font-weight:bold}
+table.t-item td.c-picture {width:60px}
+table.t-item td.c-picture img {max-height:60px}
+table.t-item td.c-picture img.popup {display:none;padding:5px;background-color:#ffffff;position:absolute;z-index:9;border:solid 1px #dddddd;border-radius:5px;box-shadow:2px 2px 4px #bbbbbb}
+
+/* ==== MEDIA SMALL ==== */
+
+@media screen and (min-width:641px) and (max-width:870px)
+{
+table.calendarheader,
+table.calendar {width:580px}
+}
+
+/* ==== MEDIA EXTRA SMALL ==== */
+
+@media screen and (min-width:501px) and (max-width:640px)
+{
+table.calendarheader,
+table.calendar {width:100%}
+table.calendarheader td {display:block}
+}
+
+@media handheld,screen and (max-width:500px)
+{
+table.calendarheader,
+table.calendar {width:100%}
+table.calendarheader td {display:block}
+}

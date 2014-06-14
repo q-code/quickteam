@@ -1,0 +1,3 @@
+<p>Vous n'avez pas accept&eacute; les r&egrave;gles de ce team.</p>
+<p>La proc&eacute;dure d'enregistrement est stopp&eacute;e.</p>
+<br />

@@ -1,0 +1,1 @@
+Bienvenue dans la communaut&eacute; QuickTeam. Cliquez le lien <a class="welcome" href="qte_register.php">s'enregistrer</a> ci-dessus pour devenir membre. Pour trouvez les autres membres, choisissez un des groupes ci-apr&egrave;s.

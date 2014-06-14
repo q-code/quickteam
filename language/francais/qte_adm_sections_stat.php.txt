@@ -1,0 +1,1 @@
+Vous pouvez ici mettre &agrave;  jour les statistiques des groupes. Le nombre de membres (et membres ayant le statut Z) peut &ecirc;tre erron&eacute; si vous importez ou effacez des membres avec un outil de database query externe. S&eacute;lectionnez ici les groupes pour lesquels il faut recalculer les statistiques.

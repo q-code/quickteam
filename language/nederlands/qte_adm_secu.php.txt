@@ -1,0 +1,1 @@
+﻿Dit scherm kunt u afstemmen van de beveiliging van het systeem. Registratie modus met e-mail controle wordt aanbevolen. Bij gebruik van een externe instantie (zoals een LDAP/AD register) de "back-office aanvraag" zal on-line registratie uit te schakelen.

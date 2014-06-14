@@ -1,0 +1,5 @@
+<p><b>R&egrave;gles COPPA</b></p>
+<p>Tout utilisateur de moins de 13 ans doit obtenir l'autorisation de leur parent ou tuteur avant de devenir membre d'une communaut&eacute;. Comme ce site applique les r&egrave;gles COPPA, il faut qu'un parent ou tuteur nous fax ou nous renvoit le formulaire sign&eacute; avant que cet enfant ne devienne membre effectif et que ses informations personnelles ne soient visibles sur le web.</p>
+<p>Vous pouvez poursuivre le processus d'enregistrement mais le compte ne sera activ&eacute; qu'apr&egrave;s rÃ©ception du formulaire de permission sign&eacute;. Si vous souhaitez annuler l'enregistrement, cliquez <a href="index.php">ici</a> et vous retournerez &agrave; l'index du team.</p>
+<p>Une copie du formulaire d'inscription est disponible <a href="qte_form_coppa.php">ici</a>.<br />
+Pour plus d'information sur la COPPA voyez : <a href="http://www.coppa.org">www.coppa.org</a></p>

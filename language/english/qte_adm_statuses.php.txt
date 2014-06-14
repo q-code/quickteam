@@ -1,0 +1,1 @@
+You can here setup the different status for your members. The display order is defined by the id and goes from A to Z. The last status (Z), meaning "not member", cannot be deleted. See the <b>Edit</b> page, to rename the status or to define the associated icon.

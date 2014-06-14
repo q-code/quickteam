@@ -1,0 +1,1 @@
+Welcome to QuickTeam board. To discover the content of the site you may have to register first: click the <a class="welcome" href="qte_register.php">register</a> link above to proceed. To start viewing members, select a team here after.

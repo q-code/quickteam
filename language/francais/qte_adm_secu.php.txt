@@ -1,0 +1,1 @@
+﻿Cet &eacute;cran vous permet d'ajuster les r&egrave;gles de s&eacute;curit&eacute; du syst&egrave;me. L'enregistrement avec v&eacute;rification par e-mail est la m&eacute;thode recommand&eacute;e. Lorsque vous utilisez une authorit&eacute; externe (comme un registre LDAP/AD) le 'back-office request' d&eacute;sactive les enregistrements en ligne.

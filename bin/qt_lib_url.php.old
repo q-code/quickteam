@@ -1,0 +1,70 @@
+<?php
+
+/* ============
+ * qt_lib_url.php
+ * ------------
+ * version: 4.0 build:20121117
+ * This is a library of public functions
+ * ------------
+ * QTargexplode()
+ * QTargadd()
+ * QTargimplode()
+ * ============ */
+
+// QTargexplode
+// Explodes an uri string according to the arguments (without ?).
+// If the string is empty, uses the current SERVER URI.
+// Returns an array with the argument as key and the value as value.
+// Returns an empty array is no argument are found.
+
+function QTargexplode($str='',$onerror=null)
+{
+  if ( empty($str) )
+  {
+    $arr = parse_url($_SERVER['REQUEST_URI']);
+    if ( !isset($arr['query']) ) return array();
+    $str = $arr['query'];
+    if ( empty($str) ) return array();
+  }
+  $str = str_replace('&amp;','&',$str);
+  $arr = explode('&',$str);
+  $arrArgs = array();
+  foreach($arr as $str)
+  {
+    if ( strstr($str,'=') )
+    {
+    $arrPart = explode('=',$str);
+    $arrArgs[$arrPart[0]]=$arrPart[1];
+    }
+  }
+  return $arrArgs;
+}
+
+// QTargadd
+// Removes the key if already set. The value can be null (the key will not be set).
+
+function QTargadd($arr,$strKey,$strValue=null,$onerror=null)
+{
+  if ( !is_array($arr) ) { if ( isset($onerror) ) return $onerror; die('QTargadd: arg #1 must be an array'); }
+  if ( !is_string($strKey) ) { if ( isset($onerror) ) return $onerror; die('QTargadd: arg #2 must be an string'); }
+  if ( isset($arr[$strKey]) ) unset($arr[$strKey]);
+  if ( is_null($strValue) ) return $arr;
+  $arr[$strKey] = $strValue;
+  return $arr;
+}
+
+// QTargimplode
+// Returns '' when the array is empty
+
+function QTargimplode($arr,$strSep='&amp;',$onerror=null)
+{
+  if ( !is_array($arr) ) { if ( isset($onerror) ) return $onerror; die('QTargimplode: arg #1 must be an array'); }
+  if ( !is_string($strSep) ) { if ( isset($onerror) ) return $onerror; die('QTargimplode: arg #2 must be an string'); }
+  if ( count($arr)==0 ) return '';
+  $str = '';
+  foreach($arr as $strKey=>$strValue)
+  {
+    $str .= (!empty($str) ? $strSep: '').$strKey.'='.$strValue;
+  }
+  return $str;
+}

@@ -1,0 +1,1 @@
+There are two types of team: <b><i>Visible (public)</i></b> where members are visible by the board community, and <b><i>Hidden</i></b> meaning that the team visible by the coordinators and administrators only. When you turn the status of a team to <b><i>Frozen</i></b>, adding or removing members will not be possible (except for Administrator).

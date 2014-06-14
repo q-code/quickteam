@@ -1,0 +1,2 @@
+Merci d'avoir choisi <b><i>QuickTeam</i></b> en tant que solution pour la gestion de vos groupes.<br />
+Cet écran donne un aper&ccedil;u de quelques statistiques de QuickTeam. Pour retourner à l'index des groupes, cliquez sur <b><i>Exit</i></b> dans le panneau de gauche. Les autres liens sur la gauche de cet écran vous permettront de contr&ocirc;ler chaque aspect de l'application.
