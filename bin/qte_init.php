@@ -1,5 +1,6 @@
 <?php // QuickTeam 3.0 build:20140608
 
+define('APP', 'qte'); // application file prefix
 if ( !isset($qte_root) ) $qte_root='';
 
 // ---------------
@@ -78,8 +79,9 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 // Classes & functions
 // ---------------
-require_once 'bin/class/qt_class_db.php';
+require_once 'bin/qt_lib_sys.php';
 require_once 'bin/qt_lib_txt.php';
+require_once 'bin/class/qt_class_db.php';
 require_once 'bin/class/qt_abstracts.php';
 require_once 'bin/class/qt_class_html.php';
 require_once 'bin/class/qt_class_table.php';
@@ -133,10 +135,10 @@ if ( empty($_SESSION[QT]['language']) ) $_SESSION[QT]['language']='english';
 
 // change language if required (by coockies or by the menu)
 
-$str=GetIso();
+$str=QTiso();
 if ( isset($_COOKIE[QT.'_cooklang']) ) $str=substr($_COOKIE[QT.'_cooklang'],0,2);
 if ( isset($_GET['lx']) ) $str=substr($_GET['lx'],0,2);
-if ( $str!=GetIso() && !empty($str) )
+if ( $str!=QTiso() && !empty($str) )
 {
   include $qte_root.'bin/qte_lang.php';
   if ( array_key_exists($str,$arrLang) )
@@ -173,11 +175,7 @@ if ( !isset($_SESSION[QT]['cal_showall']) ) $_SESSION[QT]['cal_showall']=FALSE;
 // ----------------
 if ( !isset($_SESSION['L']) ) $_SESSION['L'] = array();
 
-CheckDico('index',false);
-CheckDico('domain',false);
-CheckDico('sec',true);
-CheckDico('field',false);
-CheckDico('ffield',false);
+QTcheckL('index;domain;sec;secdesc;field;ffield');
 
 include_once $qte_root.GetLang().'qte_main.php';
 
@@ -209,11 +207,11 @@ $oHtml->scripts['base'] = '<script type="text/javascript" src="bin/js/qte_base.j
 if ( $oVIP->coockieconfirm )
 {
   $oVIP->exitname = $L['Continue'];
-  include 'qte_p_header.php';
+  include 'qte_inc_hd.php';
   $oHtml->Msgbox($L['Login'],'msgbox login');
   echo '<h2>'.L('Welcome').' '.sUser::Name().'</h2><p><a href="'.Href($oVIP->exiturl).'">'.$oVIP->exitname.'</a>&nbsp; &middot; &nbsp;<a href="'.Href('qte_login.php?a=out').'">'.sprintf(L('Welcome_not'),sUser::Name()).'</a></p>';
   $oHtml->Msgbox(END);
-  include 'qte_p_footer.php';
+  include 'qte_inc_ft.php';
   exit;
 }
 

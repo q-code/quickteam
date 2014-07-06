@@ -18,7 +18,7 @@ session_start();
 require_once 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die(Error(13));
 require_once 'bin/class/qte_class_dom.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 // INITIALISE
 
@@ -79,7 +79,7 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '
 <form method="post" action="',$oVIP->selfurl,'">
@@ -124,4 +124,4 @@ echo '<p style="margin:0 0 5px 0;text-align:center"><input type="hidden" name="d
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

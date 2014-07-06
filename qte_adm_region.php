@@ -18,8 +18,8 @@
 session_start();
 require_once 'bin/qte_init.php';
 include 'bin/qte_lang.php'; $arrLangDir = QTarrget($arrLang,2); // this creates an array with only the [iso]directories
-include Translate('qte_adm.php');
-include Translate('qte_zone.php');
+include Translate('@_adm.php');
+include Translate('@_zone.php');
 
 if ( sUser::Role()!='A' ) die(Error(13));
 
@@ -42,9 +42,9 @@ if ( isset($_POST['ok']) )
   $_SESSION[QT]['language'] = (isset($arrLangDir[$_POST['dfltlang']]) ? $arrLangDir[$_POST['dfltlang']] : 'english');
 
   // change language
-  include Translate('qte_main.php');
-  include Translate('qte_adm.php');
-  include Translate('qte_zone.php');
+  include Translate('@_main.php');
+  include Translate('@_adm.php');
+  include Translate('@_zone.php');
   $oVIP->selfname = $L['Adm_region'];
   $oVIP->exitname = $oVIP->selfname;
 
@@ -81,7 +81,7 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // Current language
 
@@ -186,4 +186,4 @@ echo '</td>
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

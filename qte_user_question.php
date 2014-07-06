@@ -23,7 +23,7 @@ if ( !sUser::CanView('U') ) die($L['E_member']);
 // INITIALISE
 
 include 'bin/class/qt_class_smtp.php';
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 $id = -1;
 if ( isset($_GET['id']) ) $id = intval(strip_tags($_GET['id']));
@@ -77,7 +77,7 @@ function ValidateForm(theForm)
 </script>
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 echo '<table class="profile">',PHP_EOL;
 echo '<tr>',PHP_EOL;
@@ -111,4 +111,4 @@ echo '
 
 // HTML END
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

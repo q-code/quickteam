@@ -128,7 +128,7 @@ return data.replace("<status "+status+"/>", "<p class=\"small\"><img src=\"'.$_S
 </script>
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 echo '
 <p id="sectiondesc">',$oVIP->selfname,'</p>
@@ -361,4 +361,4 @@ if ( $_SESSION[QT]['section']>=0 ) {
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

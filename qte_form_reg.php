@@ -239,7 +239,7 @@ $(function() {
 });
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // DEFAULT VALUE RECOVERY (na)
 
@@ -313,4 +313,4 @@ $oHtml->Msgbox(END);
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

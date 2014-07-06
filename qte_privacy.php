@@ -31,7 +31,7 @@ $oVIP->selfname = $L['Legal'];
 
 $oHtml->scripts = array();
 unset($oHtml->links['css']);
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 $oHtml->Msgbox($oVIP->selfname,array('style'=>'width:620px'));
 
@@ -42,7 +42,7 @@ $oHtml->Msgbox(END);
 
 $oHtml->Msgbox('About QuickTeam',array('style'=>'width:620px'));
 
-$strFile = Translate('sys_about.php');
+$strFile = Translate('sys_about.php','');
 if ( file_exists($strFile) ) { include $strFile; } else { echo 'Missing file:<br />'.$strFile; }
 
 echo '<p>
@@ -70,4 +70,4 @@ $oHtml->Msgbox(END);
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

@@ -60,13 +60,13 @@ if ( isset($_POST['ok']) )
     {
       $arrMembership = GetMembership($id); // list sections that MUST have statistics updated after the delete
       $oDB->Query('DELETE FROM '.TABS2U.' WHERE sid<>0 AND userid='.$id);
-      foreach(array_keys($arrMembership) as $intId) { if ( $intId>0 ) UpdateSectionStats($intId); }
+      foreach(array_keys($arrMembership) as $intId) { if ( $intId>0 ) cSection::UpdateStats($intId); }
       $bEdited = true;
     }
     else
     {
       cItem::InSection($_POST['delteam'],'rem',$id);
-      UpdateSectionStats((int)$_POST['delteam']);
+      cSection::UpdateStats((int)$_POST['delteam']);
       $bEdited = true;
     }
   }}
@@ -77,7 +77,7 @@ if ( isset($_POST['ok']) )
   if ( $_POST['addteam']!='no' ) {
     // update add team
     cItem::InSection($_POST['addteam'],'add',$id);
-    UpdateSectionStats((int)$_POST['addteam']);
+    cSection::UpdateStats((int)$_POST['addteam']);
     $bEdited = true;
   }}
 

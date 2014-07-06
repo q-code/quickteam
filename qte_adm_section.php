@@ -25,7 +25,7 @@ if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 $s = -1; QThttpvar('s','int'); if ( $s<0 ) die('Missing parameters');
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 $oVIP->selfurl  = 'qte_adm_section.php?s='.$s;
 $oVIP->selfname = '<span class="upper">'.$L['Adm_content'].'</span><br />'.$L['Section_upd'];
@@ -108,8 +108,8 @@ if ( isset($_POST['ok']) )
 
     // register section lang and description
 
-    $_SESSION['L']['sec'] = cLang::Get('sec',GetIso(),'*');
-    $_SESSION['L']['secdesc'] = cLang::Get('secdesc',GetIso(),'*');
+    $_SESSION['L']['sec'] = cLang::Get('sec',QTiso(),'*');
+    $_SESSION['L']['secdesc'] = cLang::Get('secdesc',QTiso(),'*');
     Unset($oVIP->sections);
     Unset($_SESSION[QT]['sys_notifysections']);
 
@@ -175,7 +175,7 @@ $(function() {
 ';
 }
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 $arrDest = $oVIP->domains;
 Unset($arrDest[$oSEC->pid]);
@@ -321,4 +321,4 @@ echo '<p><a href="',$oVIP->exiturl,'" onclick="return qtEdited(bEdited,\''.$L['E
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

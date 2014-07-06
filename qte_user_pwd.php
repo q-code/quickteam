@@ -88,7 +88,7 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 $oHtml->scripts_end[] = '
 <script type="text/javascript">
@@ -147,4 +147,4 @@ echo '
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

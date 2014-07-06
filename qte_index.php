@@ -52,7 +52,7 @@ $(function() {
 });
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // --------
 // DOMAIN / SECTIONS
@@ -117,4 +117,4 @@ if ( $intSec==0 ) echo '<p>',( sUser::Role()=='V' ? $L['E_no_public_section'] : 
 // --------
 
 if ( isset($oSEC) ) unset($oSEC);
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

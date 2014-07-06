@@ -17,7 +17,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 
@@ -122,7 +122,7 @@ if ( isset($_POST['ok']) )
 
     // register lang
 
-    $_SESSION['L']['index'] = cLang::Get('index',GetIso());
+    $_SESSION['L']['index'] = cLang::Get('index',QTiso());
   }
 
   // exit
@@ -168,7 +168,7 @@ return null;
 </script>
 ';
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // FORM
 
@@ -282,4 +282,4 @@ echo '
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

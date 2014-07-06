@@ -29,7 +29,7 @@ QThttpvar('q','str',false); // do not strip tags because <> can be used in the s
 // --------
 
 $oVIP->arrJava=null;
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 
 // Dataset (form)
@@ -77,4 +77,4 @@ if ( isset($_POST['ok']) )
 // HTML END
 // ---------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

@@ -112,7 +112,7 @@ $(function() {
 });
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // advanced search
 
@@ -192,4 +192,4 @@ else // simple search
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

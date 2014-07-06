@@ -18,7 +18,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 
@@ -58,7 +58,7 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '<form method="post" action="',$oVIP->selfurl,'">
 <table class="t-data">
@@ -80,4 +80,4 @@ echo '<form method="post" action="',$oVIP->selfurl,'">
 
 echo '<script type="text/javascript">document.getElementById(\'name\').focus();</script>',PHP_EOL;
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

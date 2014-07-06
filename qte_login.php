@@ -18,7 +18,7 @@
 session_start();
 require_once 'bin/qte_init.php';
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 // INITIALISE
 
@@ -115,7 +115,7 @@ function ValidateForm(theForm)
 </script>
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 $oHtml->MsgBox($oVIP->selfname,'msgbox login,msgboxtitle login,msgboxbody login');
 
@@ -133,4 +133,4 @@ $oHtml->MsgBox(END);
 
 // HTML END
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

@@ -17,7 +17,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 
@@ -58,7 +58,7 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // BOARD OFFLINE
 
@@ -159,4 +159,4 @@ echo '<tr class="t-data">
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

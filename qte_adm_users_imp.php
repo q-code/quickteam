@@ -17,7 +17,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die($L['R_admin']);
 
@@ -102,7 +102,7 @@ if ( isset($_POST['ok']) )
     }
     fclose($handle);
     // Unregister global sys (will be recomputed on next page)
-    if ( $intCountUser>0 ) UpdateSectionStats((int)$_POST['section']);
+    if ( $intCountUser>0 ) cSection::UpdateStats((int)$_POST['section']);
     Unset($_SESSION[QT]['sys_states']);
   }
 
@@ -149,7 +149,7 @@ if (navigator.userAgent.toLowerCase().indexOf("chrome") != -1) doc.style.display
 </script>
 ';
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '<form method="post" action="',$oVIP->selfurl,'" enctype="multipart/form-data" onsubmit="return ValidateForm(this);">
 <input type="hidden" name="maxsize" value="5242880"/>
@@ -187,4 +187,4 @@ echo '<h2 class="subtitle">',L('Settings'),'</h2>
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

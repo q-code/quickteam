@@ -58,7 +58,7 @@ if ( isset($_POST['ok']) )
 // --------
 
 $oHtml->scripts = array();
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // CONTENT
 
@@ -136,4 +136,4 @@ Password <span style="color:#4444ff">your password</span><br />
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

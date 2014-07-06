@@ -14,7 +14,7 @@ echo $oHtml->Head();
 echo $oHtml->Body();
 
 $oHtml->Msgbox($L['Help'],array('style'=>'width:650px'));
-include Translate('qte_secu_help.php');
+include Translate('@_secu_help.php');
 $oHtml->Msgbox(END);
 
 echo $oHtml->End();

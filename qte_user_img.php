@@ -26,7 +26,7 @@ if ( sUser::Role()!='A' ) { if (sUser::Id()!=$id) die($L['R_user']); }
 // INITIALISE
 // --------
 
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 if ( !isset($_SESSION['temp_key']) ) $_SESSION['temp_key']= "";
 if ( !isset($_SESSION['temp_ext']) ) $_SESSION['temp_ext']= "";
@@ -36,8 +36,8 @@ $oVIP->selfname = $L['Change_picture'];
 $oVIP->exiturl = Href('qte_user.php').'?id='.$id.'&amp;tt=s';
 $oVIP->exitname = $L['Profile'];
 
-$upload_subdir = TargetDir(QTE_DIR_PIC,$id);
-$upload_path = QTE_DIR_PIC.$upload_subdir; // The path to where the image will be saved
+$upload_subdir = TargetDir(APPCST('_DIR_PIC'),$id);
+$upload_path = APPCST('_DIR_PIC').$upload_subdir; // The path to where the image will be saved
 $large_image_location = $upload_path.'src'.$id.'_'.$_SESSION['temp_key'].$_SESSION['temp_ext'];
 $thumb_image_location = $upload_path.$id.$_SESSION['temp_ext'];
 

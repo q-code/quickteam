@@ -24,7 +24,7 @@ if ( !sUser::CanView('M') ) die(Error(12));
 // INITIALISE
 // ---------
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 $oVIP->selfurl = 'qte_adm_users_move.php';
 $oVIP->selfname = $L['User_man'];
@@ -70,7 +70,7 @@ if ( isset($_POST['add']) && isset($_POST['sec_add']) )
   if ( cItem::InSection($s,'add',$intKey) ) $i++;
   }
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.sprintf(L('Added_member',$i),$oSEC->name) : 'E|'.$error);
-  $oSEC->stats = UpdateSectionStats($s);
+  $oSEC->stats = cSection::UpdateStats($s);
   $oSEC->ReadStats();
 }
 if ( isset($_POST['rem']) && isset($_POST['sec_del']) )
@@ -82,7 +82,7 @@ if ( isset($_POST['rem']) && isset($_POST['sec_del']) )
   if ( cItem::InSection($s,'rem',$intKey) ) { $i++; } else { $j++; }
   }
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.sprintf(L('Removed_member',$i),$oSEC->name) : 'E|'.$error);
-  $oSEC->stats = UpdateSectionStats($s);
+  $oSEC->stats = cSection::UpdateStats($s);
   $oSEC->ReadStats();
 }
 
@@ -185,7 +185,7 @@ function page_click(id,p)
 </script>
 ';
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 $oSEC->descr .= (empty($oSEC->descr) ? '' : '<br />' ).'<span class="small">('.L('User',$oSEC->members).')</span>';
 echo $oSEC->ShowInfo('sectioninfo-left compact','sectioninfo compact','sectiondesc compact'),PHP_EOL;
@@ -349,4 +349,4 @@ if ( !$bShowtoc ) { $oVIP->exiturl='qte_index.php'; $oVIP->exitname=ObjTrans('in
 
 echo '<p><a href="',$oVIP->exiturl,'">',$oVIP->exitname,'</a> &middot; ',$L['Goto'],' <a href="qte_section.php?s=',$oSEC->id,'" target="_top">',$oSEC->name,'</a></p>';
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

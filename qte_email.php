@@ -33,7 +33,7 @@ if ( $label=='1' ) $label=true;
 // ---------
 // Note: This returns pages of 100 items ($_SESSION[QT]['items_per_page'] replaced by 100)
 
-include Translate('qte_email.php');
+include Translate('@_email.php');
 
 $strFlds  = ' u.id,u.title,u.firstname,u.midname,u.lastname,u.username,u.alias,u.privacy,u.emails';
 $strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id';
@@ -130,7 +130,7 @@ if ( $intCount<$oSEC->members ) $strPager = '<span class="small">'.$intCount.' '
 
 $oHtml->scripts = array();
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // Display description
 
@@ -161,7 +161,7 @@ if ( $intCount==0 )
     $i = intval($row);
     if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$oVIP->statuses['Z']['statusname']),')</p>';
   }
-  include 'qte_p_footer.php';
+  include 'qte_inc_ft.php';
   return;
 }
 
@@ -272,4 +272,4 @@ echo '<p class="helpbox">',$L['Emails_help'],'</p>
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

@@ -25,7 +25,7 @@ if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 $id = '-1'; QThttpvar('id','str'); if ( $id=='-1' ) die('Missing id...');
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 $oVIP->selfurl = 'qte_adm_status.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';
@@ -129,7 +129,7 @@ if (isset($_POST['ok']))
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '<table class="hidden">
 <tr>
@@ -244,4 +244,4 @@ echo '<p class="submit">
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

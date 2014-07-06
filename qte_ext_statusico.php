@@ -18,7 +18,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 
@@ -37,7 +37,7 @@ $arrStatuses=array();
 // --------
 
 $bJava=false;
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // Browse image file
 
@@ -111,4 +111,4 @@ echo '
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

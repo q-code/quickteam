@@ -10,6 +10,7 @@ p.imgcaption {margin:3px 0;font-size:8pt}
 p.imgcaption a {font-size:8pt}
 tr.hover:hover {background-color:#f4f4f4}
 td.c-icon img {display:block;margin:0 auto}
+td.c-logo img {display:block;margin:0 auto}
 td.c-picture img {display:block;margin:0}
 
 /* PAGE CONTAINER */
@@ -59,7 +60,7 @@ table.info td {padding:0;vertical-align:top}
 div.infobox {width:250px;padding:5px 8px;background-color:#FFFFFF;border-top:solid 4px #AAAAAA}
 div.infobox.stat {margin:10px auto 10px 0}
 div.infobox.details {margin:10px auto}
-div.infobox.legend {margin:10px 0 10px auto}
+div.infobox.legend {margin:10px 0 10px auto;max-height:150px;overflow:auto}
 div.infobox h1 {margin:0 0 5px 0;color:#888888;font-style:normal;font-weight:bold;font-size:11pt}
 div.infobox p {margin:5px 0 0 0}
 

@@ -18,9 +18,9 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_coppa.php');
+include Translate('@_coppa.php');
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo <<<END
 <h2>{$L['Register']} / COPPA</h2>
@@ -91,4 +91,4 @@ echo <<<END
 <p>{$L['Coppa']['End']}</p>\n
 END;
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

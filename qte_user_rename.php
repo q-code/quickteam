@@ -26,7 +26,7 @@ $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION
 // --------
 
 include 'bin/class/qt_class_smtp.php';
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 $oVIP->selfurl = 'qte_user_rename.php';
 $oVIP->selfname = $L['Change_name'];
@@ -78,7 +78,7 @@ $oItem = new cItem($id);
 // HTML START
 // --------
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 $oHtml->scripts_end[] = '
 <script type="text/javascript">
@@ -146,4 +146,4 @@ echo '
 // HTML END
 // --------
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

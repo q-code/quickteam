@@ -28,7 +28,7 @@ $ok='';
 QThttpvar('a p s ok','str str str str');
 if ( empty($a) ) die('Missing argument');
 
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 $oVIP->selfurl = 'qte_reset_pwd.php';
 $oVIP->selfname = $L['Forgotten_pwd'];
@@ -59,7 +59,7 @@ case 'id': // request username
 
   // Form
 
-  include 'qte_p_header.php';
+  include 'qte_inc_hd.php';
   $oHtml->Msgbox($oVIP->selfname,array(),array('id'=>'login_header'));
   echo '
   <form method="post" action="',Href(),'" onsubmit="return ValidateForm(this);">
@@ -78,7 +78,7 @@ case 'id': // request username
   </script>
   ';
   $oHtml->Msgbox(END);
-  include 'qte_p_footer.php';
+  include 'qte_inc_ft.php';
 
   break;
 
@@ -145,7 +145,7 @@ case 'sec': // request secret question
     $oHtml->PageMsg(NULL,'Secret question not defined.<br />Please contact the webmaster ('.$_SESSION[QT]['admin_email'].') to reset your password.');
   }
 
-  include 'qte_p_header.php';
+  include 'qte_inc_hd.php';
   $oHtml->Msgbox($oVIP->selfname,array(),array('id'=>'login_header'));
   echo '
   <form method="post" action="',Href(),'" onsubmit="return ValidateForm(this);">
@@ -172,7 +172,7 @@ case 'sec': // request secret question
   }
   </script>
   ';
-  include 'qte_p_footer.php';
+  include 'qte_inc_ft.php';
 
   break;
 

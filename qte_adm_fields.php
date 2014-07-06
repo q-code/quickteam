@@ -74,11 +74,11 @@ function SetFields($arrFields)
 // INITIALISE
 // ---------
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 include 'bin/qte_lang.php'; // this creates $arrLang
 
-$strEditLang = GetIso();
+$strEditLang = QTiso();
 if ( isset($_GET['editlang']) ) $strEditLang = $_GET['editlang'];
 if ( isset($_POST['editlang']) ) $strEditLang = $_POST['editlang'];
 
@@ -199,7 +199,7 @@ if ( isset($_POST['ok']) )
 $_SESSION['L']['field'] = cLang::Get('field',$strEditLang,'*');
 $_SESSION['L']['ffield'] = cLang::Get('ffield',$strEditLang,'*');
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '
 <script type="text/javascript">
@@ -364,4 +364,4 @@ echo '</table>
 echo '<p class="small">* ',$L['List_allowed'],'</p>';
 echo '<p class="small">',$L['H_semicolon_format'],'</p>';
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

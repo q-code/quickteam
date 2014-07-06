@@ -19,8 +19,8 @@ session_start();
 require_once 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die(Error(13));
 
-include Translate('qte_adm.php');
-include Translate('qte_reg.php');
+include Translate('@_adm.php');
+include Translate('@_reg.php');
 
 // ---------
 // INITIALISE
@@ -69,9 +69,9 @@ $strDataCommand = L('selection').': <a class="datasetcontrol" onclick="datasetco
 
 // User menu
 
-include 'qte_p_menu.php';
+include 'qte_inc_menu.php';
 
-// Prepare to check the last created user (in case of user added in qte_p_menu.php or if requested by URI)
+// Prepare to check the last created user (in case of user added in qte_inc_menu.php or if requested by URI)
 
 if ( isset($_GET['cid']) )  $intChecked = (int)strip_tags($_GET['cid']); // allow checking an id. Note checklast overridres this id
 if ( isset($_POST['cid']) ) $intChecked = (int)strip_tags($_POST['cid']);
@@ -144,7 +144,7 @@ $(function() {
 });
 ';
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // Add user(s) form / children selector
 
@@ -323,4 +323,4 @@ if ( !empty($strCsv) )
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

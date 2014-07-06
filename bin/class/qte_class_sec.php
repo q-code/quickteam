@@ -118,6 +118,28 @@ public function GetLogo($bIconIfNone=false)
 	return $str;
 }
 
+public static function UpdateStats($intS=-1,$arrValues=array())
+{
+  // Check
+
+  if ( !is_int($intS) || $intS<0) die('cSection::UpdateStats, Wrong id');
+
+  // Process (provided values are not recomputed)
+
+  if ( !isset($arrValues['members']) )  $arrValues['members']  = cSection::CountItems($intS,null); //SectionCount('members',$intS);
+  if ( !isset($arrValues['membersZ']) ) $arrValues['membersZ'] = cSection::CountItems($intS,'Z'); //SectionCount('membersZ',$intS);
+  foreach($arrValues as $strKey=>$strValue) { $arrValues[$strKey]=$strKey.'='.$strValue; }
+
+  // Save
+
+  global $oDB;
+  $oDB->Query('UPDATE '.TABSECTION.' SET stats="'.implode(';',$arrValues).'" WHERE id='.$intS );
+
+  // Return the stat line
+
+  return implode(';',$arrValues);
+}
+
 // --------
 // aQTcontainer implementations
 // --------
@@ -277,9 +299,9 @@ static function RenderFields($arrFLD,$oItem,$qte_root='',$bAllowLinkToUser=true,
         if ( !empty($oItem->emails) )
         {
           $arr = AsList($oItem->emails,false,',',3); // 4th entry is '...'
-          if ( !empty($arr[0]) ) $str = AsEmailImage(trim($arr[0]),'mail_ico_'.$oItem->id.'_a',true,QTE_JAVA_MAIL,array('class'=>'small'));
-          if ( !empty($arr[1]) ) $str .= ' '.AsEmailImage(trim($arr[1]),'mail_ico_'.$oItem->id.'_b',true,QTE_JAVA_MAIL,array('class'=>'small'));
-          if ( !empty($arr[2]) ) $str .= ' '.AsEmailImage(trim($arr[2]),'mail_ico_'.$oItem->id.'_c',true,QTE_JAVA_MAIL,array('class'=>'small'));
+          if ( !empty($arr[0]) ) $str = AsEmailImage(trim($arr[0]),'mail-i-'.$oItem->id,'a',true,QTE_JAVA_MAIL,array('class'=>'small'));
+          if ( !empty($arr[1]) ) $str .= ' '.AsEmailImage(trim($arr[1]),'mail-i-'.$oItem->id,'b',true,QTE_JAVA_MAIL,array('class'=>'small'));
+          if ( !empty($arr[2]) ) $str .= ' '.AsEmailImage(trim($arr[2]),'mail-i-'.$oItem->id,'c',true,QTE_JAVA_MAIL,array('class'=>'small'));
           if ( !empty($arr[3]) ) $str .= ' '.$arr[3];
         }
         break;
@@ -287,8 +309,8 @@ static function RenderFields($arrFLD,$oItem,$qte_root='',$bAllowLinkToUser=true,
       	if ( !empty($oItem->emails) )
         {
       	  $arr = AsList($oItem->emails,false,',',2); // 3d entry is '...'
-          if ( !empty($arr[0]) ) $str = AsEmailText(trim($arr[0]),'mail_txt_'.$oItem->id.'_a',true,QTE_JAVA_MAIL,array('class'=>'small'));
-          if ( !empty($arr[1]) ) $str .= '<br/>'.AsEmailText(trim($arr[1]),'mail_txt_'.$oItem->id.'_b',true,QTE_JAVA_MAIL,array('class'=>'small'));
+          if ( !empty($arr[0]) ) $str = AsEmailText(trim($arr[0]),'mail-t-'.$oItem->id,'a',true,QTE_JAVA_MAIL,array('class'=>'small'));
+          if ( !empty($arr[1]) ) $str .= '<br/>'.AsEmailText(trim($arr[1]),'mail-t-'.$oItem->id,'b',true,QTE_JAVA_MAIL,array('class'=>'small'));
           if ( !empty($arr[2]) ) $str .= ' '.$arr[2];
         }
         break;

@@ -17,7 +17,7 @@
 
 session_start();
 require_once 'bin/qte_init.php';
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 if ( sUser::Role()!='A' ) die(Error(13));
 
@@ -219,7 +219,7 @@ $oHtml->scripts_end[] = '<script type="text/javascript">ToggleForms();</script>
 ';
 }
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '
 <p style="text-align:right"><a id="toggleforms" href="qte_adm_sections.php" onclick="ToggleForms(); return false;">',$L['Add'],' ',$L['Domain'],'/',$L['Section'],'...</a>
@@ -349,4 +349,4 @@ echo '</ul>
 
 // HTML END
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

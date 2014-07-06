@@ -26,7 +26,7 @@ $id = -1; QThttpvar('id','int'); if ( $id<0 ) die('Missing id...');
 // --------
 
 include 'bin/class/qt_class_smtp.php';
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 $oVIP->selfurl = 'qte_unregister.php';
 $oVIP->selfname = $L['Unregister'];
@@ -81,7 +81,7 @@ function ValidateForm(theForm)
 </script>
 ';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 echo '
 <table class="hidden">
@@ -128,4 +128,4 @@ document.getElementById("title").focus();
 </script>
 ';
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

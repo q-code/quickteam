@@ -205,7 +205,7 @@ function Delete($bStat=true)
 
   if ( $bStat && isset($_SESSION[QT]['sys_sections']) )
   {
-  foreach($_SESSION[QT]['sys_sections'] as $intId=>$arr) UpdateSectionStats($intId);
+  foreach($_SESSION[QT]['sys_sections'] as $intId=>$arr) cSection::UpdateStats($intId);
   }
 }
 

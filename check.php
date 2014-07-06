@@ -65,10 +65,11 @@ $error = '';
 
   if ( !file_exists('bin/config.php') ) $error .= 'File <b>config.php</b> is not in the <b>bin</b> directory. Communication with database is impossible.<br />';
   if ( !file_exists('bin/qte_init.php') ) $error .= 'File <b>qte_init.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
+  if ( !file_exists('bin/qt_lib_sys.php') ) $error .= 'File <b>qt_lib_sys.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
+  if ( !file_exists('bin/qt_lib_txt.php') ) $error .= 'File <b>qt_lib_txt.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/qte_fn_base.php') ) $error .= 'File <b>qte_fn_base.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/qte_fn_html.php') ) $error .= 'File <b>qte_fn_html.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/class/qt_class_db.php') ) $error .= 'File <b>qt_class_db.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br />';
-  if ( !file_exists('bin/qt_lib_txt.php') ) $error .= 'File <b>qt_lib_txt.php</b> is not in the <b>bin</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/class/qt_abstracts.php') ) $error .= 'File <b>qt_abstracts.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/class/qte_class_sec.php') ) $error .= 'File <b>qte_class_sec.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br />';
   if ( !file_exists('bin/class/qte_class_item.php') ) $error .= 'File <b>qte_class_item.php</b> is not in the <b>bin/class</b> directory. Application cannot start.<br />';

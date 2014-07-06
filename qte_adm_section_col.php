@@ -112,7 +112,7 @@ function Changelist($arr,$action,$value='N')
 
 $s = -1; QThttpvar('s','int',true,true,false); if ( $s<0 ) die('missing section id...');
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 $oSEC = new cSection($s);
 $oItem = new cItem(1);
@@ -169,7 +169,7 @@ if ( !isset($_SESSION['fields']) || !isset($_GET['a']) )
   $_SESSION['fields'] = array_keys(cField::ArrayFields($oSEC->forder,false)); // get fields key (including off fields)
 }
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // get list of fields
 $arr = GetFLDnames(GetFLDs('status_i;fullname'));
@@ -292,4 +292,4 @@ echo '</tr>
 
 echo '<p><a href="',$oVIP->exiturl,'">',$oVIP->exitname,'</a></p>';
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

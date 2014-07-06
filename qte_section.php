@@ -137,7 +137,7 @@ $intCount = (int)$row['countid'];
 
 // Usermenu
 
-if ( sUser::IsStaff() ) include 'qte_p_menu.php';
+if ( sUser::IsStaff() ) include 'qte_inc_menu.php';
 
 // Pager
 
@@ -150,7 +150,7 @@ if ( empty($q) && $intCount<$oSEC->members ) $strPager = '<span class="small">'.
 $bMap=false;
 if ( UseModule('map') )
 {
-  include Translate('qtem_map.php');
+  include Translate('@m_map.php');
   include 'qtem_map_lib.php';
   if ( QTgcanmap((empty($q) ? $s : 'S'),sUser::Role()) ) $bMap=true;
   if ( $bMap ) $oHtml->links[]='<link rel="stylesheet" type="text/css" href="qtem_map.css" />';
@@ -164,7 +164,7 @@ if ( UseModule('map') )
 // HTML START
 // --------
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 if ( !empty($strPageMenu) ) echo $strPageMenu;
 
@@ -211,7 +211,7 @@ if ( $intCount==0 )
     $i = intval($row);
     if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$oVIP->statuses['Z']['statusname']),')</p>';
   }
-  include 'qte_p_footer.php';
+  include 'qte_inc_ft.php';
   return;
 }
 
@@ -551,4 +551,4 @@ if ( $bMap && !$_SESSION[QT]['m_map_hidelist'] )
   include 'qtem_map_load.php';
 }
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

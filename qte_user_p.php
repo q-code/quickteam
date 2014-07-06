@@ -282,12 +282,7 @@ case 'emails':
   }
   else
   {
-    $arr = AsList($oItem->emails);
-    foreach($arr as $intKey=>$strValue)
-    {
-      $arr[$intKey] = AsEmailText(trim($strValue),'mail_'.$oItem->id.'_'.$intKey,true,QTE_JAVA_MAIL,array('class'=>'small'));
-    }
-    $strCol2 = implode('<br />',$arr);
+    $strCol2 = AsEmailsTxt($oItem->emails,'<br/>');    
     if ( sUser::IsStaff() || sUser::Id()==$id ) {
     if ( strstr($oItem->privacy,$strField) ) {
     $strCol3 = '<span class="small" title="'.$L['Hidden_info'].'">'.$L['Hidden'].'</span>';

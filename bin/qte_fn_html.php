@@ -51,7 +51,7 @@ if ( !is_string($content) && !is_int($content) ) die('EchoPage: invalid argument
 global $oVIP,$oHtml,$L;
 $oVIP->selfurl='qte_index.php';
 $oVIP->exiturl='qte_index.php';
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 if ( is_int($content) )
 {
@@ -72,7 +72,7 @@ else
   echo $content;
 }
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';
 exit;
 
 }
@@ -113,7 +113,7 @@ function HtmlLettres($baseUrl='',$strGroup='all',$strAll='All',$strClass='lettre
 
   $strGroups  = '<div class="'.$strClass.'">';
   $strGroups .= '<span class="label">'.L('Show').'</span>'.$str;
-  if ( $bFilterForm ) $strGroups .= '<form method="get" action="'.$baseUrl.'"><input required type="text" class="'.$strClass.'" value="'.($strGroup=='all' || in_array($strGroup,$arr) ? '' : $strGroup).'" name="group" maxlength="7" title="'.$strTitle.'"/><input type="submit" class="search" value=""/></form>';
+  if ( $bFilterForm )   $strGroups .= '<form method="get" action="'.$baseUrl.'"><input required type="text" class="'.$strClass.'" value="'.($strGroup=='all' || in_array($strGroup,$arr) ? '' : $strGroup).'" name="group" maxlength="7" title="'.$strTitle.'"/><input type="submit" class="search" value=""/>'.QTuritoform($baseUrl,true,'page,group').'</form>';
   $strGroups .= '</div>';
 
   return $strGroups;

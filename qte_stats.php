@@ -97,7 +97,7 @@ for ($intBt=1;$intBt<=12;$intBt++) {
 
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_graph.css" />';
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // USERS
 
@@ -202,4 +202,4 @@ else
 
 // HTML END
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

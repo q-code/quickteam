@@ -197,12 +197,12 @@ public static function GetStatuses()
 
   // find translations
 
-  $arL = cLang::Get('status',GetIso(),'*');
+  $arL = cLang::Get('status',QTiso(),'*');
   foreach ($arL as $id=>$str)
   {
     if ( !empty($str) ) $ar[$id]['statusname'] = $str;
   }
-  $arL = cLang::Get('statusdesc',GetIso(),'*');
+  $arL = cLang::Get('statusdesc',QTiso(),'*');
   foreach ($arL as $id=>$str)
   {
     if ( !empty($str) ) $ar[$id]['statusdesc'] = $str;

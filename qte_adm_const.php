@@ -1,11 +1,11 @@
 <?php
 
-// QT 3.0 build:20140608
+// QT 3.0 build:20130817
 
 session_start();
 require_once 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die('Access denied');
-$oVIP->selfurl='qte_adm_const.php';
+$oVIP->selfurl=APP.'_adm_const.php';
 $oVIP->selfname='PHP constants';
 
 function ConstantToString($str)
@@ -19,8 +19,8 @@ function ConstantToString($str)
 
 // HTML start
 
-include Translate('qte_adm.php');
-include 'qte_adm_p_header.php';
+include Translate(APP.'_adm.php');
+include APP.'_adm_inc_hd.php';
 
 // CONSTANT
 
@@ -35,7 +35,7 @@ $table->td[1] = new cTableData();
 
 // Show constants
 
-echo '<p>Here are the major constants. To have a full list of constants see the file /bin/qte_init.php.</p>';
+echo '<p>Here are the major constants. To have a full list of constants see the file /bin/'.APP.'_init.php.</p>';
 
 echo $table->Start().PHP_EOL;
 $table->SetTDcontent( array('QT', ConstantToString(constant('QT'))) );
@@ -43,7 +43,7 @@ echo $table->GetTDrow().PHP_EOL;
 
 foreach($arr as $key=>$str)
 {
-  if ( substr($key,0,4)=='QTE_' )
+  if ( substr($key,0,3)==strtoupper(APP) )
   {
     $table->SetTDcontent( array($key, ConstantToString($str)) );
     echo $table->GetTDrow().PHP_EOL;
@@ -60,10 +60,10 @@ $table->td[0] = new cTableData('','','headfirst'); $table->td[0]->Add('style','w
 $table->td[1] = new cTableData();
 foreach(array('dbsystem','host','database','prefix','user','port','dsn','install') as $str)
 {
-  $str = 'qte_'.$str;
+  $str = APP.'_'.$str;
   $table->SetTDcontent( array('$'.$str, (isset($$str) ? ConstantToString($$str) : '&nbsp;')) );
   echo $table->GetTDrow().PHP_EOL;
 }
 echo $table->End(true,true,true).PHP_EOL;
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

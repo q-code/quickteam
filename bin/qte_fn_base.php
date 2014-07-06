@@ -1,66 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
-
-// --------
-// HIGH LEVEL
-// --------
-
-function CheckDico($strVar,$bDesc=false)
-{
-  if ( !isset($_SESSION['L'][$strVar]) )
-  {
-  $_SESSION['L'][$strVar] = cLang::Get($strVar,GetIso(),'*');
-  if ( $bDesc ) $_SESSION['L'][$strVar.'desc'] = cLang::Get($strVar.'desc',GetIso(),'*');
-  }
-}
-
-// --------
-
-function Error($i=0)
-{
-  include Translate('qte_error.php');
-  if ( isset($e[$i]) ) return $e[$i];
-  return 'Error '.$i;
-}
-
-// --------
-
-function GetIso($str='')
-{
-  if ( empty($str) ) $str = (isset($_SESSION[QT]['language']) ? $_SESSION[QT]['language'] : 'english');
-  switch(strtolower($str))
-  {
-  case 'english': return 'en'; break;
-  case 'francais': return 'fr'; break;
-  case 'nederlands': return 'nl'; break;
-  default: include 'bin/qte_lang.php'; $arr=array_flip(QTarrget($arrLang,2)); if ( isset($arr[$str]) ) return $arr[$str]; break;
-  }
-  return 'en';
-}
-
-// --------
-
-function GetLang($str='')
-{
-  if ( empty($str) ) $str=$_SESSION[QT]['language'];
-  return 'language/'.$str.'/';
-}
-
-// --------
-
-function Href($str='')
-{
-  // When urlrewriting is active, the url can be displayed in html format (they will be converted by the server's rewrite rule).
-  // This function transforms a php url into a html like url (the url can have arguments): 'qte_login.php' is displayed as 'login.html'.
-  // Note: Don't worry, server's rewriting has NO effect when the url is in php format (i.e. when this function is not used or when QTE_URLREWRITE is FALSE)
-  if ( empty($str) ) $str=$_SERVER['PHP_SELF'];
-  if ( QTE_URLREWRITE )
-  {
-    if ( strstr($str,'.php') ) return preg_replace('/qte_(.*)\.php/','$1.html',$str);
-  }
-  return $str;
-}
-
-// ---------
+<?php // v 3.0 build:20140608
 
 function EmptyFloat($i)
 {
@@ -73,34 +11,11 @@ function EmptyFloat($i)
 
 // --------
 
-function L($strKey='',$int=false,$bInclude=true)
-{
-  // Returns the corresponding word, or the lowercase string of the word (e.g. when the key is in lowercase).
-  // Also search the plural word when $int>1 (it searches for $key with 's')
-  // In case of $int exists (<>false), the $bInclude allows merging $int with the word. Note that in this case, $int can be negative or 0
-
-  global $L;
-  $str = str_replace('_',' ',$strKey); // When word is missing, returns the key code without _
-  if ( isset($L[$strKey]) )
-  {
-    $str = $L[$strKey];
-    if ( $int!==false ) { if ( $int>1 && isset($L[$strKey.'s']) ) $str = $L[$strKey.'s']; }
-  }
-  elseif ( isset($L[ucfirst($strKey)]) )
-  {
-    $str = strtolower($L[ucfirst($strKey)]);
-    if ( $int!==false ) { if ( $int>1 && isset($L[ucfirst($strKey.'s')]) ) $str = strtolower($L[ucfirst($strKey.'s')]); }
-  }
-  return ($int!==false && $bInclude ? $int.' ' : '').$str; // When $int<>false (and $bInclude is true) the value is merged with the word
-}
-
-// --------
-
 function ObjTrans($strType,$strId,$strGenerate=' ',$intMax=0,$strTrunc='...')
 {
   // This function returns the translation of the objid
-  // When translation is not defined and generate is true, returns the ucfirst(objid)
-  // otherwise, returns ''
+  // When translation is not defined, returns ucfist(strGenerate).
+  // Use $strGenerate FALSE to return '' on missing translation
   // When $intMax>1, the text is truncated to intMax characters and the $strTrunc is added.
 
   $str = '';
@@ -121,14 +36,6 @@ function ObjTrans($strType,$strId,$strGenerate=' ',$intMax=0,$strTrunc='...')
   }
   if ( $intMax>1 && strlen($str)>$intMax ) return substr($str,0,$intMax).$strTrunc;
   return $str;
-}
-
-// --------
-
-function Translate($strFile)
-{
-  if ( file_exists(GetLang().$strFile) ) Return GetLang().$strFile;
-  Return 'language/english/'.$strFile;
 }
 
 // --------
@@ -197,13 +104,50 @@ function FirstCharCase($strField,$strCase='u',$len=1)
 	}
 }
 
+function SqlDateCondition($strDate='',$strField='firstpostdate',$intLength=4,$strComp='=')
+{
+  // Creates a where close for a date field. strDate can be an integer or the string 'old' (5 years or more)
+  global $oDB;
+  if ( $strDate==='old' ) { $strDate = '<"'.(Date('Y')-3).'"'; } else { $strDate = $strComp.'"'.$strDate.'"'; }
+  switch($oDB->type)
+  {
+  case 'mysql4':
+  case 'mysql':
+  case 'sqlsrv':
+  case 'mssql': return 'LEFT('.$strField.','.$intLength.')'.$strDate; break;
+  case 'pg': return 'SUBSTRING('.$strField.',1,'.$intLength.')'.$strDate; break;
+  case 'ibase': return 'SUBSTRING('.$strField.' FROM 1 FOR '.$intLength.')'.$strDate; break;
+  case 'sqlite':
+  case 'db2':
+  case 'oci': return 'SUBSTR('.$strField.',1,'.$intLength.')'.$strDate; break;
+  default: die('Unknown db type '.$oDB->type);
+  }
+}
+
 // --------
 // COMMON FUNCTIONS
 // --------
 
-function AsEmailText($str,$strId='email1',$bLink=true,$bHash=true,$arrProp=array())
+function explodeall($sep=';,',$str,$max=null,$bClean=true,$bTrim=true)
 {
-  QTargs('AsEmailText',array($str,$strId,$bLink,$bHash,$arrProp),array('str','str','boo','boo','arr'));
+  // Same as explode but using each character in $sep as separator
+  // Note: before exploding, double separators can be removed with $bClean and $str can be trimmed with $bTrim
+  // Note: the separators can be complex (several characters) if $sep is defined as an array of separators
+  if ( is_string($sep) ) $sep = str_split($sep);
+  if ( !is_array($sep) || !is_string($str) || !is_bool($bClean) || !is_bool($bTrim) ) die('explodeall: invalid argument');
+  if ( count($sep)==1 ) return (isset($max) ? explode($sep[0],$str,$max) : explode($sep[0],$str) );
+  
+  if ( $bTrim ) $str = trim($str);
+  $str = str_replace($sep, $sep[0], $str); // all separators are translated to primary separator
+  if ( $bClean ) while ( strpos($str,$sep[0].$sep[0])!==false ) $str = str_replace($sep[0].$sep[0],$sep[0],$str); // remove duplicate separator
+  return (isset($max) ? explode($sep[0],$str,$max) : explode($sep[0],$str) );
+}
+
+// --------
+
+function AsEmailText($str,$strId='mail-',$strIdN='',$bLink=true,$bHash=true,$arrProp=array())
+{
+  QTargs('AsEmailText',array($str,$strId,$strIdN,$bLink,$bHash,$arrProp),array('str','str','str','boo','boo','arr'));
   // arrProp can includes class, style, title
   if ( !QTismail($str) ) return $str;
 
@@ -212,25 +156,25 @@ function AsEmailText($str,$strId='email1',$bLink=true,$bHash=true,$arrProp=array
     if ( $bHash )
     {
     $arr = explode('@',$str,2);
-    $strJava='<script type="text/javascript">document.getElementById("'.$strId.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";document.getElementById("'.$strId.'").innerHTML="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
+    $strJava='<script type="text/javascript">document.getElementById("'.$strId.$strIdN.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";document.getElementById("'.$strId.$strIdN.'").innerHTML="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
     $str = '';
     }
-    return '<a id="'.$strId.'" href="mailto:'.$str.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'>'.$str.'</a>'.(isset($strJava) ? $strJava: '');
+    return '<a id="'.$strId.$strIdN.'" href="mailto:'.$str.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'>'.$str.'</a>'.(isset($strJava) ? $strJava: '');
   }
   else
   {
     if ( $bHash )
     {
     $arr = explode('@',$str,2);
-    $strJava='<script type="text/javascript">document.getElementById("'.$strId.'").innerHTML="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
+    $strJava='<script type="text/javascript">document.getElementById("'.$strId.$strIdN.'").innerHTML="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
     $str = '';
     }
-    return '<span id="'.$strId.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'>'.$str.'</span>'.(isset($strJava) ? $strJava: '');
+    return '<span id="'.$strId.$strIdN.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'>'.$str.'</span>'.(isset($strJava) ? $strJava: '');
   }
 }
-function AsEmailImage($str,$strId='email1',$bLink=true,$bHash=true,$arrProp=array(),$qte_root='')
+function AsEmailImage($str,$strId='mail-',$strIdN='',$bLink=true,$bHash=true,$arrProp=array(),$root='')
 {
-  QTargs('AsEmailImage',array($str,$strId,$bLink,$bHash,$arrProp),array('str','str','boo','boo','arr'));
+  QTargs('AsEmailImage',array($str,$strId,$strIdN,$bLink,$bHash,$arrProp,$root),array('str','str','str','boo','boo','arr','str'));
   // arrProp can includes class, style, title
   if ( !QTismail($str) ) return '';
 
@@ -239,21 +183,49 @@ function AsEmailImage($str,$strId='email1',$bLink=true,$bHash=true,$arrProp=arra
     if ( $bHash )
     {
     $arr = explode('@',$str,2);
-    $strJava='<script type="text/javascript">document.getElementById("'.$strId.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";if (document.getElementById("img'.$strId.'")) document.getElementById("img'.$strId.'").title="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
+    $strJava='<script type="text/javascript">document.getElementById("'.$strId.$strIdN.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";if (document.getElementById("img'.$strId.$strIdN.'")) document.getElementById("img'.$strId.$strIdN.'").title="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
     $str = '';
     }
-    return '<a id="'.$strId.'" href="mailto:'.$str.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'><img id="img'.$strId.'" src="'.$qte_root.$_SESSION[QT]['skin_dir'].'/ico_user_e_1.gif" alt="email" title="'.$str.'" /></a>'.(isset($strJava) ? $strJava: '');
+    return '<a id="'.$strId.$strIdN.'" href="mailto:'.$str.'"'.(isset($arrProp['title']) ? ' title="'.$arrProp['title'].'"' : '').(isset($arrProp['class']) ? ' class="'.$arrProp['class'].'"' : '').(isset($arrProp['style']) ? ' style="'.$arrProp['style'].'"' : '').(isset($arrProp['target']) ? ' target="'.$arrProp['target'].'"' : '').'><img id="img'.$strId.$strIdN.'" src="'.$root.$_SESSION[QT]['skin_dir'].'/ico_user_e_1.gif" alt="email" title="'.$str.'" /></a>'.(isset($strJava) ? $strJava: '');
   }
   else
   {
     if ( $bHash )
     {
     $arr = explode('@',$str,2);
-    $strJava='<script type="text/javascript">document.getElementById("'.$strId.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";if (document.getElementById("img'.$strId.'")) document.getElementById("img'.$strId.'").title="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
+    $strJava='<script type="text/javascript">document.getElementById("'.$strId.$strIdN.'").href="mailto:'.$arr[0].'"+"@"+"'.$arr[1].'";if (document.getElementById("img'.$strId.$strIdN.'")) document.getElementById("img'.$strId.'").title="'.$arr[0].'"+"@"+"'.$arr[1].'";</script>';
     $str = '';
     }
-    return '<img id="img'.$strId.'" src="'.$qte_root.$_SESSION[QT]['skin_dir'].'/ico_user_e_1.gif" alt="email" title="'.$str.'" />';
+    return '<img id="img'.$strId.$strIdN.'" src="'.$root.$_SESSION[QT]['skin_dir'].'/ico_user_e_1.gif" alt="email" title="'.$str.'" />';
   }
+}
+function AsEmailsTxt($strEmails,$sep=' ',$strId='mail-',$bLink=true,$bHash=true,$intMax=0,$strEmpty='&nbsp;',$arrProp=array())
+{
+  if ( empty($strEmails) || !is_string($strEmails) ) return $strEmpty;
+  // get list of Emails (and remove duplicate mails)
+  $arrEmails = array_unique(explodeall(';, ',$strEmails));
+  if ( $intMax>0 ) $arrEmails = array_slice($arrEmails,0,$intMax);
+  // render emails
+  $arr = array();
+  foreach ($arrEmails as $i=>$str)
+  {
+    $arr[]= AsEmailText($str,(string)$strId,(string)$i,$bLink,$bHash,$arrProp);
+  }
+  return implode($sep,$arr);
+}
+function AsEmailsImg($strEmails,$sep='',$strId='mail-',$bLink=true,$bHash=true,$intMax=0,$strEmpty='&nbsp;',$arrProp=array(),$root='')
+{
+  if ( empty($strEmails) || !is_string($strEmails) ) return $strEmpty;
+  // get list of Emails (and remove duplicate mails)
+  $arrEmails = array_unique(explodeall(';, ',$strEmails));
+  if ( $intMax>0 ) $arrEmails = array_slice($arrEmails,0,$intMax);
+  // render emails
+  $arr = array();
+  foreach ($arrEmails as $i=>$str)
+  {
+    $arr[]= AsEmailImg($str,(string)$strId,(string)$i,$bLink,$bHash,$arrProp,$root);
+  }
+  return implode($sep,$arr);
 }
 
 // --------
@@ -280,7 +252,7 @@ function AsAvatarScr($str='')
 {
   if ( empty($str) ) return '';
   if ( isset($_SESSION[QT]['avatar']) ) { if ( $_SESSION[QT]['avatar']=='0' ) return ''; }
-  return QTE_DIR_PIC.$str;
+  return APPCST('_DIR_PIC').$str;
 }
 
 // --------
@@ -299,6 +271,14 @@ function AsImgPopup($strId='',$strSrc='',$strAlt='',$strTitle='',$strClass='',$s
 	QTargs('AsImg',array($strId,$strSrc,$strAlt,$strClass,$strStyle,$strHref));
 	if ( empty($strSrc) ) return '';
 	return '<img class="popup clickable" id="popup_'.$strId.'" src="'.$strSrc.'" style="display:none" onclick="qtHide(this.id);" alt="(image not found)"/><img'.(empty($strId) ? '' : ' id="'.$strId.'"').' src="'.$strSrc.'" alt="'.(empty($strAlt) ? '' : QTconv($strAlt)).'" title="'.(empty($strTitle) ? '' : QTconv($strTitle)).'" class="clickable'.(empty($strClass) ? '' : ' '.$strClass).'"'.(empty($strStyle) ? '' : ' style="'.$strStyle.'"').' onclick="qtPopupImage(this,\''.(empty($strHref) ? '' : $strHref).'\');"/>';
+}
+
+function AsImgBox($strSrc='',$strClass='',$strStyle='',$strCaption='',$strHref='')
+{
+  QTargs('AsImgBox',array($strSrc,$strClass,$strStyle,$strCaption,$strHref));
+
+  if ( !empty($strHref) ) $strCaption = '<a href="'.Href($strHref).'" class="small">'.$strCaption.'</a>';
+  return '<div'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').'>'.$strSrc.(empty($strCaption) ? '' : '<p class="imgcaption">'.$strCaption.'</p>').'</div>';
 }
 
 // --------
@@ -343,14 +323,6 @@ function UserPicture($oItem,$Url=false,$bNullImage=true,$class="userpicture")
 	$str = '<img class="'.$class.'" src="'.$str.'" title="'.QTconv(UserFirstLastName($oItem)).'" alt="(user)">';
 	if ( !empty($Url) ) $str = '<a href="'.$Url.'">'.$str.'</a>';
 	return $str;
-}
-
-function AsImgBox($strSrc='',$strClass='',$strStyle='',$strCaption='',$strHref='')
-{
-  QTargs('AsImgBox',array($strSrc,$strClass,$strStyle,$strCaption,$strHref));
-
-  if ( !empty($strHref) ) $strCaption = '<a href="'.Href($strHref).'" class="small">'.$strCaption.'</a>';
-  return '<div'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').'>'.$strSrc.(empty($strCaption) ? '' : '<p class="imgcaption">'.$strCaption.'</p>').'</div>';
 }
 
 function AsImgBoxUser($oItem,$add='',$bNullImage=true,$bEditUrl=false)
@@ -546,7 +518,7 @@ function GetDomains()
     $arr[$row['id']] = $row['title'];
   }
   // search translation
-  $arrL = cLang::Get('domain',GetIso(),'*');
+  $arrL = cLang::Get('domain',QTiso(),'*');
   if ( count($arrL)>0)
   {
     foreach ($arr as $id => $str)
@@ -957,30 +929,6 @@ function ToCsv($str,$strSep=';',$strEnc='"',$strSepAlt=',',$strEncAlt="'")
   $str = str_replace($strSep,$strSepAlt,$str);
   $str = str_replace($strEnc,$strEncAlt,$str);
   return $strEnc.$str.$strEnc.$strSep;
-}
-
-// --------
-
-function UpdateSectionStats($intS=-1,$arrValues=array())
-{
-  // Check
-
-  if ( !is_int($intS) || $intS<0) die('UpdateSectionStats: Wrong id');
-
-  // Process (provided values are not recomputed)
-
-  if ( !isset($arrValues['members']) )  $arrValues['members']  = cSection::CountItems($intS,null); //SectionCount('members',$intS);
-  if ( !isset($arrValues['membersZ']) ) $arrValues['membersZ'] = cSection::CountItems($intS,'Z'); //SectionCount('membersZ',$intS);
-  foreach($arrValues as $strKey=>$strValue) { $arrValues[$strKey]=$strKey.'='.$strValue; }
-
-  // Save
-
-  global $oDB;
-  $oDB->Query('UPDATE '.TABSECTION.' SET stats="'.implode(';',$arrValues).'" WHERE id='.$intS );
-
-  // Return the stat line
-
-  return implode(';',$arrValues);
 }
 
 // --------

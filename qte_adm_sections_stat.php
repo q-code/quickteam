@@ -18,7 +18,7 @@
 session_start();
 require_once 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 // ---------
 // INITIALISE
@@ -48,7 +48,7 @@ if ( isset($_POST['ok']) )
   }
   if ( count($arr)>0 )
   {
-  foreach($arr as $id) UpdateSectionStats((int)$id);
+  foreach($arr as $id) cSection::UpdateStats((int)$id);
   $_SESSION['pagedialog'] = 'O|'.L('Section',count($arr)).'. '.$L['S_update'];
   }
   else
@@ -69,7 +69,7 @@ $(function() {
 });
 ';
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 // count users by section (used to check last stats in each sections)
 $arrCounts = array();
@@ -108,7 +108,7 @@ foreach($arrDomains as $intDomain=>$strDomain)
       // update stats if required
       if ( isset($arrCounts[$intSecid]) ) {
       if ( $arrCounts[$intSecid]!=$oSEC->members ) {
-        UpdateSectionStats($intSecid);
+        cSection::UpdateStats($intSecid);
         $oSEC->members=$arrCounts[$intSecid];
       }}
 
@@ -133,4 +133,4 @@ echo '</table>
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

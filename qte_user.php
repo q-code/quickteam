@@ -59,7 +59,7 @@ function InputFormat($strField,$aValue,$bCanBeList=false,$intSize=30,$intMaxleng
 // INITIALISE
 // --------
 
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 $oVIP->selfurl = 'qte_user.php';
 $oVIP->selfname = $L['Profile'];
@@ -90,7 +90,7 @@ $strPosition='';
 $bMap=false;
 if ( $tt=='p' && UseModule('map') )
 {
-  include Translate('qtem_map.php');
+  include Translate('@m_map.php');
   include 'qtem_map_lib.php';
   $bMap=true;
   if ( $_SESSION[QT]['editing'] || !QTgemptycoord($oItem) ) $oHtml->links[]='<link rel="stylesheet" type="text/css" href="qtem_map.css" />';
@@ -183,7 +183,7 @@ if ( $tt=='d' && $_SESSION[QT]['editing'] && ( $_SESSION[QT]['upload']=='1' || s
 
 // Content header
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 if ( isset($bCanEdit) && $bCanEdit ) echo '<div class="profilecmd">',( $_SESSION[QT]['editing'] ? '<a class="button" href="'.Href($oVIP->selfurl).'?id='.$id.'&amp;tt='.$tt.'&amp;edit=0">'.$L['Edit_stop'].'</a>' : '<a class="button" href="'.Href($oVIP->selfurl).'?id='.$id.'&amp;tt='.$tt.'&amp;edit=1">'.$L['Edit_start'].'</a>'),'</div>';
 echo '<h2>',UserFirstLastName($oItem,' ',$oItem->username),'</h2>',PHP_EOL;
@@ -441,4 +441,4 @@ if ( $tt=='p' && $bMap )
   include 'qtem_map_load.php';
 }
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';

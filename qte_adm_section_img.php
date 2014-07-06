@@ -25,7 +25,7 @@ QThttpvar('id','int'); if ( $id<0 ) die('Missing parameter id...');
 // INITIALISE
 // --------
 
-include Translate('qte_reg.php');
+include Translate('@_reg.php');
 
 if ( !isset($_SESSION['temp_key']) ) $_SESSION['temp_key']='';
 if ( !isset($_SESSION['temp_ext']) ) $_SESSION['temp_ext']='';
@@ -58,10 +58,10 @@ if ( file_exists('document/section/'.$id.'.jpeg') ) $oSEC->d_logo = $id.'.jpeg';
 
 $max_file = 2;       // Maximum file size in MB
 $max_width = 650;    // Display width for the large image (image can be larger)
-$thumb_max_width  = (defined('QTE_SECTIONLOGO_WIDTH') ? QTE_SECTIONLOGO_WIDTH+25 : 75); // Above this value, the crop tool will start
-$thumb_max_height = (defined('QTE_SECTIONLOGO_HEIGHT') ? QTE_SECTIONLOGO_HEIGHT+25 : 75); // Above this value, the crop tool will start
-$thumb_width      = (defined('QTE_SECTIONLOGO_WIDTH') ? QTE_SECTIONLOGO_WIDTH : 50);  // Width of thumbnail image (75px)
-$thumb_height     = (defined('QTE_SECTIONLOGO_HEIGHT') ? QTE_SECTIONLOGO_HEIGHT : 50); // Height of thumbnail image (75px)
+$thumb_max_width  = (defined('QTE_SECTIONLOGO_WIDTH') ? QTE_SECTIONLOGO_WIDTH+25 : 100); // Above this value, the crop tool will start
+$thumb_max_height = (defined('QTE_SECTIONLOGO_HEIGHT') ? QTE_SECTIONLOGO_HEIGHT+25 : 100); // Above this value, the crop tool will start
+$thumb_width      = (defined('QTE_SECTIONLOGO_WIDTH') ? QTE_SECTIONLOGO_WIDTH : 75);  // Width of thumbnail image (75px)
+$thumb_height     = (defined('QTE_SECTIONLOGO_HEIGHT') ? QTE_SECTIONLOGO_HEIGHT : 75); // Height of thumbnail image (75px)
 $strMimetypes = 'image/pjpeg,image/jpeg,image/jpg,image/gif,image/png,image/x-png';
 $photo = QTE_DIR_DOC.'section/'.$oSEC->d_logo; // Current photo (Can be empty)
 if ( !file_exists($photo) ) $photo='';

@@ -24,7 +24,7 @@ if ( sUser::Role()!='A' ) die($L['R_admin']);
 // INITIALISE
 // ---------
 
-include Translate('qte_adm.php');
+include Translate('@_adm.php');
 
 $oVIP->selfurl = 'qte_adm_statuses.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';
@@ -76,7 +76,7 @@ if ( isset($_POST['ok_show']) )
 // HTML START
 // --------
 
-include 'qte_adm_p_header.php';
+include APP.'_adm_inc_hd.php';
 
 echo '<form method="post" action="',$oVIP->selfurl,'">
 <table class="t-item">
@@ -132,4 +132,4 @@ echo '
 // HTML END
 // --------
 
-include 'qte_adm_p_footer.php';
+include APP.'_adm_inc_ft.php';

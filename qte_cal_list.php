@@ -54,7 +54,7 @@ $oVIP->exitname = '&laquo; '.$L['Calendar'];
 // HTML START
 // --------
 
-include 'qte_p_header.php';
+include 'qte_inc_hd.php';
 
 // USERS
 
@@ -160,4 +160,4 @@ if ( $bEmails && sUser::IsStaff() ) echo '<p class="right" style="margin:5px 0">
 
 echo '<p><a href="',Href($oVIP->exiturl),'">',$oVIP->exitname,'</a></p>',PHP_EOL;
 
-include 'qte_p_footer.php';
+include 'qte_inc_ft.php';
