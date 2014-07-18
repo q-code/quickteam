@@ -78,32 +78,23 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 // Classes & functions
 // ---------------
-require_once 'bin/class/qt_class_db.php';
-require_once 'bin/qt_lib_txt.php';
-require_once 'bin/class/qt_abstracts.php';
-require_once 'bin/class/qt_class_html.php';
-require_once 'bin/class/qt_class_table.php';
-require_once 'bin/class/qt_class_sys.php';
-require_once 'bin/class/qt_class_fld.php';
-require_once 'bin/class/qte_class_vip.php';
-require_once 'bin/class/qte_class_user.php';
-require_once 'bin/class/qte_class_sec.php';
-require_once 'bin/class/qte_class_item.php';
-require_once 'bin/qte_fn_base.php';
-require_once 'bin/qte_fn_html.php';
+require_once $qte_root.'bin/class/qt_class_db.php';
+require_once $qte_root.'bin/qt_lib_txt.php';
+require_once $qte_root.'bin/class/qt_abstracts.php';
+require_once $qte_root.'bin/class/qt_class_html.php';
+require_once $qte_root.'bin/class/qt_class_table.php';
+require_once $qte_root.'bin/class/qt_class_sys.php';
+require_once $qte_root.'bin/class/qt_class_fld.php';
+require_once $qte_root.'bin/class/qte_class_vip.php';
+require_once $qte_root.'bin/class/qte_class_user.php';
+require_once $qte_root.'bin/class/qte_class_sec.php';
+require_once $qte_root.'bin/class/qte_class_item.php';
+require_once $qte_root.'bin/qte_fn_base.php';
+require_once $qte_root.'bin/qte_fn_html.php';
 
 // ---------------
 //  Installation wizard (if file exists)
 // ---------------
-if ( !isset($qte_install) )
-{
-  if ( file_exists('install/index.php') )
-  {
-  echo 'QuickTeam ',QTEVERSION,' <a href="install/index.php">starting installation</a>...';
-  echo '<meta http-equiv="REFRESH" content="1;url=install/index.php" />';
-  exit;
-  }
-}
 if ( empty($qte_install) )
 {
   if ( file_exists('install/index.php') )
