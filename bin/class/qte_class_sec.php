@@ -133,7 +133,7 @@ public static function UpdateStats($intS=-1,$arrValues=array())
   // Save
 
   global $oDB;
-  $oDB->Query('UPDATE '.TABSECTION.' SET stats="'.implode(';',$arrValues).'" WHERE id='.$intS );
+  $oDB->Exec('UPDATE '.TABSECTION.' SET stats="'.implode(';',$arrValues).'" WHERE id='.$intS );
 
   // Return the stat line
 
@@ -172,7 +172,7 @@ public static function MoveItems($id,$destination)
   if ( $id==$destination ) die('cSection->MoveItems: source and destination are the same');
 
   global $oDB;
-  $oDB->Query('UPDATE '.TABS2U." SET sid=$destination WHERE sid=$id");
+  $oDB->Exec('UPDATE '.TABS2U." SET sid=$destination WHERE sid=$id");
 }
 
 public static function CountItems($id,$status='')
@@ -221,7 +221,7 @@ public function ReadOptions()
 public function WriteOptions()
 {
   global $oDB;
-  $oDB->Query('UPDATE '.TABSECTION.' SET options="'.$this->options.'" WHERE id='.$this->id);
+  $oDB->Exec('UPDATE '.TABSECTION.' SET options="'.$this->options.'" WHERE id='.$this->id);
 }
 
 public function ChangeStat($strKey,$strValue)
@@ -246,7 +246,7 @@ public function ReadStats()
 public function WriteStats()
 {
   global $oDB;
-  $oDB->Query('UPDATE '.TABSECTION.' SET stats="'.$this->stats.'" WHERE id='.$this->id);
+  $oDB->Exec('UPDATE '.TABSECTION.' SET stats="'.$this->stats.'" WHERE id='.$this->id);
 }
 
 // --------

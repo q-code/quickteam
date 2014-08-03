@@ -106,7 +106,7 @@ case 'sec': // request secret question
       // send new password
       $newpwd = 'T'.rand(0,9).rand(0,9).'Q'.rand(0,9).rand(0,9);
       $issuedate = date('Y-m-d H:i:s');
-      $oDB->Query('UPDATE '.TABUSER.' SET pwd="'.sha1($newpwd).'" WHERE username="'.$p.'"');
+      $oDB->Exec('UPDATE '.TABUSER.' SET pwd="'.sha1($newpwd).'" WHERE username="'.$p.'"');
 
       // send email
       $strSubject='New password';

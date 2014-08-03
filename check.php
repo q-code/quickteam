@@ -7,16 +7,20 @@
 // --------
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en">
-
 <head>
 <title>QuickTeam installation checker</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-<meta name="description" content="QuickTeam member management" />
-<meta name="keywords" content="Team,member,management,qt-cute,OpenSource" />
+<meta charset="utf-8" />
+<meta name="description" content="QuickTeam" />
+<meta name="keywords" content="quickteam,users management,qt-cute,OpenSource" />
 <meta name="author" content="qt-cute.org" />
-<meta name="language" content="en,fr,nl" />
-<link rel="stylesheet" href="admin/qte_main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5" />
 <style type="text/css">
+body {margin-top:6px;padding:0;color:#000000;background-color:#EEEEEE}
+div,th,td,h1,h2,p,a,select,input,textarea,fieldset {font-family:Verdana, Arial, sans-serif}
+h1 {margin-top:10px;margin-bottom:5px;font-size:14pt;font-weight:bold}
+h2 {margin-top:10px;margin-bottom:5px;font-size:12pt;font-weight:bold}
+div,th,td,p,a,select,input,textarea,fieldset {font-size:9pt;text-decoration:none}
+div.banner {margin:0;padding:6px;background:#0C4C8C;background:linear-gradient(to bottom, #0C4C8C 20%, #156AC2)}
 div.page {width:550px;margin:5px auto;background-color:#f2f2f2}
 div.pagecontent {padding:5px 10px 10px 10px; border:1px solid #AAAAAA}
 h1 {color:#999999}
@@ -28,7 +32,8 @@ p.footer {width:100%; text-align:right;font-size:8pt}
 div.pagecontent a {display:inline-block; padding:7px; background-color:#4242FF; color:#ffffff}
 div.pagecontent a:hover {background-color:#0000ff; text-decoration:none}
 </style>
-</head>';
+</head>
+';
 
 echo '<body>
 
@@ -38,9 +43,7 @@ echo '<body>
 
 <!-- HEADER BANNER -->
 <div class="banner">
-<div class="banner_in">
 <img src="admin/qte_logo.gif" width="150" height="50" style="border-width:0" alt="QuickTeam" title="QuickTeam" />
-</div>
 </div>
 <!-- END HEADER BANNER -->
 
@@ -53,7 +56,7 @@ echo '<body>
 // 1 CONFIG
 // --------
 
-echo '<p style="margin:0;text-align:right">QuickTeam 3.0 build:20140608</p>';
+echo '<p style="margin:0;text-align:right">QuickTeam v3.0 build:20140608</p>';
 
 echo '<h1>Checking your configuration</h1>';
 
@@ -103,7 +106,7 @@ $error = '';
   if ( !empty($error) )  die('<span class="nok">'.$error.'</span>');
 
   // check db type
-  if ( !in_array($qte_dbsystem,array('mysql4','mysql','sqlsrv','mssql','pg','ibase','sqlite','db2','oci')) ) die('Unknown db type '.$qte_dbsystem);
+  if ( !in_array($qte_dbsystem,array('pdo.mysql','mysql4','mysql','sqlsrv','mssql','pg','ibase','sqlite','db2','oci')) ) die('Unknown db type '.$qte_dbsystem);
   // check other values
   if ( empty($qte_host) ) $error .= 'Variable <b>$qte_host</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
   if ( empty($qte_database) ) $error .= 'Variable <b>$qte_database</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
@@ -120,11 +123,11 @@ $error = '';
 
 // 3 test db connection
 
-  echo '<p>Connecting to database... ';
+  echo '<p>Connecting to database (connection type: ',$qte_dbsystem,')... ';
 
   include 'bin/class/qt_class_db.php';
 
-  $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+  $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 
   if ( empty($oDB->error) )
   {

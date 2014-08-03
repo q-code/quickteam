@@ -149,8 +149,8 @@ function SetSys()
   if ( !isset($_SESSION[QT]['sys_domains']) ) $_SESSION[QT]['sys_domains'] = GetDomains(sUser::Role());
   if ( !isset($_SESSION[QT]['sys_sections']) ) $_SESSION[QT]['sys_sections'] = QTarrget(GetSections(sUser::Role()));
   if ( !isset($_SESSION[QT]['sys_statuses']) ) $_SESSION[QT]['sys_statuses'] = cVIP::GetStatuses();
-  if ( !isset($_SESSION[QT]['sys_members']) ) $_SESSION[QT]['sys_members'] = $this->SysCount('members');
-  if ( !isset($_SESSION[QT]['sys_states']) ) $_SESSION[QT]['sys_states'] = $this->SysCount('states');
+  if ( !isset($_SESSION[QT]['sys_members']) ) $_SESSION[QT]['sys_members'] = cVIP::SysCount('members');
+  if ( !isset($_SESSION[QT]['sys_states']) ) $_SESSION[QT]['sys_states'] = cVIP::SysCount('states');
 
   $this->domains = $_SESSION[QT]['sys_domains'];
   $this->sections = $_SESSION[QT]['sys_sections'];
@@ -263,9 +263,9 @@ public static function StatusDelete($id='',$to='A')
 
   global $oDB;
 
-  $oDB->Query('UPDATE '.TABUSER.' SET status="'.$to.'" WHERE status="'.$id.'"' );
-  $oDB->Query('DELETE FROM '.TABSTATUS.' WHERE id="'.$id.'"' );
-  $oDB->Query('DELETE FROM '.TABLANG.' WHERE (objtype="status" OR objtype="statusdesc") AND objid="'.$id.'"' );
+  $oDB->Exec('UPDATE '.TABUSER.' SET status="'.$to.'" WHERE status="'.$id.'"' );
+  $oDB->Exec('DELETE FROM '.TABSTATUS.' WHERE id="'.$id.'"' );
+  $oDB->Exec('DELETE FROM '.TABLANG.' WHERE (objtype="status" OR objtype="statusdesc") AND objid="'.$id.'"' );
 
   // Exit
 
@@ -301,8 +301,8 @@ public static function StatusChangeId($id='',$to='')
 
   if ( empty($error) )
   {
-  $oDB->Query('UPDATE '.TABUSER.' SET status="'.$to.'" WHERE status="'.$id.'"');
-  $oDB->Query('UPDATE '.TABSTATUS.' SET id="'.$to.'" WHERE id="'.$id.'"');
+  $oDB->Exec('UPDATE '.TABUSER.' SET status="'.$to.'" WHERE status="'.$id.'"');
+  $oDB->Exec('UPDATE '.TABSTATUS.' SET id="'.$to.'" WHERE id="'.$id.'"');
   }
 
   // Exit
@@ -313,7 +313,7 @@ public static function StatusChangeId($id='',$to='')
 
 // --------
 
-function SysCount($strObject='members',$strWhere='')
+public static function SysCount($strObject='members',$strWhere='')
 {
   global $oDB;
   switch($strObject)

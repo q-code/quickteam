@@ -59,7 +59,7 @@ if ( isset($_POST['ok']) )
     if ( $_POST['delteam']=='all' )
     {
       $arrMembership = GetMembership($id); // list sections that MUST have statistics updated after the delete
-      $oDB->Query('DELETE FROM '.TABS2U.' WHERE sid<>0 AND userid='.$id);
+      $oDB->Exec('DELETE FROM '.TABS2U.' WHERE sid<>0 AND userid='.$id);
       foreach(array_keys($arrMembership) as $intId) { if ( $intId>0 ) cSection::UpdateStats($intId); }
       $bEdited = true;
     }

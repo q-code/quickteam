@@ -44,7 +44,7 @@ $thumb_image_location = $upload_path.$id.$_SESSION['temp_ext'];
 // Save (and notify if coppa)
 function saveThumbnail($id,$str)
 {
-  global $oDB; $oDB->Query('UPDATE '.TABUSER.' SET picture="'.$str.'" WHERE id='.$id);
+  global $oDB; $oDB->Exec('UPDATE '.TABUSER.' SET picture="'.$str.'" WHERE id='.$id);
 
   if ( $_SESSION[QT]['register_coppa']=='1' )
   {
@@ -107,7 +107,7 @@ if ( isset($_POST['del']) )
 {
   if ( file_exists($large_image_location) ) unlink($large_image_location);
   if ( file_exists(QTE_DIR_PIC.$oItem->picture) ) unlink(QTE_DIR_PIC.$oItem->picture);
-  $oDB->Query('UPDATE '.TABUSER.' SET picture="0" WHERE id='.$id);
+  $oDB->Exec('UPDATE '.TABUSER.' SET picture="0" WHERE id='.$id);
   unset($_SESSION['temp_key']);
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.$L['S_delete'] : 'E|'.$error);
   $oHtml->Redirect($oVIP->exiturl);

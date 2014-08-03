@@ -58,7 +58,7 @@ if ( isset($_POST['ok']) )
   // execute and exit
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABUSER.' SET pwd="'.sha1($_POST['newpwd']).'" WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET pwd="'.sha1($_POST['newpwd']).'" WHERE id='.$id);
 
     // send parent email (if coppa)
     if ( $_POST['children']!='0' && $_SESSION[QT]['register_coppa']=='1' )

@@ -27,7 +27,7 @@ if ( isset($_POST['ok']) )
   // SAVE
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABUSER.' SET firstdate="'.$oItem->firstdate.'" WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET firstdate="'.$oItem->firstdate.'" WHERE id='.$id);
   }
 
   // --- SAVE CHILD INFO (if any) ---
@@ -82,8 +82,8 @@ if ( isset($_POST['ok']) )
   	// save coppa
   	if ( empty($error) )
   	{
-  		$oDB->Query('UPDATE '.TABCHILD.' SET childdate="'.$strChilddate.'",parentdate="'.$strParentdate.'",parentmail="'.$strParentmail.'" WHERE id='.$id);
-  		$oDB->Query('UPDATE '.TABUSER.' SET children="'.$_POST['coppastatus'].'" WHERE id='.$id);
+  		$oDB->Exec('UPDATE '.TABCHILD.' SET childdate="'.$strChilddate.'",parentdate="'.$strParentdate.'",parentmail="'.$strParentmail.'" WHERE id='.$id);
+  		$oDB->Exec('UPDATE '.TABUSER.' SET children="'.$_POST['coppastatus'].'" WHERE id='.$id);
   	}
   }
   // --- END SAVE CHILD INFO (if any) ---

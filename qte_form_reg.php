@@ -19,6 +19,17 @@ session_start();
 require_once 'bin/qte_init.php';
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
 
+// Check validation (regv is created by qtx_registration and extended 15 minutes for this form)
+
+if ( !empty($_SESSION[QT]['regv']) && time()<$_SESSION[QT]['regv'] ) 
+{  
+  $_SESSION[QT]['regv']=time()+15*60;
+}
+else
+{
+  $oHtml->Redirect(APP.'_register.php?timeout',L('Register')); // without valid time, returns to the aggreement page with timeout argument
+}
+
 // ---------
 // INITIALISE
 // ---------
@@ -145,11 +156,11 @@ if ( isset($_POST['ok']) )
 	    if ( $_SESSION[QT]['register_mode']==='email' ) $_POST['pwd'] = 'QT'.rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 
 	    $id = $oDB->Nextid(TABUSER);
-	    $oDB->Query('INSERT INTO '.TABUSER.' (id,username,lastname,pwd,role,emails,birthdate,status,children,firstdate) VALUES ('.$id.',"'.$_POST['title'].'","'.$_POST['title'].'","'.sha1($_POST['pwd']).'","U","'.$_POST['mail'].'","0","Z","'.$strChild.'","'.date('Ymd').'")');
-	    $oDB->Query('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES (0,'.$id.',"'.date('Ymd').'")');
+	    $oDB->Exec('INSERT INTO '.TABUSER.' (id,username,lastname,pwd,role,emails,birthdate,status,children,firstdate) VALUES ('.$id.',"'.$_POST['title'].'","'.$_POST['title'].'","'.sha1($_POST['pwd']).'","U","'.$_POST['mail'].'","0","Z","'.$strChild.'","'.date('Ymd').'")');
+	    $oDB->Exec('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES (0,'.$id.',"'.date('Ymd').'")');
 	    if ( $strChild!='0' )
 	    {
-	    $oDB->Query('INSERT INTO '.TABCHILD.' (id,childdate,parentmail) VALUES ('.$id.',"'.date('Ymd').'","'.$_POST['parentmail'].'")');
+	    $oDB->Exec('INSERT INTO '.TABCHILD.' (id,childdate,parentmail) VALUES ('.$id.',"'.date('Ymd').'","'.$_POST['parentmail'].'")');
 	    }
 
 	    // Unregister global sys (will be recomputed on next page)

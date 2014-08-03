@@ -5,7 +5,8 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
+case 'pdo.mysql':
+case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id int NOT NULL default 0,
   docdate varchar(8) NOT NULL default "0",
@@ -15,7 +16,7 @@ case 'mysql4':
   )';
   break;
 
-case 'mysql':
+case 'mysql4':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id int NOT NULL default 0,
   docdate varchar(8) NOT NULL default "0",
@@ -91,10 +92,10 @@ default:
 }
 
 echo '<span style="color:blue;">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qtedoc',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';

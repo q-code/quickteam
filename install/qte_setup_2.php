@@ -42,8 +42,9 @@ if ( isset($_POST['ok']) )
   define('TABSETTING', $qte_prefix.'qtesetting');
   define('TABINDEX', $qte_prefix.'qteindex');
   define('TABDOC', $qte_prefix.'qtedoc');
-  $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
-  if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br />Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
+  
+  $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
+  if ( !empty($oDB->error) ) die ('<p class="error">Connection with database failed.<br/>Please contact the webmaster for further information.</p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
 
   if ( empty($oDB->error) )
   {
@@ -110,7 +111,7 @@ if ( isset($_POST['ok']) )
       // save the url
       $strURL = ( empty($_SERVER['SERVER_HTTPS']) ? "http://" : "https://" ).$_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
       $strURL = substr($strURL,0,-24);
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$strURL.'" WHERE param="site_url"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$strURL.'" WHERE param="site_url"');
     }
   }
   else

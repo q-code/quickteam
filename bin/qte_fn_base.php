@@ -1,4 +1,46 @@
-<?php // v 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20140608
+
+// --------
+// HIGH LEVEL
+// --------
+
+function GetSetting($key='',$default='',$db=true)
+{
+  // This returns a string (can be empty string if key not found and no default)
+  if ( empty($key) || !is_string($key) || !is_string($default) ) die('GetSetting: wrong type for key or default');
+
+  // Read from session
+  if ( isset($_SESSION[QT][$key]) ) return $_SESSION[QT][$key];
+
+  // Read from database
+  if ( $db )
+  {
+  global $oDB;
+  $oDB->Query('SELECT setting FROM '.TABSETTING.' WHERE param="'.$key.'"');
+  $row=$oDB->Getrow();
+  if ( isset($row['setting']) ) return (string)$row['setting'];
+  }
+
+  // Uses default
+  return $default;
+}
+
+// --------
+
+function GetParam($bRegister=false,$strWhere='')
+{
+  global $oDB;
+  $arrParam = array();
+  $oDB->Query('SELECT param,setting FROM '.TABSETTING.(empty($strWhere) ? '' : ' WHERE '.$strWhere));
+  while($row=$oDB->Getrow())
+  {
+  $arrParam[$row['param']]=$row['setting'];
+  if ( $bRegister ) $_SESSION[QT][$row['param']]=$row['setting'];
+  }
+  Return $arrParam;
+}
+
+// --------
 
 function EmptyFloat($i)
 {
@@ -14,8 +56,8 @@ function EmptyFloat($i)
 function ObjTrans($strType,$strId,$strGenerate=' ',$intMax=0,$strTrunc='...')
 {
   // This function returns the translation of the objid
-  // When translation is not defined, returns ucfist(strGenerate).
-  // Use $strGenerate FALSE to return '' on missing translation
+  // When translation is not defined and generate is true, returns the ucfirst(objid)
+  // otherwise, returns ''
   // When $intMax>1, the text is truncated to intMax characters and the $strTrunc is added.
 
   $str = '';
@@ -28,7 +70,7 @@ function ObjTrans($strType,$strId,$strGenerate=' ',$intMax=0,$strTrunc='...')
     case 'ffield': $str = $strGenerate; break;
     case 'tab': $str = ucfirst(str_replace('_',' ',$strId)); break;
     case 'tabdesc': $str = $strGenerate; break;
-    case 'index': $str = $_SESSION[QT]['index_name']; break;
+    case 'index': $str = GetSetting('index_name','Index'); break;
     case 'domain': $str = $strGenerate; break;
     case 'sec': $str = $strGenerate; break;
     case 'secdesc': $str = $strGenerate; break;
@@ -248,15 +290,6 @@ function AsFormat($arr='',$strFormat='',$strSep='<br/>')
 
 // --------
 
-function AsAvatarScr($str='')
-{
-  if ( empty($str) ) return '';
-  if ( isset($_SESSION[QT]['avatar']) ) { if ( $_SESSION[QT]['avatar']=='0' ) return ''; }
-  return APPCST('_DIR_PIC').$str;
-}
-
-// --------
-
 function AsImg($strSrc='',$strAlt='',$strTitle='',$strClass='',$strStyle='',$strHref='',$strId='')
 {
   QTargs('AsImg',array($strSrc,$strAlt,$strClass,$strStyle,$strHref,$strId));
@@ -434,19 +467,6 @@ function DateAdd($d='0',$i=-1,$str='year')
    return strval($intY*10000+$intM*100+$intD).(strlen($d)>8 ? substr($d,8) : '');
 }
 
-// --------
-
-function CanPerform($strParam,$strRole='V')
-{
-  // valid parameter are: upload, show_calendar, show_stats
-  if ( empty($strParam) || !isset($_SESSION[QT][$strParam]) ) return false;
-  if ( $_SESSION[QT][$strParam]=='A' && $strRole=='A' ) return true;
-  if ( $_SESSION[QT][$strParam]=='M' && ($strRole=='A' || $strRole=='M') ) return true;
-  if ( $_SESSION[QT][$strParam]=='U' && $strRole!='V' ) return true;
-  if ( $_SESSION[QT][$strParam]=='V' ) return true;
-  return false;
-}
-
 // -------
 
 function DropHttp($str)
@@ -584,21 +604,6 @@ function GetFields($str)
   if ( $str=='index_s') return array('id','status','role');
   if ( $str=='all') return array_merge(GetFields('index_p'),GetFields('index_t'),GetFields('index_s'));
   return array();
-}
-
-// --------
-
-function GetParam($bRegister=false,$strWhere='')
-{
-  global $oDB;
-  $arrParam = array();
-  $oDB->Query('SELECT param,setting FROM '.TABSETTING.(empty($strWhere) ? '' : ' WHERE '.$strWhere));
-  while($row=$oDB->Getrow())
-  {
-  $arrParam[$row['param']]=$row['setting'];
-  if ( $bRegister ) $_SESSION[QT][$row['param']]=$row['setting'];
-  }
-  Return $arrParam;
 }
 
 // --------
@@ -933,10 +938,33 @@ function ToCsv($str,$strSep=';',$strEnc='"',$strSepAlt=',',$strEncAlt="'")
 
 // --------
 
+function UpdateSectionStats($intS=-1,$arrValues=array())
+{
+  // Check
+
+  if ( !is_int($intS) || $intS<0) die('UpdateSectionStats: Wrong id');
+
+  // Process (provided values are not recomputed)
+
+  if ( !isset($arrValues['members']) )  $arrValues['members']  = cSection::CountItems($intS,null); //SectionCount('members',$intS);
+  if ( !isset($arrValues['membersZ']) ) $arrValues['membersZ'] = cSection::CountItems($intS,'Z'); //SectionCount('membersZ',$intS);
+  foreach($arrValues as $strKey=>$strValue) { $arrValues[$strKey]=$strKey.'='.$strValue; }
+
+  // Save
+
+  global $oDB;
+  $oDB->Exec('UPDATE '.TABSECTION.' SET stats="'.implode(';',$arrValues).'" WHERE id='.$intS );
+
+  // Return the stat line
+
+  return implode(';',$arrValues);
+}
+
+// --------
+
 function UseModule($strName)
 {
   QTargs('UseModule',array($strName));
-  if ( isset($_SESSION[QT]['module_'.$strName]) ) return TRUE;
-  return FALSE;
+  if ( empty(GetSetting('module_'.$strName,'',false)) ) return false; // check only in session variable
+  return true;
 }
-

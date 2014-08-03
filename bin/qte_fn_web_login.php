@@ -53,7 +53,7 @@ function qte_web_login($strAction='',$intSection=-1,$strUsr='',$strPwd='',$qte_r
       // query
       require_once $qte_root.'bin/config.php';
       require_once $qte_root.'bin/class/qt_class_db.php';
-      $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+      $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
       if ( !empty($oDB->error) ) die ('<p style="color:red">Connection with database failed.<br />Check that server is up and running.<br />Check that the settings in the file <b>bin/config.php</b> are correct for your database.</p>');
       $oDB->Query('SELECT count(userid) as countid  FROM '.$qte_prefix.'qtes2u WHERE userid='.$_SESSION['qte_usr_id'].' AND sid='.$intSection);
       $row=$oDB->Getrow();
@@ -75,7 +75,7 @@ function qte_web_login($strAction='',$intSection=-1,$strUsr='',$strPwd='',$qte_r
     // query
     require_once $qte_root.'bin/config.php';
     require_once $qte_root.'bin/class/qt_class_db.php';
-    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
     if ( !empty($oDB->error) ) die ('<p style="color:red">Connection with database failed.<br />Check that server is up and running.<br />Check that the settings in the file <b>bin/config.php</b> are correct for your database.</p>');
 
     // check user exists

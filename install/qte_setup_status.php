@@ -5,16 +5,7 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
-  id char(1),
-  name varchar(32),
-  icon varchar(32),
-  color varchar(32),
-  PRIMARY KEY (id)
-  )';
-  break;
-  
+case 'pdo.mysql':
 case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1),
@@ -25,6 +16,16 @@ case 'mysql':
   )';
   break;
 
+case 'mysql4':
+  $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
+  id char(1),
+  name varchar(32),
+  icon varchar(32),
+  color varchar(32),
+  PRIMARY KEY (id)
+  )';
+  break;
+  
 case 'sqlsrv':
 case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
@@ -90,10 +91,10 @@ default:
 }
 
 echo '<span style="color:blue">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qtestatus',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';
@@ -102,7 +103,7 @@ if ( !empty($oDB->error) || !$b )
 
 // add default values
 
-$oDB->Query('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("A","Candidate","","status_star.gif")');
-$oDB->Query('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("B","Member","","status_body_blue.gif")');
-$oDB->Query('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("C","Retired","","status_body_grey.gif")');
-$oDB->Query('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("Z","Not member","","status_no.gif")');
+$oDB->Exec('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("A","Candidate","","status_star.gif")');
+$oDB->Exec('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("B","Member","","status_body_blue.gif")');
+$oDB->Exec('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("C","Retired","","status_body_grey.gif")');
+$oDB->Exec('INSERT INTO '.$qte_prefix.'qtestatus (id,name,color,icon) VALUES ("Z","Not member","","status_no.gif")');

@@ -5,15 +5,7 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtes2u (
-  sid int NOT NULL default 0,
-  userid int NOT NULL default 0,
-  issuedate varchar(8) NOT NULL default "0",
-  PRIMARY KEY (sid,userid)
-  )';
-  break;
-  
+case 'pdo.mysql':
 case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtes2u (
   sid int NOT NULL default 0,
@@ -23,6 +15,15 @@ case 'mysql':
   )';
   break;
 
+case 'mysql4':
+  $strQ='CREATE TABLE '.$qte_prefix.'qtes2u (
+  sid int NOT NULL default 0,
+  userid int NOT NULL default 0,
+  issuedate varchar(8) NOT NULL default "0",
+  PRIMARY KEY (sid,userid)
+  )';
+  break;
+  
 case 'sqlsrv':
 case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtes2u (
@@ -84,14 +85,14 @@ default:
 }
 
 echo '<span style="color:blue">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qtes2u',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';
   exit;
 }
 
-$oDB->Query( 'INSERT INTO '.TABS2U.' VALUES (0,1,"'.date('Ymd').'")' );
+$oDB->Exec( 'INSERT INTO '.TABS2U.' VALUES (0,1,"'.date('Ymd').'")' );

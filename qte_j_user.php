@@ -19,7 +19,7 @@ include 'bin/config.php';
 
 // query
 
-$oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+$oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDBAJAX->error) ) exit;
 $oDBAJAX->Query('SELECT firstname,lastname,username,picture,status FROM '.$qte_prefix.'qteuser WHERE id='.$id);
 $row = $oDBAJAX->GetRow();

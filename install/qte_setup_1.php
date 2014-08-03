@@ -44,8 +44,6 @@ if ( isset($_POST['ok']) )
   $qte_prefix   = strip_tags(trim($_POST['qte_prefix']));
   $qte_user     = strip_tags(trim($_POST['qte_user']));
   $qte_pwd      = strip_tags(trim($_POST['qte_pwd']));
-  $qte_port     = strip_tags(trim($_POST['qte_port']));
-  $qte_dsn      = strip_tags(trim($_POST['qte_dsn']));
   $str = strip_tags(trim($_POST['qte_dbo_login']));
   if ( $str!='') $_SESSION['qte_dbologin'] = $str;
   $str = strip_tags(trim($_POST['qte_dbo_pswrd']));
@@ -55,11 +53,11 @@ if ( isset($_POST['ok']) )
 
   if ( isset($_SESSION['qte_dbologin']) )
   {
-    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$_SESSION['qte_dbologin'],$_SESSION['qte_dbopwd'],$qte_port,$qte_dsn);
+    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$_SESSION['qte_dbologin'],$_SESSION['qte_dbopwd']);
   }
   else
   {
-    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+    $oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
   }
 
   if ( empty($oDB->error) )
@@ -81,8 +79,6 @@ if ( isset($_POST['ok']) )
   $qte_prefix = "'.$qte_prefix.'";
   $qte_user = "'.$qte_user.'";
   $qte_pwd = "'.$qte_pwd.'";
-  $qte_port = "'.$qte_port.'";
-  $qte_dsn = "'.$qte_dsn.'";
   $qte_install = "'.date('Y-m-d').'";';
 
   if (!is_writable($strFilename)) $strError="Impossible to write into the file [$strFilename].";
@@ -113,10 +109,11 @@ if ( isset($_POST['ok']) )
 
 echo '<form method="post" name="install" action="qte_setup_1.php">
 <h2>',$L['Connection_db'],'</h2>
-<table class="hidden">
+<table class="t-conn">
 <tr>
 <td>',$L['Database_type'],'</td>
 <td><select name="qte_dbsystem">
+<option value="pdo.mysql"',($qte_dbsystem=='pdo.mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next (PDO)</option>
 <option value="mysql4"',($qte_dbsystem=='mysql4' ? ' selected="selected"' : ''),'>MySQL 4</option>
 <option value="mysql"',($qte_dbsystem=='mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next</option>
 <option value="sqlsrv"',($qte_dbsystem=='sqlsrv' ? ' selected="selected"' : ''),'>SQL server, Microsoft driver</option>
@@ -132,9 +129,7 @@ echo '<form method="post" name="install" action="qte_setup_1.php">
 echo '<tr>
 <td>',$L['Database_host'],'</td>
 <td>
-<input type="text" name="qte_host" value="',$qte_host,'" size="15" maxlength="100"/>
-<input type="text" name="qte_port" value="',$qte_port,'" size="5" maxlength="20"/>
-<input type="text" name="qte_dsn" value="',$qte_dsn,'" size="6" maxlength="100"/>
+<input type="text" name="qte_host" value="',$qte_host,'" size="30" maxlength="250"/>
 </td>
 </tr>
 <tr>

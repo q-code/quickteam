@@ -87,11 +87,11 @@ if (isset($_POST['ok']))
 
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABSTATUS.' SET name="'.addslashes($name).'",color="'.$color.'",icon="'.$icon.'" WHERE id="'.$id.'"');
+    $oDB->Exec('UPDATE '.TABSTATUS.' SET name="'.addslashes($name).'",color="'.$color.'",icon="'.$icon.'" WHERE id="'.$id.'"');
 
     //  save translation
 
-    $oDB->Query('DELETE FROM '.TABLANG.' WHERE (objtype="status" OR objtype="statusdesc") AND objid="'.$id.'"');
+    $oDB->Exec('DELETE FROM '.TABLANG.' WHERE (objtype="status" OR objtype="statusdesc") AND objid="'.$id.'"');
 
     foreach ($_POST as $strKey => $strTranslation)
     {

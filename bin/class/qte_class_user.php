@@ -46,7 +46,7 @@ public static function Login($username='',$password='',$bRemember=FALSE)
     sUser::RegisterUser($username,$password,true); // get extra user info and register user's info
 
     global $oDB;
-    $oDB->Query('UPDATE '.TABUSER.' SET ip="'.$_SERVER['REMOTE_ADDR'].'" WHERE id='.sUser::Id());
+    $oDB->Exec('UPDATE '.TABUSER.' SET ip="'.$_SERVER['REMOTE_ADDR'].'" WHERE id='.sUser::Id());
 
     if ( $bRemember )
     {
@@ -196,7 +196,7 @@ public static function LoginPostProc()
     // protection against hacking of admin/moderator
     if ( sUser::Id()<2 || sUser::IsStaff() || $items==0 )
     {
-      $oDB->Query('UPDATE '.TABUSER.' SET closed="0" WHERE id='.sUser::Id());
+      $oDB->Exec('UPDATE '.TABUSER.' SET closed="0" WHERE id='.sUser::Id());
       $oVIP->exiturl = 'qte_login.php?dfltname='.sUser::Name();
       $oVIP->exitname = L('Login');
       sUser::SessionUnset();
@@ -213,7 +213,7 @@ public static function LoginPostProc()
 
     if ( date('Ymd')>$endban )
     {
-      $oDB->Query('UPDATE '.TABUSER.' SET closed="0" WHERE id='.sUser::Id());
+      $oDB->Exec('UPDATE '.TABUSER.' SET closed="0" WHERE id='.sUser::Id());
       $oVIP->exiturl = 'qte_login.php?dfltname='.sUser::Name();
       $oVIP->exitname = L('Login');
       sUser::SessionUnset();
@@ -248,13 +248,13 @@ public static function AddUser($username='',$password='',$emails='',$role='U',$c
 
   // add user
   $id = $oDB->Nextid(TABUSER);
-  $b = $oDB->Query('INSERT INTO '.TABUSER.' (id,username,pwd,role,emails,firstdate,children) VALUES ('.$id.',"'.htmlspecialchars($username,ENT_QUOTES).'","'.sha1($password).'","'.$role.'","'.$emails.'","'.date('Ymd His').'","'.$child.'")');
+  $b = $oDB->Exec('INSERT INTO '.TABUSER.' (id,username,pwd,role,emails,firstdate,children) VALUES ('.$id.',"'.htmlspecialchars($username,ENT_QUOTES).'","'.sha1($password).'","'.$role.'","'.$emails.'","'.date('Ymd His').'","'.$child.'")');
   if ( !$b ) return false;
 
   // add as child
   if ( $child!='0' && $_SESSION[QT]['register_coppa']=='1' )
   {
-  $b = $oDB->Query('INSERT INTO '.TABCHILD.' (id,parentmail) VALUES ('.$id.',"'.$parentmail.'")');
+  $b = $oDB->Exec('INSERT INTO '.TABCHILD.' (id,parentmail) VALUES ('.$id.',"'.$parentmail.'")');
   if ( !$b ) return false;
   }
 
@@ -287,7 +287,7 @@ public static function SetCoord($id,$coord)
   if ( isset($coord[1]) ) $x = (float)$coord[1];
   if ( EmptyFloat($y) && EmptyFloat($x) ) { $y=null; $x=null; }
   global $oDB;
-  $oDB->Query('UPDATE '.TABUSER.' SET y='.(isset($y) ? $y : 'NULL').',x='.(isset($x) ? $x : 'NULL').' WHERE id='.$id);
+  $oDB->Exec('UPDATE '.TABUSER.' SET y='.(isset($y) ? $y : 'NULL').',x='.(isset($x) ? $x : 'NULL').' WHERE id='.$id);
 }
 
 }

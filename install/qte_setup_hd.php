@@ -22,13 +22,10 @@ echo '<!DOCTYPE html>
 
 <!-- HEADER BANNER -->
 <div class="banner">
-<h1 id="title">',$L['Installation'],'</h1>
-<img id="logo" src="qte_logo.gif" width="150" height="50" style="border-width:0" alt="',$strAppl,'" title="',$strAppl,'" />
+<img id="logo" src="qte_logo.gif" width="150" height="50" alt="',$strAppl,'" title="',$strAppl,'" />
 </div>
 
 <!-- BODY MAIN -->
-<table width="100%" cellspacing="0" style="border:1px solid #AAAAAA">
-<tr class="body">
-<td class="body" style="padding:10px">
-<p style="margin:0 0 10px 0;text-align:right">v<b>3.0</b> build:20140608</p>
+<div class="body">
+<p style="margin:0 0 20px 0;text-align:right">',$L['Installation'],' v3.0 build:20140608</p>
 ';

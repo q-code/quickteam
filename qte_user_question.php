@@ -49,7 +49,7 @@ if ( isset($_POST['ok']) )
   if ( empty($error) )
   {
     // save new password
-    $oDB->Query('UPDATE '.TABUSER.' SET secret_q="'.QTconv($strQ,'3').'",secret_a="'.QTconv(strtolower($strA),'3').'" WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET secret_q="'.QTconv($strQ,'3').'",secret_a="'.QTconv(strtolower($strA),'3').'" WHERE id='.$id);
 
     // exit
     $_SESSION['pagedialog'] = 'O|'.$L['S_update'];

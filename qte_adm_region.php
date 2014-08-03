@@ -49,10 +49,10 @@ if ( isset($_POST['ok']) )
   $oVIP->exitname = $oVIP->selfname;
 
   // save
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['time_zone'].'" WHERE param="time_zone"');
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_time_zone'].'" WHERE param="show_time_zone"');
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['userlang'].'" WHERE param="userlang"');
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.(isset($arrLangDir[$_POST['dfltlang']]) ? $arrLangDir[$_POST['dfltlang']] : 'english').'" WHERE param="language"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['time_zone'].'" WHERE param="time_zone"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_time_zone'].'" WHERE param="show_time_zone"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['userlang'].'" WHERE param="userlang"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.(isset($arrLangDir[$_POST['dfltlang']]) ? $arrLangDir[$_POST['dfltlang']] : 'english').'" WHERE param="language"');
 
   // formatdate
   $str = trim($_POST['formatdate']); if ( get_magic_quotes_gpc() ) $str = stripslashes($_POST['formatdate']);
@@ -60,7 +60,7 @@ if ( isset($_POST['ok']) )
   if ( empty($error) )
   {
   $_SESSION[QT]['formatdate'] = $str;
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['formatdate'].'" WHERE param="formatdate"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['formatdate'].'" WHERE param="formatdate"');
   }
 
   // formattime
@@ -69,7 +69,7 @@ if ( isset($_POST['ok']) )
   if ( empty($error) )
   {
   $_SESSION[QT]['formattime'] = $str;
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['formattime'].'" WHERE param="formattime"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['formattime'].'" WHERE param="formattime"');
   }
 
   // exit

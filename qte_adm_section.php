@@ -82,10 +82,10 @@ if ( isset($_POST['ok']) )
   if ( empty($error) )
   {
     // update
-    $oDB->Query('UPDATE '.TABSECTION.' SET domainid='.$oSEC->pid.', title="'.$oSEC->name.'", type="'.$oSEC->type.'", status="'.$oSEC->status.'", modid='.$oSEC->modid.', modname="'.$oSEC->modname.'" WHERE id='.$oSEC->id);
+    $oDB->Exec('UPDATE '.TABSECTION.' SET domainid='.$oSEC->pid.', title="'.$oSEC->name.'", type="'.$oSEC->type.'", status="'.$oSEC->status.'", modid='.$oSEC->modid.', modname="'.$oSEC->modname.'" WHERE id='.$oSEC->id);
 
     // translation
-    $oDB->Query('DELETE FROM '.TABLANG.' WHERE (objtype="sec" OR objtype="secdesc") AND objid="s'.$oSEC->id.'"');
+    $oDB->Exec('DELETE FROM '.TABLANG.' WHERE (objtype="sec" OR objtype="secdesc") AND objid="s'.$oSEC->id.'"');
     foreach ($_POST as $strKey => $strTranslation)
     {
       if ( substr($strKey,0,1)=='T' )

@@ -59,7 +59,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.or
 ';
 
 echo '<h2>1. Opening database connection...</h2>';
-$oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+$oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDB->error) ) die ('<p style="color:red">Connection with database failed.<br />Check that server is up and running.<br />Check that the settings in the file <b>bin/config.php</b> are correct for your database.</p>');
 
 echo '<p>done</p>';
@@ -71,46 +71,46 @@ if ( isset($_GET['a']) )
   switch ($_GET['a'])
   {
   case 'Drop ALL tables':
-    echo ' Dropping Lang...'; $oDB->Query('DROP TABLE '.TABLANG); echo 'done.<br />';
-    echo ' Dropping Team...'; $oDB->Query('DROP TABLE '.TABSECTION); echo 'done.<br />';
-    echo ' Dropping Domain...'; $oDB->Query('DROP TABLE '.TABDOMAIN); echo 'done.<br />';
-    echo ' Dropping User...'; $oDB->Query('DROP TABLE '.TABUSER); echo 'done.<br />';
-    echo ' Dropping Child...'; $oDB->Query('DROP TABLE '.TABCHILD); echo 'done.<br />';
-    echo ' Dropping S2U...'; $oDB->Query('DROP TABLE '.TABS2U); echo 'done.<br />';
-    echo ' Dropping Status...'; $oDB->Query('DROP TABLE '.TABSTATUS); echo 'done.<br />';
-    echo ' Dropping Setting...'; $oDB->Query('DROP TABLE '.TABSETTING); echo 'done.<br />';
-    echo ' Dropping Index...'; $oDB->Query('DROP TABLE '.TABINDEX); echo 'done.<br />';
-    echo ' Dropping Doc...'; $oDB->Query('DROP TABLE '.TABDOC); echo 'done.<br />';
+    echo ' Dropping Lang...'; $oDB->Exec('DROP TABLE '.TABLANG); echo 'done.<br />';
+    echo ' Dropping Team...'; $oDB->Exec('DROP TABLE '.TABSECTION); echo 'done.<br />';
+    echo ' Dropping Domain...'; $oDB->Exec('DROP TABLE '.TABDOMAIN); echo 'done.<br />';
+    echo ' Dropping User...'; $oDB->Exec('DROP TABLE '.TABUSER); echo 'done.<br />';
+    echo ' Dropping Child...'; $oDB->Exec('DROP TABLE '.TABCHILD); echo 'done.<br />';
+    echo ' Dropping S2U...'; $oDB->Exec('DROP TABLE '.TABS2U); echo 'done.<br />';
+    echo ' Dropping Status...'; $oDB->Exec('DROP TABLE '.TABSTATUS); echo 'done.<br />';
+    echo ' Dropping Setting...'; $oDB->Exec('DROP TABLE '.TABSETTING); echo 'done.<br />';
+    echo ' Dropping Index...'; $oDB->Exec('DROP TABLE '.TABINDEX); echo 'done.<br />';
+    echo ' Dropping Doc...'; $oDB->Exec('DROP TABLE '.TABDOC); echo 'done.<br />';
     break;
   case 'Drop table Lang':
-    echo ' Dropping Lang...';   $oDB->Query('DROP TABLE '.TABLANG);   echo 'done.<br />';
+    echo ' Dropping Lang...';   $oDB->Exec('DROP TABLE '.TABLANG);   echo 'done.<br />';
     break;
   case 'Drop table Team':
-    echo ' Dropping Team...';   $oDB->Query('DROP TABLE '.TABSECTION);   echo 'done.<br />';
+    echo ' Dropping Team...';   $oDB->Exec('DROP TABLE '.TABSECTION);   echo 'done.<br />';
     break;
   case 'Drop table Domain':
-    echo ' Dropping Domain...';  $oDB->Query('DROP TABLE '.TABDOMAIN);  echo 'done.<br />';
+    echo ' Dropping Domain...';  $oDB->Exec('DROP TABLE '.TABDOMAIN);  echo 'done.<br />';
     break;
   case 'Drop table User':
-    echo ' Dropping User...';    $oDB->Query('DROP TABLE '.TABUSER);    echo 'done.<br />';
+    echo ' Dropping User...';    $oDB->Exec('DROP TABLE '.TABUSER);    echo 'done.<br />';
     break;
   case 'Drop table Child':
-    echo ' Dropping Child...';    $oDB->Query('DROP TABLE '.TABCHILD);    echo 'done.<br />';
+    echo ' Dropping Child...';    $oDB->Exec('DROP TABLE '.TABCHILD);    echo 'done.<br />';
     break;
   case 'Drop table S2U':
-    echo ' Dropping S2U...';  $oDB->Query('DROP TABLE '.TABS2U);  echo 'done.<br />';
+    echo ' Dropping S2U...';  $oDB->Exec('DROP TABLE '.TABS2U);  echo 'done.<br />';
     break;
   case 'Drop table Status':
-    echo ' Dropping Status...';  $oDB->Query('DROP TABLE '.TABSTATUS);  echo 'done.<br />';
+    echo ' Dropping Status...';  $oDB->Exec('DROP TABLE '.TABSTATUS);  echo 'done.<br />';
     break;
   case 'Drop table Setting':
-    echo ' Dropping Setting...'; $oDB->Query('DROP TABLE '.TABSETTING); echo 'done.<br />';
+    echo ' Dropping Setting...'; $oDB->Exec('DROP TABLE '.TABSETTING); echo 'done.<br />';
     break;
   case 'Drop table Index':
-    echo ' Dropping Index...'; $oDB->Query('DROP TABLE '.TABINDEX); echo 'done.<br />';
+    echo ' Dropping Index...'; $oDB->Exec('DROP TABLE '.TABINDEX); echo 'done.<br />';
     break;
   case 'Drop table Doc':
-    echo ' Dropping Doc...'; $oDB->Query('DROP TABLE '.TABDOC); echo 'done.<br />';
+    echo ' Dropping Doc...'; $oDB->Exec('DROP TABLE '.TABDOC); echo 'done.<br />';
     break;
   case 'Add table Lang':
     include 'qte_setup_lang.php'; echo $_GET['a'],' done'; break;

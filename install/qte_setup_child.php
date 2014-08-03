@@ -7,16 +7,7 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtechild (
-  id int NOT NULL default 0,
-  childdate varchar(8) NOT NULL default "0",
-  parentmail varchar(255),
-  parentdate varchar(8) NOT NULL default "0",
-  PRIMARY KEY (id)
-  )';
-  break;
-  
+case 'pdo.mysql':
 case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtechild (
   id int NOT NULL default 0,
@@ -27,6 +18,16 @@ case 'mysql':
   )';
   break;
 
+case 'mysql4':
+  $strQ='CREATE TABLE '.$qte_prefix.'qtechild (
+  id int NOT NULL default 0,
+  childdate varchar(8) NOT NULL default "0",
+  parentmail varchar(255),
+  parentdate varchar(8) NOT NULL default "0",
+  PRIMARY KEY (id)
+  )';
+  break;
+  
 case 'sqlsrv':
 case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtechild (
@@ -91,10 +92,10 @@ default:
 }
 
 echo '<span style="color:blue;">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qtechild',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';

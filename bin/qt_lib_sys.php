@@ -77,7 +77,7 @@ function Href($str='')
 
 function GetLang($str='')
 {
-  if ( empty($str) ) $str=$_SESSION[QT]['language'];
+  if ( empty($str) ) $str = GetSetting('language','english');
   return 'language/'.$str.'/';
 }
 
@@ -149,7 +149,7 @@ function QTcheckL($arr)
 
 function QTiso($str='')
 {
-  if ( empty($str) ) $str = (isset($_SESSION[QT]['language']) ? $_SESSION[QT]['language'] : 'english');
+  if ( empty($str) ) $str = GetSetting('language','english');
   switch(strtolower($str))
   {
   case 'english': return 'en'; break;
@@ -160,77 +160,6 @@ function QTiso($str='')
   default: include 'bin/'.APP.'_lang.php'; $arr=array_flip(QTarrget($arrLang,2)); if ( isset($arr[$str]) ) return $arr[$str]; break;
   }
   return 'en';
-}
-
-// --------
-
-// This function allow cheching argument types: The value in $arrArgs must be of type specified in $arrTypes
-// Application stops when the value is not of the specified type.
-// Note 1: The type 'empty' means that the application stops if the value IS empty.
-// Note 2: When $arrTypes is one type, this type is converted to a list of types
-
-function QTargs($str='Error',$arrArgs,$arrTypes='str')
-{
-  if ( !is_string($str) ) die('QTargs: Argument #1 must be a string');
-  if ( !is_array($arrArgs) ) die('QTargs: Argument #2 must be an array');
-  // last argument can be one string meaning: an array of n time this string is created
-  if ( is_string($arrTypes) ) { $s=$arrTypes; $arrTypes=array(); foreach($arrArgs as $a) $arrTypes[]=$s; }
-  if ( !is_array($arrTypes) ) die('QTargs: Argument #3 must be an array');
-  if ( count($arrTypes)!=count($arrArgs) ) die('QTargs: Argument #2 and #3 are not the same size');
-
-  // Process
-
-  for($i=0;$i<count($arrArgs);$i++) {
-  switch($arrTypes[$i]) {
-  case 'str': if ( !is_string($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be a string'); break;
-  case 'int': if ( !is_int($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be an int'); break;
-  case 'arr': if ( !is_array($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be an array'); break;
-  case 'flo': if ( !is_float($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be a float'); break;
-  case 'boo': if ( !is_bool($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be a boolean'); break;
-  case 'empty': if ( empty($arrArgs[$i]) ) die($str.': Argument #'.$i.' is empty'); break;
-  }}
-}
-
-// --------
-
-// arrAttr can includes (S means selected & C current):
-// format,name,endline,current,class,classS,classC,style,styleS,styleC
-
-function QTasOption($arr,$valSelected='',$arrAttr=array(),$arrDisabled=array()) { return QTasTag($arr,$valSelected,$arrAttr,'option',$arrDisabled); }
-function QTasHidden($arr,$valSelected='',$arrAttr=array()) { return QTasTag($arr,$valSelected,$arrAttr,'hidden'); }
-function QTasCheckbox($arr,$valSelected='',$arrAttr=array(),$arrDisabled=array()) { return QTasTag($arr,$valSelected,$arrAttr,'checkbox',$arrDisabled); }
-function QTasSpan($arr,$valSelected='',$arrAttr=array()) { return QTasTag($arr,$valSelected,$arrAttr,'span'); }
-function QTasTag($arr,$valSelected='',$arrAttr=array(),$strTag='option',$arrDisabled=array(),$eol='')
-{
-  QTargs( 'QTasTag',array($arr,$arrAttr,$strTag),array('arr','arr','str') ); // valSelected can be str or int
-  $strReturn = '';
-  foreach($arr as $strKey=>$strValue)
-  {
-    // format the value
-    if ( is_array($strValue) ) $strValue = reset($strValue);
-    if ( isset($arrAttr['format']) ) $strValue = sprintf($arrAttr['format'],$strValue);
-
-    $strName='';
-      if ( isset($arrAttr['name']) ) $strName=$arrAttr['name'];
-    $strClass='';
-      if ( isset($arrAttr['class']) ) $strClass=$arrAttr['class'];
-      if ( isset($arrAttr['classS']) ) { if ( strlen($valSelected)>0 && $valSelected==$strKey ) $strClass=$arrAttr['classS']; }
-      if ( isset($arrAttr['current']) && isset($arrAttr['classC']) ) { if ( $arrAttr['current']==$strKey ) $strClass=$arrAttr['classC']; }
-    $strStyle='';
-      if ( isset($arrAttr['style']) ) $strStyle=$arrAttr['style'];
-      if ( isset($arrAttr['styleS']) ) { if ( strlen($valSelected)>0 && $valSelected==$strKey ) $strStyle=$arrAttr['styleS']; }
-      if ( isset($arrAttr['current']) && isset($arrAttr['styleC']) ) { if ( $arrAttr['current']==$strKey ) $strStyle=$arrAttr['styleC']; }
-    switch($strTag)
-    {
-    case 'option': $strReturn .= '<option value="'.$strKey.'"'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').($valSelected===$strKey ? ' selected="selected"' : '').(in_array($strKey,$arrDisabled,true) ? ' disabled="disabled" ': '').'>'.$strValue.'</option>'; break;
-    case 'checkbox': $strReturn .= '<input type="checkbox" value="'.$strKey.'"'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').(empty($strName) ? '' : ' name="'.$strName.'"').(in_array($strKey,$arrDisabled,true) ? ' disabled="disabled" ': '').'/>'.$strValue; break;
-    case 'hidden': $strReturn .= '<input type="hidden" name="'.$strKey.'" value="'.$strValue.'"/>'; break;
-    case 'span': $strReturn .= '<span'.(empty($strClass) ? '' : ' class="'.$strClass.'"').'>'.$strValue.'</span>'.(isset($arrAttr['endline']) ? $arrAttr['endline'] : '' ); break;
-    default: die('HtmlTags: Invalid argument #2');
-    }
-    if ( !empty($eol) ) $strReturn .= $eol;
-  }
-  return $strReturn;
 }
 
 // --------

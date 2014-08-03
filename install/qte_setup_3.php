@@ -30,7 +30,7 @@ $strNextLabel= $L['Next'];
 
 // Read admin_email setting
 
-$oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+$oDB = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 define('TABSETTING', $qte_prefix.'qtesetting');
 GetParam(true,'param="admin_email"');
 if ( !isset($_SESSION[QT]['admin_email']) ) $_SESSION[QT][admin_email]='';
@@ -48,7 +48,7 @@ if ( !empty($_POST['admin_email']) )
   if ( QTismail($_POST['admin_email']) )
   {
     $_SESSION[QT]['admin_email'] = $_POST['admin_email'];
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['admin_email'].'" WHERE param="admin_email"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['admin_email'].'" WHERE param="admin_email"');
     if ( empty($oDB->error) )
     {
     echo '<div class="setup_ok">',$L['S_save'],'</div>';

@@ -50,7 +50,7 @@ function Rename($str='')
   if ( !is_string($str) || empty($str) ) die('cDomain->Rename: Argument #1 must be a string');
 
   global $oDB;
-  $r = $oDB->Query('UPDATE '.TABDOMAIN.' SET title="'.addslashes($str).'" WHERE id='.$this->id);
+  $r = $oDB->Exec('UPDATE '.TABDOMAIN.' SET title="'.addslashes($str).'" WHERE id='.$this->id);
   if ( !$r ) return false;
 
   // Clear session to allow reload values

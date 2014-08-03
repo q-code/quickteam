@@ -104,7 +104,7 @@ if ( isset($_POST['ok']) )
       $strUpdate .= $strField.'="'.$oItem->$strField.'",';
     }
     $strUpdate .= 'privacy="'.$oItem->privacy.'"';
-    $oDB->Query('UPDATE '.TABUSER.' SET '.$strUpdate.' WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET '.$strUpdate.' WHERE id='.$id);
 
     if ( $bMap ) {
     if ( isset($_POST['coord']) ) {
@@ -118,7 +118,7 @@ if ( isset($_POST['ok']) )
     if ( $oItem->role=='A' || $oItem->role=='M' )
     {
       $strNewname = $oItem->firstname.' '.$oItem->lastname;
-      if ( $strOldname!=$strNewname ) $oDB->Query('UPDATE '.TABSECTION.' SET modname="'.$strNewname.'" WHERE modid='.$id);
+      if ( $strOldname!=$strNewname ) $oDB->Exec('UPDATE '.TABSECTION.' SET modname="'.$strNewname.'" WHERE modid='.$id);
     }
 
     // check fullname

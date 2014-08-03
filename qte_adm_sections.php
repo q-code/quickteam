@@ -61,8 +61,8 @@ if ( isset($_POST['neworder']) )
   {
     switch(substr($arrO[0],0,3))
     {
-      case 'dom': foreach($arrO as $intKey=>$strId) $oDB->Query('UPDATE '.TABDOMAIN.' SET vorder='.$intKey.' WHERE id='.substr($strId,4)); break;
-      case 'sec': foreach($arrO as $intKey=>$strId) $oDB->Query('UPDATE '.TABSECTION.' SET vorder='.$intKey.' WHERE id='.substr($strId,4)); break;
+      case 'dom': foreach($arrO as $intKey=>$strId) $oDB->Exec('UPDATE '.TABDOMAIN.' SET vorder='.$intKey.' WHERE id='.substr($strId,4)); break;
+      case 'sec': foreach($arrO as $intKey=>$strId) $oDB->Exec('UPDATE '.TABSECTION.' SET vorder='.$intKey.' WHERE id='.substr($strId,4)); break;
       default: die('invalid command');
     }
     if ( isset($_SESSION[QT]['sys_domains']) ) Unset($_SESSION[QT]['sys_domains']);

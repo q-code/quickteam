@@ -38,33 +38,33 @@ if ( isset($_POST['ok']) )
   // check form
 
   $_SESSION[QT]['visitor_right']=$_POST['pal'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['visitor_right'].'" WHERE param="visitor_right"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['visitor_right'].'" WHERE param="visitor_right"');
 
   $_SESSION[QT]['member_right']=$_POST['mal'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['member_right'].'" WHERE param="member_right"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['member_right'].'" WHERE param="member_right"');
 
   $_SESSION[QT]['login_qtf']=trim($_POST['login_qtf']);
   if ( empty($_SESSION[QT]['login_qtf']) || strlen($_SESSION[QT]['login_qtf'])<3 ) $_SESSION[QT]['login_qtf']='0';
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qtf'].'" WHERE param="login_qtf"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qtf'].'" WHERE param="login_qtf"');
 
   $_SESSION[QT]['login_qti']=trim($_POST['login_qti']);
   if ( empty($_SESSION[QT]['login_qti']) || strlen($_SESSION[QT]['login_qti'])<3 ) $_SESSION[QT]['login_qti']='0';
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qti'].'" WHERE param="login_qti"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qti'].'" WHERE param="login_qti"');
 
   $_SESSION[QT]['login_qte_web']=$_POST['login_qte_web'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qte_web'].'" WHERE param="login_qte_web"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['login_qte_web'].'" WHERE param="login_qte_web"');
 
   $_SESSION[QT]['register_mode']=$_POST['regmode'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['regmode'].'" WHERE param="register_mode"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['regmode'].'" WHERE param="register_mode"');
 
   $_SESSION[QT]['register_safe']=$_POST['regsafe'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['regsafe'].'" WHERE param="register_safe"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['regsafe'].'" WHERE param="register_safe"');
 
   $_SESSION[QT]['register_coppa']=$_POST['regcoppa'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['regcoppa'].'" WHERE param="register_coppa"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['regcoppa'].'" WHERE param="register_coppa"');
 
   $_SESSION[QT]['picture']=$_POST['picture'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['picture'].'" WHERE param="picture"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['picture'].'" WHERE param="picture"');
 
   if ( $_SESSION[QT]['picture']!='0' )
   {
@@ -74,7 +74,7 @@ if ( isset($_POST['ok']) )
       if ( !QTisbetween($str,20,200) ) { $error = $L['Max_picture_size'].S.$L['E_invalid'].' (20-200 pixels)'; }
       if ( empty($error) )
       {
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_width"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_width"');
       $_SESSION[QT]['picture_width']=$str;
       }
     }
@@ -84,7 +84,7 @@ if ( isset($_POST['ok']) )
       if ( !QTisbetween($str,20,200) ) { $error = $L['Max_picture_size'].S.$L['E_invalid'].' (20-200 pixels)'; }
       if ( empty($error) )
       {
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_height"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_height"');
       $_SESSION[QT]['picture_height']=$str;
       }
     }
@@ -94,14 +94,14 @@ if ( isset($_POST['ok']) )
       if ( !QTisbetween($str,10,100) ) { $error = $L['Max_picture_size'].S.$L['E_invalid'].' (10-100 kb)'; }
       if ( empty($error) )
       {
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_size"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="picture_size"');
       $_SESSION[QT]['picture_size']=$str;
       }
     }
   }
 
   $_SESSION[QT]['upload']=$_POST['upload'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['upload'].'" WHERE param="upload"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['upload'].'" WHERE param="upload"');
 
   if ( $_SESSION[QT]['upload']!='0' )
   {
@@ -111,16 +111,16 @@ if ( isset($_POST['ok']) )
       if ( !QTisbetween($str,100,10000) ) { $error = $L['Maximum'].S.$L['E_invalid'].' (100-10000 kb)'; }
       if ( empty($error) )
       {
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="uploadsize"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$str.'" WHERE param="uploadsize"');
       $_SESSION[QT]['uploadsize']=$str;
       }
     }
   }
 
   $_SESSION[QT]['show_calendar'] = $_POST['show_calendar'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_calendar'].'" WHERE param="show_calendar"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_calendar'].'" WHERE param="show_calendar"');
   $_SESSION[QT]['show_stats'] = $_POST['show_stats'];
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_stats'].'" WHERE param="show_stats"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_stats'].'" WHERE param="show_stats"');
 
   // exit
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.$L['S_save'] : 'E|'.$error);

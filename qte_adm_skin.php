@@ -76,18 +76,18 @@ if ( isset($_POST['ok']) )
   // save value
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['skin_dir'].'" WHERE param="skin_dir"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_welcome'].'" WHERE param="show_welcome"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_banner'].'" WHERE param="show_banner"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_legend'].'" WHERE param="show_legend"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_menu'].'" WHERE param="home_menu"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['skin_dir'].'" WHERE param="skin_dir"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_welcome'].'" WHERE param="show_welcome"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_banner'].'" WHERE param="show_banner"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_legend'].'" WHERE param="show_legend"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_menu'].'" WHERE param="home_menu"');
     if ( $_SESSION[QT]['home_menu']=='1' )
     {
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_name'].'" WHERE param="home_name"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_url'].'" WHERE param="home_url"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_name'].'" WHERE param="home_name"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['home_url'].'" WHERE param="home_url"');
     }
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['items_per_page'].'" WHERE param="items_per_page"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['section_descr'].'" WHERE param="section_descr"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['items_per_page'].'" WHERE param="items_per_page"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['section_descr'].'" WHERE param="section_descr"');
   }
   // exit
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.$L['S_save'] : 'E|'.$error);

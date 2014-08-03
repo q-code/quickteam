@@ -15,9 +15,9 @@ if ( strlen($_POST['v'])<4 )
 }
 else
 {
-  $oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+  $oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
   if ( !empty($oDBAJAX->error) ) return;
-  $oDBAJAX->Query( 'SELECT count(*) as countid FROM '.$qte_prefix.'qteuser WHERE '.$_POST['f'].'="'.htmlspecialchars(addslashes($_POST['v']),ENT_QUOTES).'"' );
+  $oDBAJAX->Query('SELECT count(*) as countid FROM '.$qte_prefix.'qteuser WHERE '.$_POST['f'].'="'.htmlspecialchars(addslashes($_POST['v']),ENT_QUOTES).'"' );
   $row = $oDBAJAX->GetRow();
   if ( $row['countid']>0 )
   {

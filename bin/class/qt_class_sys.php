@@ -62,7 +62,7 @@ class cLang
     $row=$oDB->Getrow();
     if ( $row['countid']!=0 ) return False;
     }
-    return $oDB->Query('INSERT INTO '.TABLANG.' (objtype,objlang,objid,objname) VALUES ("'.$strType.'","'.strtolower($strLang).'","'.$strId.'","'.addslashes(QTconv($strName,'3',constant($prefix.'_CONVERT_AMP'),false)).'")');
+    return $oDB->Exec('INSERT INTO '.TABLANG.' (objtype,objlang,objid,objname) VALUES ("'.$strType.'","'.strtolower($strLang).'","'.$strId.'","'.addslashes(QTconv($strName,'3',constant($prefix.'_CONVERT_AMP'),false)).'")');
   }
   public static function Delete($strType='',$strId='')
   {
@@ -73,7 +73,7 @@ class cLang
     // Process
 
     global $oDB;
-    return $oDB->Query('DELETE FROM '.TABLANG.' WHERE (objtype="'.$strType.'") AND objid="'.$strId.'"');
+    return $oDB->Exec('DELETE FROM '.TABLANG.' WHERE (objtype="'.$strType.'") AND objid="'.$strId.'"');
   }
   public static function Get($strType='',$strLang='en',$strId='*')
   {

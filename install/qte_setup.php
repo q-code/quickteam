@@ -43,7 +43,6 @@ include 'qte_lang_'.$_SESSION['qte_setup_lang'].'.php';
 
 include 'qte_setup_hd.php';
 
-
 if ( $bFolder && $bConfig )
 {
   echo '<h1>',$strAppl,'</h1>';

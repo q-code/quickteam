@@ -82,9 +82,9 @@ if ( isset($_POST['ok']) )
           // insert
           if ( !empty($strLog) )
           {
-            if ( $oDB->Query('INSERT INTO '.TABUSER.' (id,role,username,lastname,pwd,status,emails,children,firstdate) VALUES ('.$intNextUser.',"'.$strRole.'","'.$strLog.'","'.$strLog.'","'.$strPwd.'","'.$strStatus.'","'.$strMail.'","0","'.date('Ymd').'")') )
+            if ( $oDB->Exec('INSERT INTO '.TABUSER.' (id,role,username,lastname,pwd,status,emails,children,firstdate) VALUES ('.$intNextUser.',"'.$strRole.'","'.$strLog.'","'.$strLog.'","'.$strPwd.'","'.$strStatus.'","'.$strMail.'","0","'.date('Ymd').'")') )
             {
-              $oDB->Query('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES ('.$_POST['section'].','.$intNextUser.',"'.date('Ymd').'")');
+              $oDB->Exec('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES ('.$_POST['section'].','.$intNextUser.',"'.date('Ymd').'")');
               $intNextUser++;
               $intCountUser++;
             }

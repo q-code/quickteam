@@ -152,7 +152,7 @@ if ( isset($_GET['a']) )
 if ( isset($_GET['ok']) )
 {
   $oSEC->forder = implode(';',$_SESSION['fields']);
-  $oDB->Query('UPDATE '.TABSECTION.' SET forder="'.$oSEC->forder.'" WHERE id='.$s);
+  $oDB->Exec('UPDATE '.TABSECTION.' SET forder="'.$oSEC->forder.'" WHERE id='.$s);
   unset($_SESSION['fields']);
 
   // exit

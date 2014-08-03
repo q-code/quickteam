@@ -53,8 +53,8 @@ if ( isset($_POST['ok']) )
   if ( empty($error) )
   {
   $_SESSION[QT]['defaulttimezone']=$strTZI;
-  $oDB->Query('DELETE FROM '.TABSETTING.' WHERE param="defaulttimezone"');
-  $oDB->Query('INSERT INTO '.TABSETTING.' VALUES ("defaulttimezone", "'.$_SESSION[QT]['defaulttimezone'].'", "1")');
+  $oDB->Exec('DELETE FROM '.TABSETTING.' WHERE param="defaulttimezone"');
+  $oDB->Exec('INSERT INTO '.TABSETTING.' VALUES ("defaulttimezone", "'.$_SESSION[QT]['defaulttimezone'].'", "1")');
   }
 
   // Exit

@@ -89,7 +89,7 @@ function __construct($aUser=null,$bPrivate=false)
 
 public function Create($intSection=-1)
 {
-  $oDB->Query('INSERT INTO '.TABUSER.' (id,role,username,lastname,pwd,emails,children,status,firstdate) VALUES ('.$id.',"U","'.htmlspecialchars($strTitle,ENT_QUOTES).'","'.htmlspecialchars($strTitle,ENT_QUOTES).'","'.sha1($strNewpwd).'","'.$strMail.'","0","'.$_POST['status'].'","'.date('Ymd').'")');
+  $oDB->Exec('INSERT INTO '.TABUSER.' (id,role,username,lastname,pwd,emails,children,status,firstdate) VALUES ('.$id.',"U","'.htmlspecialchars($strTitle,ENT_QUOTES).'","'.htmlspecialchars($strTitle,ENT_QUOTES).'","'.sha1($strNewpwd).'","'.$strMail.'","0","'.$_POST['status'].'","'.date('Ymd').'")');
 }
 
 // --------
@@ -188,11 +188,11 @@ function Delete($bStat=true)
   if ( $this->id<2 ) die('cItem->Delete: Wrong id cannot delete user 0 and 1');
 
   global $oDB;
-  $oDB->Query('UPDATE '.TABSECTION.' SET modid=1, modname="Administrator" WHERE modid='.$this->id);
-  $oDB->Query('DELETE FROM '.TABS2U.' WHERE userid='.$this->id);
-  $oDB->Query('DELETE FROM '.TABUSER.' WHERE id='.$this->id);
-  $oDB->Query('DELETE FROM '.TABCHILD.' WHERE id='.$this->id);
-  $oDB->Query('DELETE FROM '.TABINDEX.' WHERE userid='.$this->id);
+  $oDB->Exec('UPDATE '.TABSECTION.' SET modid=1, modname="Administrator" WHERE modid='.$this->id);
+  $oDB->Exec('DELETE FROM '.TABS2U.' WHERE userid='.$this->id);
+  $oDB->Exec('DELETE FROM '.TABUSER.' WHERE id='.$this->id);
+  $oDB->Exec('DELETE FROM '.TABCHILD.' WHERE id='.$this->id);
+  $oDB->Exec('DELETE FROM '.TABINDEX.' WHERE userid='.$this->id);
 
   // remove images
 
@@ -228,7 +228,7 @@ public static function InSection($intSection=-1,$strAction='add',$id=null)
     $row = $oDB->Getrow();
     if ( $row['countid']==0 )
     {
-    $oDB->Query('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES ('.$intSection.','.$id.',"'.date('Ymd').'")');
+    $oDB->Exec('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES ('.$intSection.','.$id.',"'.date('Ymd').'")');
     }
     else
     {
@@ -236,9 +236,9 @@ public static function InSection($intSection=-1,$strAction='add',$id=null)
     }
     break;
   case 'rem':
-    $oDB->Query('DELETE FROM '.TABS2U.' WHERE sid='.$intSection.' AND userid='.$id);
+    $oDB->Exec('DELETE FROM '.TABS2U.' WHERE sid='.$intSection.' AND userid='.$id);
       // add in the garbage collector if necessary
-      if ( cSection::CountItems($id)==0 ) { $oDB->Query('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES (0,'.$id.',"'.date('Ymd').'")'); return false; }
+      if ( cSection::CountItems($id)==0 ) { $oDB->Exec('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES (0,'.$id.',"'.date('Ymd').'")'); return false; }
     break;
   }
   return true;
@@ -275,10 +275,10 @@ function SaveKeywords($arrKeys)
   $arrFields = array_keys($arrKeys);
   foreach ($arrFields as $strField)
   {
-    $oDB->query('DELETE FROM '.TABINDEX.' WHERE userid='.$this->id.' AND ufield="'.$strField.'"');
+    $oDB->Exec('DELETE FROM '.TABINDEX.' WHERE userid='.$this->id.' AND ufield="'.$strField.'"');
     foreach ($arrKeys[$strField] as $strValue)
     {
-    $oDB->query('INSERT INTO '.TABINDEX.' (userid,ufield,ukey) VALUES ('.$this->id.',"'.$strField.'","'.$strValue.'")');
+    $oDB->Exec('INSERT INTO '.TABINDEX.' (userid,ufield,ukey) VALUES ('.$this->id.',"'.$strField.'","'.$strValue.'")');
     }
   }
 }
@@ -298,7 +298,7 @@ public static function SetCoord($id,$coord)
   if ( isset($coord[1]) ) $x = (float)$coord[1];
   if ( EmptyFloat($y) && EmptyFloat($x) ) { $y=null; $x=null; }
   global $oDB;
-  $oDB->Query('UPDATE '.TABUSER.' SET y='.(isset($y) ? $y : 'NULL').',x='.(isset($x) ? $x : 'NULL').' WHERE id='.$id);
+  $oDB->Exec('UPDATE '.TABUSER.' SET y='.(isset($y) ? $y : 'NULL').',x='.(isset($x) ? $x : 'NULL').' WHERE id='.$id);
 }
 
 }

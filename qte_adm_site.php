@@ -78,33 +78,33 @@ if ( isset($_POST['ok']) )
   // save value
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.addslashes($_SESSION[QT]['site_name']).'" WHERE param="site_name"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['site_url'].'"WHERE param="site_url"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.addslashes($_SESSION[QT]['index_name']).'" WHERE param="index_name"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['admin_email'].'" WHERE param="admin_email"');
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['use_smtp'].'" WHERE param="use_smtp"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($_SESSION[QT]['site_name']).'" WHERE param="site_name"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['site_url'].'"WHERE param="site_url"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($_SESSION[QT]['index_name']).'" WHERE param="index_name"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['admin_email'].'" WHERE param="admin_email"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['use_smtp'].'" WHERE param="use_smtp"');
     if ( $_SESSION[QT]['smtp_host']=='1' )
     {
-    $oDB->Query('DELETE FROM '.TABSETTING.' WHERE param="smtp_host" OR param="smtp_port" OR param="smtp_username" OR param="smtp_password"');
-    $oDB->Query('INSERT INTO '.TABSETTING.' VALUES ("smtp_host","'.$_SESSION[QT]['smtp_host'].'","1")');
-    $oDB->Query('INSERT INTO '.TABSETTING.' VALUES ("smtp_port","'.$_SESSION[QT]['smtp_port'].'","1")');
-    $oDB->Query('INSERT INTO '.TABSETTING.' VALUES ("smtp_username","'.$_SESSION[QT]['smtp_username'].'","1")');
-    $oDB->Query('INSERT INTO '.TABSETTING.' VALUES ("smtp_password","'.$_SESSION[QT]['smtp_password'].'","1")');
+    $oDB->Exec('DELETE FROM '.TABSETTING.' WHERE param="smtp_host" OR param="smtp_port" OR param="smtp_username" OR param="smtp_password"');
+    $oDB->Exec('INSERT INTO '.TABSETTING.' VALUES ("smtp_host","'.$_SESSION[QT]['smtp_host'].'","1")');
+    $oDB->Exec('INSERT INTO '.TABSETTING.' VALUES ("smtp_port","'.$_SESSION[QT]['smtp_port'].'","1")');
+    $oDB->Exec('INSERT INTO '.TABSETTING.' VALUES ("smtp_username","'.$_SESSION[QT]['smtp_username'].'","1")');
+    $oDB->Exec('INSERT INTO '.TABSETTING.' VALUES ("smtp_password","'.$_SESSION[QT]['smtp_password'].'","1")');
     }
     $str = trim($_POST['adminfax']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
       if ( strlen($str)>255 ) $str = substr($str,0,255);
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_fax"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_fax"');
       $_SESSION[QT]['admin_fax'] = $str;
     $str = trim($_POST['adminname']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
       if ( strlen($str)>255 ) $str = substr($str,0,255);
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_name"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_name"');
       $_SESSION[QT]['admin_name'] = $str;
     $str = trim($_POST['adminaddr']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
       if ( strlen($str)>255 ) $str = substr($str,0,255);
-      $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_addr"');
+      $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_addr"');
       $_SESSION[QT]['admin_addr'] = $str;
 
 

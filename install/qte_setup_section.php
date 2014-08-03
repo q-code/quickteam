@@ -5,7 +5,8 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
+case 'pdo.mysql':
+case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id int,
   domainid int NOT NULL default 0,
@@ -24,7 +25,7 @@ case 'mysql4':
   )';
   break;
 
-case 'mysql':
+case 'mysql4':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id int,
   domainid int NOT NULL default 0,
@@ -162,29 +163,16 @@ default:
 }
 
 echo '<span style="color:blue">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qtesection',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';
   exit;
 }
 
-$oDB->Query
-(
-'INSERT INTO '.$qte_prefix.'qtesection
- (id,domainid,title,type,status,stats,options,vorder,forder,modid,modname) 
- VALUES
- (0,0,"Members collector","0","0","members=1","logo=none.gif",0,"status_i;lastname;firstname;phones;emails;picture",1,"Admin")'
-);
-$oDB->Query
-(
-'INSERT INTO '.$qte_prefix.'qtesection
- (id,domainid,title,type,status,stats,options,vorder,forder,modid,modname) 
- VALUES
- (1,1,"My team","0","0","members=0","logo=0",1,"status_i;lastname;firstname;phones;emails;picture",1,"Admin")'
-);
-
-$oDB->Query( 'INSERT INTO '.TABLANG.' (objtype,objlang,objid,objname) VALUES ("secdesc","en","s0","Collect members not yet in a team or removed from a team")' );
+$oDB->Exec( 'INSERT INTO '.$qte_prefix.'qtesection (id,domainid,title,type,status,stats,options,vorder,forder,modid,modname) VALUES (0,0,"Members collector","0","0","members=1","logo=none.gif",0,"status_i;lastname;firstname;phones;emails;picture",1,"Admin")' );
+$oDB->Exec( 'INSERT INTO '.$qte_prefix.'qtesection (id,domainid,title,type,status,stats,options,vorder,forder,modid,modname) VALUES (1,1,"My team","0","0","members=0","logo=0",1,"status_i;lastname;firstname;phones;emails;picture",1,"Admin")' );
+$oDB->Exec( 'INSERT INTO '.TABLANG.' (objtype,objlang,objid,objname) VALUES ("secdesc","en","s0","Collect members not yet in a team or removed from a team")' );

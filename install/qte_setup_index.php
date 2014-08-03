@@ -5,14 +5,7 @@
 switch($oDB->type)
 {
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
-  userid int NOT NULL default 0,
-  ufield varchar(32) NOT NULL default "undefined",
-  ukey varchar(32) NOT NULL default "undefined"
-  )';
-  break;
-  
+case 'pdo.mysql':
 case 'mysql':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid int NOT NULL default 0,
@@ -21,6 +14,14 @@ case 'mysql':
   )';
   break;
 
+case 'mysql4':
+  $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
+  userid int NOT NULL default 0,
+  ufield varchar(32) NOT NULL default "undefined",
+  ukey varchar(32) NOT NULL default "undefined"
+  )';
+  break;
+  
 case 'sqlsrv':
 case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
@@ -76,14 +77,14 @@ default:
 }
 
 echo '<span style="color:blue">';
-$b=$oDB->Query($strQ);
+$b=$oDB->Exec($strQ);
 echo '</span>';
 
-if ( !empty($oDB->error) || !$b )
+if ( !empty($oDB->error) || $b===false )
 {
   echo '<div class="setup_err">',sprintf ($L['E_install'],$qte_prefix.'qteindex',$qte_database,$qte_user),'</div>';
   echo '<br /><table cellspacing="0" class="button"><tr><td></td><td class="button" style="width:120px">&nbsp;<a href="qte_setup_1.php">',$L['Restart'],'</a>&nbsp;</td></tr></table>';
   exit;
 }
 
-$result=$oDB->Query( 'INSERT INTO '.$qte_prefix.'qteindex (userid,ufield,ukey) VALUES (0,"username","Admin")' );
+$result=$oDB->Exec( 'INSERT INTO '.$qte_prefix.'qteindex (userid,ufield,ukey) VALUES (0,"username","Admin")' );

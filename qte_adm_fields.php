@@ -65,9 +65,9 @@ function SetFields($arrFields)
   $_SESSION[QT]['fields_u'] = implode(',',$arrSetFieldsU);
   $_SESSION[QT]['fields_t'] = implode(',',$arrSetFieldsT);
 
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_c'].'" WHERE param="fields_c"');
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_u'].'" WHERE param="fields_u"');
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_t'].'" WHERE param="fields_t"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_c'].'" WHERE param="fields_c"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_u'].'" WHERE param="fields_u"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['fields_t'].'" WHERE param="fields_t"');
 }
 
 // ---------
@@ -176,7 +176,7 @@ if ( isset($_POST['ok']) )
   // Save
   if ( empty($error) )
   {
-    $oDB->Query('DELETE FROM '.TABLANG.' WHERE (objtype="field" OR objtype="ffield") AND objlang="'.$strEditLang.'"');
+    $oDB->Exec('DELETE FROM '.TABLANG.' WHERE (objtype="field" OR objtype="ffield") AND objlang="'.$strEditLang.'"');
     $arrFields = array();
     foreach ($arrFnewnames as $strKey=>$arrFnewname)
     {

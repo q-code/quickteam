@@ -256,7 +256,7 @@ case 'pwdreset':
 
   // reset user
   $strNewpwd = 'qt'.rand(0,9).rand(0,9).rand(0,9).rand(0,9);
-  $oDB->Query('UPDATE '.TABUSER.' SET pwd="'.sha1($strNewpwd).'" WHERE id='.$u);
+  $oDB->Exec('UPDATE '.TABUSER.' SET pwd="'.sha1($strNewpwd).'" WHERE id='.$u);
 
   // send email
   $strSubject = $_SESSION[QT]['site_name'].' - New password';
@@ -335,7 +335,7 @@ case 'renamedoc':
   // CHANGE
 
   $str = QTconv(trim(strip_tags($_GET['name'])),'3',QTE_CONVERT_AMP); if ( empty($str) ) $str='untitled';
-  $oDB->Query('UPDATE '.TABDOC.' SET docname="'.$str.'" WHERE docfile="'.$v.'"');
+  $oDB->Exec('UPDATE '.TABDOC.' SET docname="'.$str.'" WHERE docfile="'.$v.'"');
 
   // EXIT
   $_SESSION['pagedialog'] = 'O|'.$L['S_update'];
@@ -400,7 +400,7 @@ case 'docs_del':
     $oDB->Query('SELECT * FROM '.TABDOC.' WHERE id='.$u.' AND docfile="'.$v.'"');
     while ($row=$oDB->Getrow())
     {
-      $oDB->Query('DELETE FROM '.TABDOC.' WHERE id='.$u.' AND docfile="'.$v.'"' );
+      $oDB->Exec('DELETE FROM '.TABDOC.' WHERE id='.$u.' AND docfile="'.$v.'"' );
       if (file_exists(QTE_DIR_DOC.$row['docpath'].$row['docfile'])) unlink(QTE_DIR_DOC.$row['docpath'].$row['docfile']);
     }
   }
@@ -453,7 +453,7 @@ case 'userstatus':
 
   // CHANGE STATUS
 
-  $oDB->Query('UPDATE '.TABUSER.' SET status="'.$v.'" WHERE id='.$u);
+  $oDB->Exec('UPDATE '.TABUSER.' SET status="'.$v.'" WHERE id='.$u);
 
   // EXIT
   $_SESSION['pagedialog'] = 'O|'.$L['S_update'];
@@ -509,8 +509,8 @@ case 'userrole':
 
   //update role
   if ( sUser::Role()!='A' && $v=='A' ) die($L['R_admin']);
-  $oDB->Query('UPDATE '.TABUSER.' SET role="'.$v.'" WHERE id='.$u);
-  if ( $v=='U' ) $oDB->Query('UPDATE '.TABSECTION.' SET modid=1, modname="Administrator" WHERE modid='.$u);
+  $oDB->Exec('UPDATE '.TABUSER.' SET role="'.$v.'" WHERE id='.$u);
+  if ( $v=='U' ) $oDB->Exec('UPDATE '.TABSECTION.' SET modid=1, modname="Administrator" WHERE modid='.$u);
 
   // EXIT
   $_SESSION['pagedialog'] = 'O|'.$L['S_update'];
@@ -746,9 +746,9 @@ case 'users_role':
   	if ( empty($ids) ) die('Nothing selected');
     if ( in_array('0',$ids) || in_array('1',$ids) ) die('User 0 and 1 cannot be updated');
   	// status (except admin and visitor)
-    $oDB->Query('UPDATE '.TABUSER.' SET role="'.strtoupper(substr($v,0,1)).'" WHERE id IN ('.implode(',',$ids).')' );
+    $oDB->Exec('UPDATE '.TABUSER.' SET role="'.strtoupper(substr($v,0,1)).'" WHERE id IN ('.implode(',',$ids).')' );
   	// change section coordinator if required
-  	if ( $v=='U' ) $oDB->Query('UPDATE '.TABSECTION.' SET moderator=1,moderatorname="Admin" WHERE moderator IN ('.implode(',',$ids).')');
+  	if ( $v=='U' ) $oDB->Exec('UPDATE '.TABSECTION.' SET moderator=1,moderatorname="Admin" WHERE moderator IN ('.implode(',',$ids).')');
   	// End message
   	$_SESSION['pagedialog'] = 'O|'.$L['S_update'].'|'.count($ids);
   }
@@ -816,7 +816,7 @@ case 'users_status':
   		if ( empty($ids) ) die('Nothing selected');
   		if ( in_array('0',$ids) ) die('User 0 cannot be updated');
   		// status
-  	  foreach($ids as $id) { $id=(int)$id; $oDB->Query('UPDATE '.TABUSER.' SET status="'.strtoupper(substr($v,0,1)).'" WHERE id IN ('.implode(',',$ids).')'); }
+  	  foreach($ids as $id) { $id=(int)$id; $oDB->Exec('UPDATE '.TABUSER.' SET status="'.strtoupper(substr($v,0,1)).'" WHERE id IN ('.implode(',',$ids).')'); }
 
   		// End message
   		$_SESSION['pagedialog'] = 'O|'.$L['S_update'].'|'.count($arr);
@@ -929,16 +929,16 @@ case 'userchild':
 
   // CHANGE CHILD STATUS
 
-  $oDB->Query('UPDATE '.TABUSER.' SET children="'.$v.'" WHERE id='.$u);
+  $oDB->Exec('UPDATE '.TABUSER.' SET children="'.$v.'" WHERE id='.$u);
   if ( $v!=0 )
   {
     $oDB->Query('SELECT count(*) as countid FROM '.TABCHILD.' WHERE id='.$u);
     $row = $oDB->Getrow();
-    if ( $row['countid']==0 ) $oDB->Query('INSERT INTO '.TABCHILD.' (id,childdate) VALUES ('.$u.',"'.date('Ymd').'")' );
+    if ( $row['countid']==0 ) $oDB->Exec('INSERT INTO '.TABCHILD.' (id,childdate) VALUES ('.$u.',"'.date('Ymd').'")' );
   }
   else
   {
-    $oDB->Query('DELETE FROM '.TABCHILD.' WHERE id='.$u);
+    $oDB->Exec('DELETE FROM '.TABCHILD.' WHERE id='.$u);
   }
 
   // EXIT
@@ -989,7 +989,7 @@ case 'dropindex':
   }
 
   // drop index
-  $oDB->query('DELETE FROM '.TABINDEX.' WHERE userid='.$u);
+  $oDB->Exec('DELETE FROM '.TABINDEX.' WHERE userid='.$u);
 
   // EXIT
   $_SESSION['pagedialog'] = 'O|'.$L['S_delete'];

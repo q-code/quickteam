@@ -70,7 +70,7 @@ if ( isset($_POST['ok']) )
     if ( isset($_POST['hiddendescr']) ) $oItem->privacy .= 'descr;';
 
     // save changes
-    $oDB->Query('UPDATE '.TABUSER.' SET teamid1="'.$oItem->teamid1.'",teamid2="'.$oItem->teamid2.'",teamvalue1='.($oItem->teamvalue1=='' ? 'NULL' : $oItem->teamvalue1).',teamvalue2='.($oItem->teamvalue2=='' ? 'NULL' : $oItem->teamvalue2).',teamrole1="'.$oItem->teamrole1.'",teamrole2="'.$oItem->teamrole2.'",teamflag1="'.$oItem->teamflag1.'",teamflag2="'.$oItem->teamflag2.'",teamdate1="'.$oItem->teamdate1.'",teamdate2="'.$oItem->teamdate2.'",descr="'.$oItem->descr.'",privacy="'.$oItem->privacy.'" WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET teamid1="'.$oItem->teamid1.'",teamid2="'.$oItem->teamid2.'",teamvalue1='.($oItem->teamvalue1=='' ? 'NULL' : $oItem->teamvalue1).',teamvalue2='.($oItem->teamvalue2=='' ? 'NULL' : $oItem->teamvalue2).',teamrole1="'.$oItem->teamrole1.'",teamrole2="'.$oItem->teamrole2.'",teamflag1="'.$oItem->teamflag1.'",teamflag2="'.$oItem->teamflag2.'",teamdate1="'.$oItem->teamdate1.'",teamdate2="'.$oItem->teamdate2.'",descr="'.$oItem->descr.'",privacy="'.$oItem->privacy.'" WHERE id='.$id);
 
     // update index
     $oItem->SaveKeywords($oItem->GetKeywords(GetFields('index_t')));

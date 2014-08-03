@@ -15,7 +15,7 @@ include 'bin/config.php';
 
 // query
 
-$oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+$oDBAJAX = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDBAJAX->error) ) return;
 
 $oDBAJAX->Query('SELECT username,firstname,lastname FROM '.$qte_prefix.'qteuser WHERE '.$strRole.' (UPPER(username) like "%'.addslashes(strtoupper($_GET['term'])).'%" OR UPPER(lastname) like "%'.addslashes(strtoupper($_GET['term'])).'%" OR UPPER(firstname) like "%'.addslashes(strtoupper($_GET['term'])).'%")');

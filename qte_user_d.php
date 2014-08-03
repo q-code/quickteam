@@ -100,7 +100,7 @@ if ( isset($_POST['ok']) )
       $strDir = TargetDir(QTE_DIR_DOC,$id);
       if ( copy($_FILES['fileselect']['tmp_name'][$f],QTE_DIR_DOC.$strDir.$strFile) )
       {
-        $oDB->Query('INSERT INTO '.TABDOC.' (id,docname,docfile,docpath,docdate) VALUES ('.$id.',"'.substr($strName,0,255).'","'.substr($strFile,0,255).'","'.$strDir.'","'.date('Ymd').'")');
+        $oDB->Exec('INSERT INTO '.TABDOC.' (id,docname,docfile,docpath,docdate) VALUES ('.$id.',"'.substr($strName,0,255).'","'.substr($strFile,0,255).'","'.$strDir.'","'.date('Ymd').'")');
         $bUpload=true;
       }
       else

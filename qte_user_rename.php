@@ -55,10 +55,10 @@ if ( isset($_POST['ok']) )
   // execute and exit
   if ( empty($error) )
   {
-    $oDB->Query('UPDATE '.TABUSER.' SET username="'.$strName.'" WHERE id='.$id);
+    $oDB->Exec('UPDATE '.TABUSER.' SET username="'.$strName.'" WHERE id='.$id);
     // index
-    $oDB->query('DELETE FROM '.TABINDEX.' WHERE userid='.$id.' AND ufield="username"');
-    $oDB->query('INSERT INTO '.TABINDEX.' (userid,ufield,ukey) VALUES ('.$id.',"username","'.$strName.'")');
+    $oDB->Exec('DELETE FROM '.TABINDEX.' WHERE userid='.$id.' AND ufield="username"');
+    $oDB->Exec('INSERT INTO '.TABINDEX.' (userid,ufield,ukey) VALUES ('.$id.',"username","'.$strName.'")');
 
     $oVIP->exiturl = Href('qte_login.php').'?dfltname='.$strName;
     $oVIP->exitname = '&laquo; '.$L['Login'];

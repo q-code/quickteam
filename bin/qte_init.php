@@ -79,33 +79,24 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 // Classes & functions
 // ---------------
-require_once 'bin/qt_lib_sys.php';
-require_once 'bin/qt_lib_txt.php';
-require_once 'bin/class/qt_class_db.php';
-require_once 'bin/class/qt_abstracts.php';
-require_once 'bin/class/qt_class_html.php';
-require_once 'bin/class/qt_class_table.php';
-require_once 'bin/class/qt_class_sys.php';
-require_once 'bin/class/qt_class_fld.php';
-require_once 'bin/class/qte_class_vip.php';
-require_once 'bin/class/qte_class_user.php';
-require_once 'bin/class/qte_class_sec.php';
-require_once 'bin/class/qte_class_item.php';
-require_once 'bin/qte_fn_base.php';
-require_once 'bin/qte_fn_html.php';
+require $qte_root.'bin/qt_lib_sys.php';
+require $qte_root.'bin/qt_lib_txt.php';
+require $qte_root.'bin/class/qt_class_db.php';
+require $qte_root.'bin/class/qt_abstracts.php';
+require $qte_root.'bin/class/qt_class_html.php';
+require $qte_root.'bin/class/qt_class_table.php';
+require $qte_root.'bin/class/qt_class_sys.php';
+require $qte_root.'bin/class/qt_class_fld.php';
+require $qte_root.'bin/class/qte_class_vip.php';
+require $qte_root.'bin/class/qte_class_user.php';
+require $qte_root.'bin/class/qte_class_sec.php';
+require $qte_root.'bin/class/qte_class_item.php';
+require $qte_root.'bin/qte_fn_base.php';
+require $qte_root.'bin/qte_fn_html.php';
 
 // ---------------
 //  Installation wizard (if file exists)
 // ---------------
-if ( !isset($qte_install) )
-{
-  if ( file_exists('install/index.php') )
-  {
-  echo 'QuickTeam ',QTEVERSION,' <a href="install/index.php">starting installation</a>...';
-  echo '<meta http-equiv="REFRESH" content="1;url=install/index.php" />';
-  exit;
-  }
-}
 if ( empty($qte_install) )
 {
   if ( file_exists('install/index.php') )
@@ -119,7 +110,7 @@ if ( empty($qte_install) )
 // --------------
 // Initialise Classes
 // --------------
-$oDB  = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd,$qte_port,$qte_dsn);
+$oDB  = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br />Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
 $oVIP = new cVIP();
 
@@ -177,7 +168,7 @@ if ( !isset($_SESSION['L']) ) $_SESSION['L'] = array();
 
 QTcheckL('index;domain;sec;secdesc;field;ffield');
 
-include_once $qte_root.GetLang().'qte_main.php';
+include $qte_root.GetLang().'qte_main.php';
 
 // ----------------
 // Define types,statuses and initialise statistics
@@ -188,7 +179,6 @@ $oVIP->SetSys(); // must be at the end because uses language
 // Default HTML settings
 // ----------------
 $oHtml = new cHtml();
-$oHtml->file = 'qte';
 $oHtml->html = '<html xmlns="http://www.w3.org/1999/xhtml" dir="'.QT_HTML_DIR.'" xml:lang="'.QT_HTML_LANG.'" lang="'.QT_HTML_LANG.'" class="no-js">';
 $oHtml->title = $_SESSION[QT]['site_name'];
 $oHtml->metas['charset'] = '<meta charset="'.QT_HTML_CHAR.'" />';

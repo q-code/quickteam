@@ -46,7 +46,7 @@ if ( isset($_POST['ok']) )
 
   if ( isset($_POST['offline']) ) {
   if ( $_POST['offline']=='1' || $_POST['offline']=='0' ) {
-    $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_POST['offline'].'" WHERE param="board_offline"');
+    $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_POST['offline'].'" WHERE param="board_offline"');
     $_SESSION[QT]['board_offline'] = $_POST['offline'];
   }}
 

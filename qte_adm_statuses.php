@@ -68,7 +68,7 @@ if ( isset($_POST['ok_add']) )
 if ( isset($_POST['ok_show']) )
 {
   if ( $_POST['show_Z']=='0' ) { $_SESSION[QT]['show_Z']='0'; }  else { $_SESSION[QT]['show_Z']='1'; }
-  $oDB->Query('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_Z'].'" WHERE param="show_Z"');
+  $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.$_SESSION[QT]['show_Z'].'" WHERE param="show_Z"');
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.$L['S_save'] : 'E|'.$error);
 }
 
