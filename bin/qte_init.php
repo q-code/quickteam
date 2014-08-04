@@ -79,6 +79,7 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 // Classes & functions
 // ---------------
+<<<<<<< HEAD
 require $qte_root.'bin/qt_lib_sys.php';
 require $qte_root.'bin/qt_lib_txt.php';
 require $qte_root.'bin/class/qt_class_db.php';
@@ -93,6 +94,21 @@ require $qte_root.'bin/class/qte_class_sec.php';
 require $qte_root.'bin/class/qte_class_item.php';
 require $qte_root.'bin/qte_fn_base.php';
 require $qte_root.'bin/qte_fn_html.php';
+=======
+require_once $qte_root.'bin/class/qt_class_db.php';
+require_once $qte_root.'bin/qt_lib_txt.php';
+require_once $qte_root.'bin/class/qt_abstracts.php';
+require_once $qte_root.'bin/class/qt_class_html.php';
+require_once $qte_root.'bin/class/qt_class_table.php';
+require_once $qte_root.'bin/class/qt_class_sys.php';
+require_once $qte_root.'bin/class/qt_class_fld.php';
+require_once $qte_root.'bin/class/qte_class_vip.php';
+require_once $qte_root.'bin/class/qte_class_user.php';
+require_once $qte_root.'bin/class/qte_class_sec.php';
+require_once $qte_root.'bin/class/qte_class_item.php';
+require_once $qte_root.'bin/qte_fn_base.php';
+require_once $qte_root.'bin/qte_fn_html.php';
+>>>>>>> origin/master
 
 // ---------------
 //  Installation wizard (if file exists)
