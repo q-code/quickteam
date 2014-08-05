@@ -17,19 +17,18 @@ $oHtml->scripts[] = '<script type="text/javascript">var e0 = '.(isset($L['E_edit
 
 if ( !empty($_SESSION['pagedialog']) )
 {
-  if ( empty($oVIP->msg->text) ) $oVIP->msg->FromString($_SESSION['pagedialog']);
-  $oHtml->scripts_jq[] = '
-  $(function() {
+  $type = cMsg::GetType();
+  $oHtml->scripts_jq[] = '$(function() {
     var doc = document.getElementById("pagedialog");
     if ( doc )
     {
-    doc.innerHTML = "<img src=\"bin/css/pagedialog_'.$oVIP->msg->type.'.png\" alt=\"+\" class=\"pagedialog\"/>'.$oVIP->msg->text.'";
-    doc.className = "absolute_'.$oVIP->msg->type.'";
+    doc.innerHTML = "<img src=\"bin/css/pagedialog_'.$type.'.png\" alt=\"+\" class=\"pagedialog\"/>'.cMsg::GetText().'";
+    doc.className = "absolute_'.$type.'";
     $("#pagedialog").fadeIn(500).delay(2000).fadeOut(800);
     }
   });
   ';
-  $oVIP->msg->Clear();
+  cMsg::Reset();
 }
 
 echo $oHtml->Head();

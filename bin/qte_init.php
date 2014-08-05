@@ -1,12 +1,12 @@
 <?php // QuickTeam 3.0 build:20140608
 
-define('APP', 'qte'); // application file prefix
+define('APP', 'qte'); // application file prefix (this is required and cannot be changed)
 if ( !isset($qte_root) ) $qte_root='';
 
 // ---------------
 // Connection config
 // ---------------
-require_once $qte_root.'bin/config.php';
+require $qte_root.'bin/config.php';
 if ( isset($qte_install) ) { define('QT','qte'.substr($qte_install,-1)); } else { define('QT','qte'); }
 
 // ---------------
@@ -37,6 +37,7 @@ define('JQUERYUI_CSS_OFF', 'bin/css/jquery-ui/themes/base/jquery-ui.css');
 // ---------------
 // Interface constants (can be changed by webmasters)
 // ---------------
+define('QTE_USE_MEMCACHE', true);            // Store frequently used values in memcache server (instead of session cache)
 define('QTE_CHANGE_USERNAME', true);         // allow users to change their username (login). False = only administrators can change the username.
 define('QTE_SHOW_TIME',     true);           // show time in the bottom bar
 define('QTE_SHOW_MODERATOR',true);           // show moderator in the bottom bar
@@ -79,7 +80,6 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 // Classes & functions
 // ---------------
-<<<<<<< HEAD
 require $qte_root.'bin/qt_lib_sys.php';
 require $qte_root.'bin/qt_lib_txt.php';
 require $qte_root.'bin/class/qt_class_db.php';
@@ -94,21 +94,6 @@ require $qte_root.'bin/class/qte_class_sec.php';
 require $qte_root.'bin/class/qte_class_item.php';
 require $qte_root.'bin/qte_fn_base.php';
 require $qte_root.'bin/qte_fn_html.php';
-=======
-require_once $qte_root.'bin/class/qt_class_db.php';
-require_once $qte_root.'bin/qt_lib_txt.php';
-require_once $qte_root.'bin/class/qt_abstracts.php';
-require_once $qte_root.'bin/class/qt_class_html.php';
-require_once $qte_root.'bin/class/qt_class_table.php';
-require_once $qte_root.'bin/class/qt_class_sys.php';
-require_once $qte_root.'bin/class/qt_class_fld.php';
-require_once $qte_root.'bin/class/qte_class_vip.php';
-require_once $qte_root.'bin/class/qte_class_user.php';
-require_once $qte_root.'bin/class/qte_class_sec.php';
-require_once $qte_root.'bin/class/qte_class_item.php';
-require_once $qte_root.'bin/qte_fn_base.php';
-require_once $qte_root.'bin/qte_fn_html.php';
->>>>>>> origin/master
 
 // ---------------
 //  Installation wizard (if file exists)
@@ -126,6 +111,11 @@ if ( empty($qte_install) )
 // --------------
 // Initialise Classes
 // --------------
+$error = ''; // Required when server uses register_global_on
+$warning = ''; // Required when server uses register_global_on
+$arrExtData = array(); // Can be used by extensions
+$memcache=false;
+if ( QTE_USE_MEMCACHE && class_exists('Memcache') ) { $memcache = new Memcache; } else { $warning='Memcache library not found. Turn this option to false in qte_init...'; }
 $oDB  = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br />Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
 $oVIP = new cVIP();
@@ -167,10 +157,6 @@ if ( $str!=QTiso() && !empty($str) )
 // ----------------
 // Initialise variable
 // ----------------
-$error = ''; // Required when server uses register_global_on
-$warning = ''; // Required when server uses register_global_on
-$arrExtData = array(); // Can be used by extensions
-
 if ( !isset($_SESSION[QT]['viewmode']) ) $_SESSION[QT]['viewmode']='n';
 if ( !isset($_SESSION[QT]['userlang']) ) $_SESSION[QT]['userlang']='1';
 if ( !isset($_SESSION[QT]['lastcolumn']) ) $_SESSION[QT]['lastcolumn']='';

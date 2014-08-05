@@ -8,18 +8,18 @@ if ( isset($_GET['view']) ) $_SESSION[QT]['viewmode'] = (strtolower($_GET['view'
 
 if ( !empty($_SESSION['pagedialog']) )
 {
-  if ( empty($oVIP->msg->text) ) $oVIP->msg->FromString($_SESSION['pagedialog']);
+  $type = cMsg::GetType();
   $oHtml->scripts_jq[] = '$(function() {
     var doc = document.getElementById("pagedialog");
     if ( doc )
     {
-    doc.innerHTML = "<img src=\"bin/css/pagedialog_'.$oVIP->msg->type.'.png\" alt=\"+\" class=\"pagedialog\"/>'.$oVIP->msg->text.'";
-    doc.className = "absolute_'.$oVIP->msg->type.'";
+    doc.innerHTML = "<img src=\"bin/css/pagedialog_'.$type.'.png\" alt=\"+\" class=\"pagedialog\"/>'.cMsg::GetText().'";
+    doc.className = "absolute_'.$type.'";
     $("#pagedialog").fadeIn(500).delay(2000).fadeOut(800);
     }
   });
   ';
-  $oVIP->msg->Clear();
+  cMsg::Reset();
 }
 
 // check LangMenu condition
@@ -60,7 +60,7 @@ if ( in_array($oVIP->selfurl,array('qte_register.php','qte_form_reg.php','qte_ch
 if ( $_SESSION[QT]['show_welcome']=='0' ) $bWelcome = false;
 if ( $_SESSION[QT]['show_welcome']=='1' && sUser::Auth() ) $bWelcome = false;
 if ( $_SESSION[QT]['board_offline']=='1' ) $bWelcome = false;
-if ( !file_exists(Translate('sys_welcome.txt')) ) $bWelcome = false;
+if ( !file_exists(Translate('sys_welcome.txt',false)) ) $bWelcome = false;
 
 $oHtml->title = (empty($oVIP->selfname) ? '' : $oVIP->selfname.' - ').$oHtml->title;
 
@@ -104,7 +104,7 @@ $arrMenus[]=array('h'=>true, 'f'=>true,'n'=>L('Logout'), 'u'=>'qte_login.php?a=o
 }
 else
 {
-$arrMenus[]=array('h'=>true, 'f'=>true,'n'=>L('Register'),'u'=>($_SESSION[QT]['board_offline']=='1' ? '' : 'qte_user_new.php'), 's'=>'qte_register.php qte_form_reg.php', 'secondary'=>true);
+$arrMenus[]=array('h'=>true, 'f'=>true,'n'=>L('Register'),'u'=>($_SESSION[QT]['board_offline']=='1' ? '' : 'qte_register.php'), 's'=>'qte_register.php qte_form_reg.php', 'secondary'=>true);
 $arrMenus[]=array('h'=>true, 'f'=>true,'n'=>L('Login'),'u'=>'qte_login.php', 's'=>'qte_login.php qte_reset_pwd.php');
 }
 
@@ -217,6 +217,6 @@ echo '</div>
 
 echo '
 <!-- main content -->
-<div class="bodyct pg-'.cSYS::PageCode($oVIP->selfurl).' view-'.$_SESSION[QT]['viewmode'].'">
+<div class="bodyct pg-'.cVIP::PageCode($oVIP->selfurl).' view-'.$_SESSION[QT]['viewmode'].'">
 
 ';

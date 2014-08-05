@@ -7,8 +7,16 @@
  * Here we extend the basic Login method (cAuthenticate::Login) to return extra user's info
  */
 
-class cVIP extends cSYS
+class cVIP
 {
+
+public $selfurl;
+public $selfname;
+public $selfuri;
+public $exiturl;
+public $exitname;
+public $exituri;
+
 public $coockieconfirm = false; // Will be set to TRUE when login is performed via coockie.
 public $fullname ='';
 public $picture = '';
@@ -27,7 +35,12 @@ public $members = 0;      // count members
 function __construct()
 {
 
-  parent::__construct();
+  $this->selfurl = APP.'_index.php';
+  $this->selfname = '';
+  $this->selfuri = '';  // URL parameters
+  $this->exiturl = APP.'_index.php';
+  $this->exitname = 'Back';
+  $this->exituri = '';
 
   // Coockie login check if not yet logged in
   if ( !sUser::Auth() && isset($_COOKIE[QT.'_cookname']) && isset($_COOKIE[QT.'_cookpass']) )
@@ -68,6 +81,17 @@ function __construct()
   }}}
 }
 
+// --------
+
+static function PageCode($str,$prefixsize=4)
+{
+  // Returns the PageCode: the php-file without prefix and without .php
+  // If several points exist in the pagecode, only the first part is returned
+  // This is use as code in the html class style
+  $arr = explode('.',substr($str,$prefixsize));
+  return $arr[0];
+}
+  
 // --------
 
 function GetTypes()

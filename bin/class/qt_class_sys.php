@@ -1,45 +1,35 @@
 <?php
 
-// QT re-usable component 1.1 build:20140608
+// QT re-usable component 1.2 build:20140805
 
-// ==========
-// This class includes info on the current user and the current page
-// The class also provides major lists or global stats used in most of the pages
-// ==========
+// ========
 
-class cSYS
+function memcacheGet($key)
 {
-  public $prefix; // TLA used for the files prefix
-  public $selfurl;
-  public $selfname;
-  public $selfuri;
-  public $exiturl;
-  public $exitname;
-  public $exituri;
+  global $memcache; return ($memcache) ? $memcache->get($key) : false;
+}
+function memcacheSet($key,$object,$timeout=300)
+{
+  global $memcache; return ($memcache) ? $memcache->set($key,$object,false,$timeout) : false;
+}
+// Caching a sql query a few minutes
+function memcacheQuery($key,$sql,$timeout=300)
+{
+  if ( empty($key) ) $key = md5('query'.$sql);
 
-  public $msg; // sub class cMsg
-  public $stats; // sub class cStats
-
-  function __construct($prefix='')
+  // Get the cache from memcache
+  if ( ($cache=memcacheGet($key))!==false )
   {
-    $this->prefix = strtolower($prefix); if ( empty($this->prefix) ) $this->prefix = strtolower(substr(constant('QT'),0,3));
-    $this->selfurl = $this->prefix.'_index.php';
-    $this->selfname = '';
-    $this->selfuri = '';  // URL parameters
-    $this->exiturl = $this->prefix.'_index.php';
-    $this->exitname = 'Back';
-    $this->exituri = '';
-    $this->msg = new cMsg(); // subclass
-    $this->stats = new cStats();
+    // If no cache response, runs the query to populate $cache (then save into memcache)
+    $cache = false;
+    global $oDB;
+    $oDB->Query($sql);
+    $i = 0;
+    while( $row=$oDB->Getrow() ) { $cache[$i]=$row; ++$i; }
+    // Save $cache into the memchage. Attention if memcache daemon not running or not responding, this will failled (setCache just returns false)
+    memcacheSet($key,$cache,$timeout);
   }
-
-  static function PageCode($str,$prefixsize=4)
-  {
-    // Returns the PageCode: the php-file without prefix and without .php
-    // If several points exist in the pagecode, only the first part is returned
-    $arr = explode('.',substr($str,$prefixsize));
-    return $arr[0];
-  }
+  return $cache;
 }
 
 // ========
@@ -150,12 +140,62 @@ class cMsg
 {
   // This class handles a message comming from a previous page (session variable 'pagedialog')
   // The message is displayed thanks to a jquery function from *_page_header.
-  // While the session variable is destroyed after display, the properties of this class remains accessible
+  // The session variable must be destroyed after display width cMsg::Reset()
+  // cMsg::getType()
+  // cMsg::getFulltext()
+  // cMsg::getItems()
+  // cMsg::getText()
+  // The class can also be instanciated for backward compatibility (see after)
+
+  public static function getType()
+  {
+    if ( !empty($_SESSION['pagedialog']) )
+    {
+    $arr = explode('|',$_SESSION['pagedialog']);
+    return strtolower(substr($arr[0],0,1));
+    }
+    return 'o'; //i=info, e=error, w=warning, o=ok (default)
+  }
+  public static function getFulltext()
+  {
+    if ( !empty($_SESSION['pagedialog']) )
+    {
+    $arr = explode('|',$_SESSION['pagedialog']);
+    $i = (isset($arr[2]) ? (int)$arr[2] : 0);
+    if ( isset($arr[1]) ) return str_replace('"','',$arr[1]).($i>1 ? ' ('.$i.')' : '');
+    }
+    return '';
+  }
+  public static function getItems()
+  {
+    if ( !empty($_SESSION['pagedialog']) )
+    {
+    $arr = explode('|',$_SESSION['pagedialog']);
+    if ( isset($arr[2]) ) return (int)$arr[2];
+    }
+    return 0;
+  }
+  public static function getText()
+  {
+    if ( !empty($_SESSION['pagedialog']) )
+    {
+    $str = cMsg::getFulltext();
+    return (isset($str{65}) ? substr($str,0,60).'...' : $str);
+    }
+    return '';
+  }
+  public static function Reset()
+  {
+    $_SESSION['pagedialog']=null;
+  }
+
+  // For backward compatiblity, the non-static class
+
   public $text; // '' means nothing (no display)
   public $fulltext;
   public $type; // i=info, e=error, w=warning, o=ok (default)
   public $items; // affected items
-  function __construct()
+  public function __construct()
   {
     if ( !empty($_SESSION['pagedialog']) ) $this->FromString($_SESSION['pagedialog']);
   }
