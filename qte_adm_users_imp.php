@@ -174,7 +174,7 @@ echo '<h2 class="subtitle">',L('Settings'),'</h2>
 </tr>
 <tr>
 <td class="headfirst">',L('Status'),'</td>
-<td> <select name="status" size="1">',QTasTag($oVIP->statuses,'Z'),'</select></td>
+<td> <select name="status" size="1">',QTasTag(memGet('sys_statuses'),'Z'),'</select></td>
 </tr>
 <tr>
 <td class="headfirst">',L('Destination'),'</td>

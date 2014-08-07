@@ -76,6 +76,7 @@ $arrCounts = array();
 $oDB->Query('SELECT sid,count(userid) as countid FROM '.TABS2U.' GROUP BY sid');
 while($row=$oDB->Getrow()) $arrCounts[(int)$row['sid']]=(int)$row['countid'];
 
+$arr = memGet('sys_statuses');
 echo '<form method="post" action="qte_adm_sections_stat.php">',PHP_EOL;
 if ( $intSections>3 ) echo '<p style="margin:4px 0"><img src="admin/selection_up.gif" style="width:10px;height:10px;vertical-align:bottom;margin:2px 10px 0 15px"/>',$L['Selection'],': <input type="submit" class="small" name="ok" value="',$L['Update_stats'],'" /></p>',PHP_EOL;
 echo '<table class="t-sec">
@@ -83,7 +84,7 @@ echo '<table class="t-sec">
 <th>&nbsp;</th>
 <th colspan="2" style="text-align:left">',$L['Domain'],'/',$L['Section'],'</th>
 <th>',$L['Users'],'</th>
-<th>',$oVIP->statuses['Z']['statusname'],' (',$L['Status'],' Z)</th>
+<th>',$arr['Z']['statusname'],' (',$L['Status'],' Z)</th>
 </tr>
 ';
 

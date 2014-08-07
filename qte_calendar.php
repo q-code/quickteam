@@ -26,7 +26,7 @@ $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION
 // ---------
 
 $s = -1;
-$a = 1; if ( $oVIP->members>200 ) $a = 0; // all sections at once. If too much members, default becomes this section only
+$a = 1; if ( memGet('sys_domains')>200 ) $a = 0; // all sections at once. If too much members, default becomes this section only
 $v = 'birthdate';
 
 QThttpvar('s a','int int',true,true,false);
@@ -102,7 +102,7 @@ while($row=$oDB->Getrow())
 // --------
 
 $strStatuses='';
-foreach($oVIP->statuses as $key=>$arr) $strStatuses .= 'var status_'.$key.'="'.(isset($arr['statusname']) ? $arr['statusname'] : 'null' ).'"; var icon_'.$key.'="'.(isset($arr['icon']) ? $arr['icon'] : 'null' ).'";'.PHP_EOL;
+foreach(memGet('sys_statuses') as $key=>$arr) $strStatuses .= 'var status_'.$key.'="'.(isset($arr['statusname']) ? $arr['statusname'] : 'null' ).'"; var icon_'.$key.'="'.(isset($arr['icon']) ? $arr['icon'] : 'null' ).'";'.PHP_EOL;
 
 $oHtml->scripts_jq[] = '
 $(function() {

@@ -71,7 +71,7 @@ $table->td[3] = new cTableData('','','c-items');
 $intDom = 0;
 $intSec = 0;
 
-foreach($oVIP->domains as $intDomid=>$strDomtitle)
+foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
 {
 	if ( isset($arrSections[$intDomid]) ) {
   if ( count($arrSections[$intDomid])>0 ) {

@@ -65,7 +65,7 @@ if ( isset($_POST['neworder']) )
       case 'sec': foreach($arrO as $intKey=>$strId) $oDB->Exec('UPDATE '.TABSECTION.' SET vorder='.$intKey.' WHERE id='.substr($strId,4)); break;
       default: die('invalid command');
     }
-    if ( isset($_SESSION[QT]['sys_domains']) ) Unset($_SESSION[QT]['sys_domains']);
+    memUnset('sys_domains');
     if ( isset($_SESSION[QT]['sys_sections']) ) Unset($_SESSION[QT]['sys_sections']);
     $_SESSION['pagedialog'] = 'O|'.$L['S_update'];
   }
@@ -118,7 +118,7 @@ if ( !empty($a) )
     {
     if ( empty($error) ) $oDB->QueryErr('UPDATE '.TABDOMAIN.' SET vorder='.$intKey.' WHERE id='.$intId, $error);
     }
-    Unset($_SESSION[QT]['sys_domains']);
+    memUnset('sys_domains');
     Unset($_SESSION[QT]['sys_sections']);
   }
   if ( $a=='f_up' || $a=='f_down' )

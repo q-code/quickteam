@@ -71,7 +71,7 @@ public static function Create($title,$parentid)
   $oDB->QueryErr('INSERT INTO '.TABDOMAIN.' (id,title,vorder) VALUES ('.$id.',"'.addslashes($title).'",0)', $error);
 
   // Clear session to allow reload values
-  Unset($_SESSION[QT]['sys_domains']);
+  memUnset('sys_domains');
   return $id;
 }
 
@@ -82,7 +82,7 @@ public static function Drop($id)
   $oDB->QueryErr('UPDATE '.TABSECTION.' SET domainid=0 WHERE domainid='.$id, $error); // sections return to domain 0
   $oDB->QueryErr('DELETE FROM '.TABDOMAIN.' WHERE id='.$id, $error);
   cLang::Delete('domain','d'.$id);
-  unset($_SESSION[QT]['sys_domains']);
+  memUnset('sys_domains');
   unset($_SESSION[QT]['sys_sections']);
   $_SESSION['L'] = array();
 }

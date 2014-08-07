@@ -137,7 +137,7 @@ if ( isset($_GET['a']) || isset($_GET['s']) || isset($_SESSION[QT]['section']) |
   <table class="t-sec">
   <tr>
   <td class="c-icon">',AsImg($_SESSION[QT]['skin_dir'].'/ico_section_search.gif','search',$L['Search'],'ico i-sec'),'</td>
-  <td>'.$L['Status'],'&nbsp;<select id="sta_v" name="v" size="1">',QTasTag($oVIP->statuses,$strStatus),'</select> ',$L['In_section'],'&nbsp;<select id="sta_s" name="s" size="1"><option value="-1"',($s<0 ? QSEL : ''),'>'.$L['All'].'</option>',Sectionlist($s),'</select></td>
+  <td>'.$L['Status'],'&nbsp;<select id="sta_v" name="v" size="1">',QTasTag(memGet('sys_statuses'),$strStatus),'</select> ',$L['In_section'],'&nbsp;<select id="sta_s" name="s" size="1"><option value="-1"',($s<0 ? QSEL : ''),'>'.$L['All'].'</option>',Sectionlist($s),'</select></td>
   <td class="right"><input type="hidden" name="q" value="sta"/><input type="submit" id="sta_ok" name="ok" value="',$L['Search'],'"/></td>
   </tr>
   </table>

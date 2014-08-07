@@ -263,9 +263,10 @@ if ( $intCount!=0 )
     $bChecked = $row['id']==$intChecked;
 
     // prepare row
+    $arr = memGet('sys_statuses');
     $table->row = new cTableRow( 'tr_t1_cb'.$row['id'], 't-item hover rowlight '.$strAlt.($bChecked ? ' checked' : '') );
     $table->td['checkbox']->content = '<input type="checkbox" name="t1_cb[]" id="t1_cb'.$row['id'].'" value="'.$row['id'].'"'.($bChecked ? QCHE : '').'/>'; if ($row['id']<2) $table->td['checkbox']->content = '&nbsp;';
-    $table->td['status_i']->content = (isset($oVIP->statuses[$row['status']]) ? AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$row['status']]['icon'],$row['status'],$oVIP->statuses[$row['status']]['statusname']) : '&nbsp;');
+    $table->td['status_i']->content = (isset($arr[$row['status']]) ? AsImg($_SESSION[QT]['skin_dir'].'/'.$arr[$row['status']]['icon'],$row['status'],$arr[$row['status']]['statusname']) : '&nbsp;');
     //$table->td['fullname']->content = cItem::MakeFullname($row['username'],$row['lastname'],$row['midname'],$row['firstname'],$row['title'],$row['alias']);
     $table->td['lastname']->content = '<a href="qte_user.php?id='.$row['id'].'">'.$row['lastname'].'</a>';;
     $table->td['firstname']->content = $row['firstname'];

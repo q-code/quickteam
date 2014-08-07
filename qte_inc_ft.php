@@ -74,7 +74,8 @@ if ( isset($oSEC) )
   else
   {
     echo '&bull; ',L('User',$oSEC->members);
-    echo '<br />&bull; ',(isset($oVIP->statuses['Z']['statusname']) ? $oVIP->statuses['Z']['statusname'] : 'Not member'),': ',($oSEC->membersZ==0 ? strtolower($L['None']) : $oSEC->membersZ),'<br /><br />';
+    $arr = memGet('sys_statuses');
+    echo '<br />&bull; ',(isset($arr['Z']['statusname']) ? $arr['Z']['statusname'] : 'Not member'),': ',($oSEC->membersZ==0 ? strtolower($L['None']) : $oSEC->membersZ),'<br /><br />';
   }
 
 }
@@ -146,9 +147,10 @@ if ( in_array($oVIP->selfurl,array('index.php','qte_index.php')) )
 }
 else
 {
-  foreach ($oVIP->statuses as $strKey=>$arr)
+  $arrStatuses = memGet('sys_statuses');
+  foreach ($arrStatuses as $strKey=>$arr)
   {
-  echo AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$strKey]['icon'],$strKey,$arr['statusname'],'ico i-status'),S,$arr['statusname'],'<br />',PHP_EOL;
+  echo AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$strKey]['icon'],$strKey,$arr['statusname'],'ico i-status'),S,$arr['statusname'],'<br />',PHP_EOL;
   }
 }
 echo '</div>',PHP_EOL;

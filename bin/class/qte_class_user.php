@@ -56,7 +56,7 @@ public static function Login($username='',$password='',$bRemember=FALSE)
     }
 
     // Reset parameters (because the Role can impact the lists)
-    unset($_SESSION[QT]['sys_domains']);
+    memUnset('sys_domains');
     unset($_SESSION[QT]['sys_sections']);
   }
 

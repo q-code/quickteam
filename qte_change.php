@@ -136,7 +136,8 @@ case 'deletedomain':
   // ask destination
   if ( empty($ok) )
   {
-    $strTitle = $oVIP->domains[$s];
+    $arrDomains = memGet('sys_domains');
+    $strTitle = (isset($arrDomains[$s]) ? $arrDomains[$s] : 'untitled');  //!! $oVIP->domains[$s];
     $arrTeams = GetSectionTitles(sUser::Role(),$s);
 
     // list the domain content
@@ -157,7 +158,7 @@ case 'deletedomain':
     if ( count($arrTeams)>0 )
     {
       $arrDest = array(); // array_diff_key() not supported in php<5.1
-      foreach ($oVIP->domains as $intKey => $strValue) { if ( $intKey!=$s ) $arrDest[$intKey] = $strValue; }
+      foreach ($arrDomains as $intKey => $strValue) { if ( $intKey!=$s ) $arrDest[$intKey] = $strValue; }
 
       $strDest = '<tr class="tr">
       <td class="headfirst">'.$L['Sections'].'</td>
@@ -426,6 +427,7 @@ case 'userstatus':
   if ( empty($ok) )
   {
     $oItem = new cItem($u);
+    $arr = memGet('sys_statuses');
     $oHtml->PageMsgAdm
     (
     NULL,
@@ -435,8 +437,8 @@ case 'userstatus':
     </td>
     <td class="boxform">
     <form method="get" action="'.Href().'">
-    <h2>'.$oItem->fullname.'<br />'.AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$oItem->status]['icon'],$oItem->status,$oVIP->statuses[$oItem->status]['statusname'],'ico i-status').' ('.$oVIP->statuses[$oItem->status]['statusname'].')</h2>
-    <p>'.$L['Change_status'].' <select name="v" size="1">'.QTasTag($oVIP->statuses,$oItem->status).'</select></p>;
+    <h2>'.$oItem->fullname.'<br />'.AsImg($_SESSION[QT]['skin_dir'].'/'.$arr[$oItem->status]['icon'],$oItem->status,$arr[$oItem->status]['statusname'],'ico i-status').' ('.$arr[$oItem->status]['statusname'].')</h2>
+    <p>'.$L['Change_status'].' <select name="v" size="1">'.QTasTag($arr,$oItem->status).'</select></p>;
     <p><input type="hidden" name="a" value="'.$a.'"/>
     <input type="hidden" name="u" value="'.$u.'"/>
     <input type="submit" name="ok" value="'.$L['Ok'].'"/>&nbsp;
@@ -590,7 +592,8 @@ case 'status_del':
   {
     // list of status destination
     $strSdest = '';
-    foreach( $oVIP->statuses as $strKey=>$arrStatus )
+    $arrStatuses = memGet('sys_statuses');
+    foreach( $arrStatuses as $strKey=>$arrStatus )
     {
       if ( $strKey!=$v ) $strSdest .= '<option value="'.$strKey.'"/>'.$strKey.' - '.$arrStatus['statusname'].'</option>';
     }
@@ -602,11 +605,11 @@ case 'status_del':
     <table  class="t-data">
     <tr>
     <td class="headfirst" style="width:150px;">'.$L['Status'].'</td>
-    <td><b>'.$v.'&nbsp;&nbsp;'.AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$v]['icon'],'-',$oVIP->statuses[$v]['statusname'],'ico i-status').'&nbsp;&nbsp;'.$oVIP->statuses[$v]['statusname'].'</b></td>
+    <td><b>'.$v.'&nbsp;&nbsp;'.AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$v]['icon'],'-',$arrStatuses[$v]['statusname'],'ico i-status').'&nbsp;&nbsp;'.$arrStatuses[$v]['statusname'].'</b></td>
     </tr>
     <tr>
     <td class="headfirst">'.$L['Description'].'</td>
-    <td>'.$oVIP->statuses[$v]['statusdesc'].'</td>
+    <td>'.$arrStatuses[$v]['statusdesc'].'</td>
     </tr>
     <tr>
     <td class="headfirst">'.$L['Move'].'</td>
@@ -777,8 +780,9 @@ case 'users_status':
   		if ( count($arrNames)==4 ) { $arrNames[4]='...'; 	break; }
   	}
 
-  	$strCol2 = '<select id="status" name="v" onchange="bEdited=true; SetStatusIcon(this.value);">'.QTasTag($oVIP->statuses).'</select> ';
-    foreach($_SESSION[QT]['sys_statuses'] as $key=>$arr) $strCol2 .= AsImg($_SESSION[QT]['skin_dir'].'/'.$arr['icon'],'',$arr['statusname'],'ico i-status hiddenicon','display:none','','statusicon_'.$key);
+    $arrStatuses = memGet(sys_statuses);
+    $strCol2 = '<select id="status" name="v" onchange="bEdited=true; SetStatusIcon(this.value);">'.QTasTag($arrStatuses).'</select> ';
+    foreach($arrStatuses as $key=>$arr) $strCol2 .= AsImg($_SESSION[QT]['skin_dir'].'/'.$arr['icon'],'',$arr['statusname'],'ico i-status hiddenicon','display:none','','statusicon_'.$key);
 
     $oHtml->PageMsgAdm
   	(
@@ -894,6 +898,7 @@ case 'userchild':
   $oVIP->selfname = $L['Coppa_apply'];
   $oVIP->exiturl = Href('qte_user.php').'?id='.$u;
   $oVIP->exitname = '&laquo; '.$L['Profile'];
+  $arrStatuses = memGet('sys_statuses');
 
   // ask confirmation
   if ( empty($ok) )
@@ -913,7 +918,7 @@ case 'userchild':
     <td class="hidden">
     <form method="get" action="'.Href().'">
     <h2>'.$oItem->fullname.'</h2>
-    <p>Username: '.$oItem->username.'<br/>'.$L['Status'].': '.$oVIP->statuses[$oItem->status]['statusname'].' '.AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$oItem->status]['icon'],$oItem->status,$oVIP->statuses[$oItem->status]['statusname']).'</p>
+    <p>Username: '.$oItem->username.'<br/>'.$L['Status'].': '.$arrStatuses[$oItem->status]['statusname'].' '.AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$oItem->status]['icon'],$oItem->status,$arrStatuses[$oItem->status]['statusname']).'</p>
     <p style="text-align:right">'.$L['Coppa_status'].' <select name="v" size="1">'.QTasTag($L['Coppa_child'],$v).'</select><input type="hidden" name="a" value="'.$a.'"/><input type="hidden" name="u" value="'.$u.'"/></p>
     <p style="text-align:right">'.($oItem->role=='A' ? '<span class="error">System administrator must be major</span>' : '').'<input type="submit" name="ok" value="'.$L['Ok'].'"/><input type="button" id="cancel" name="cancel" value="'.L('Cancel').'" onclick="window.location=\''.$oVIP->exiturl.'\';"/></p>
     </form>

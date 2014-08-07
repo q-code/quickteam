@@ -25,6 +25,7 @@ function GetSetting($key='',$default='',$db=true)
   return $default;
 }
 
+
 // --------
 
 function GetParam($bRegister=false,$strWhere='')
@@ -39,6 +40,7 @@ function GetParam($bRegister=false,$strWhere='')
   }
   Return $arrParam;
 }
+
 
 // --------
 
@@ -293,9 +295,8 @@ function AsFormat($arr='',$strFormat='',$strSep='<br/>')
 function AsImg($strSrc='',$strAlt='',$strTitle='',$strClass='',$strStyle='',$strHref='',$strId='')
 {
   QTargs('AsImg',array($strSrc,$strAlt,$strClass,$strStyle,$strHref,$strId));
-
   if ( empty($strSrc) ) return '';
-  $strSrc = '<img'.(empty($strId) ? '' : ' id="'.$strId.'"').' src="'.$strSrc.'" alt="'.(empty($strAlt) ? '' : QTconv($strAlt)).'" title="'.(empty($strTitle) ? '' : QTconv($strTitle)).'"'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').'/>';
+  $strSrc  = '<img'.(empty($strId) ? '' : ' id="'.$strId.'"').' src="'.$strSrc.'" alt="'.(empty($strAlt) ? '' : QTconv($strAlt)).'" title="'.(empty($strTitle) ? '' : QTconv($strTitle)).'"'.(empty($strClass) ? '' : ' class="'.$strClass.'"').(empty($strStyle) ? '' : ' style="'.$strStyle.'"').'/>';
   if ( empty($strHref) ) { return $strSrc; } else { return '<a href="'.Href($strHref).'">'.$strSrc.'</a>' ; }
 }
 
@@ -369,8 +370,8 @@ function AsImgBoxUser($oItem,$add='',$bNullImage=true,$bEditUrl=false)
     $strCaption .= '<br />('.QTconv(trim($oItem->username),'5').')';
     break;
   case 'status':
-    global $oVIP;
-    if ( isset($oVIP->statuses[$oItem->status]['statusname']) ) $strCaption .= '<br />('.QTconv($oVIP->statuses[$oItem->status]['statusname'],'5').')';
+    $arr = memGet('sys_statuses');
+    if ( isset($arr[$oItem->status]['statusname']) ) $strCaption .= '<br />('.QTconv($arr[$oItem->status]['statusname'],'5').')';
     break;
   default:
     if ( !empty($add) ) '<br />('.$strCaption .= QTconv(trim($add),'5').')';
@@ -965,6 +966,7 @@ function UpdateSectionStats($intS=-1,$arrValues=array())
 function UseModule($strName)
 {
   QTargs('UseModule',array($strName));
-  if ( empty(GetSetting('module_'.$strName,'',false)) ) return false; // check only in session variable
+  $mod = GetSetting('module_'.$strName,'',false);
+  if ( empty($mod) ) return false; // check only in session variable
   return true;
 }

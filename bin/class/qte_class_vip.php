@@ -168,71 +168,71 @@ public static function CanViewStats()
 
 // --------
 
-function SetSys()
+public function SetSys()
 {
-  if ( !isset($_SESSION[QT]['sys_domains']) ) $_SESSION[QT]['sys_domains'] = GetDomains(sUser::Role());
-  if ( !isset($_SESSION[QT]['sys_sections']) ) $_SESSION[QT]['sys_sections'] = QTarrget(GetSections(sUser::Role()));
-  if ( !isset($_SESSION[QT]['sys_statuses']) ) $_SESSION[QT]['sys_statuses'] = cVIP::GetStatuses();
-  if ( !isset($_SESSION[QT]['sys_members']) ) $_SESSION[QT]['sys_members'] = cVIP::SysCount('members');
-  if ( !isset($_SESSION[QT]['sys_states']) ) $_SESSION[QT]['sys_states'] = cVIP::SysCount('states');
+  memGet('sys_domains');  echo 'memGet ok<br/>';
+  memGet('sys_sections'); echo 'memGet ok<br/>';
+  memGet('sys_statuses'); echo 'memGet ok<br/>';
+  memGet('sys_members');  echo 'memGet ok<br/>';
+  memGet('sys_states');    echo 'memGet ok<br/>';
 
-  $this->domains = $_SESSION[QT]['sys_domains'];
-  $this->sections = $_SESSION[QT]['sys_sections'];
-  $this->statuses = $_SESSION[QT]['sys_statuses'];
-  $this->members = $_SESSION[QT]['sys_members'];
-  $this->states = $_SESSION[QT]['sys_states'];
+  /* !! must be removed */
+  //$this->domains  = memGet('sys_domains');
+  $this->sections = memGet('sys_sections');
+  //$this->statuses = memGet('sys_statuses');
+  //$this->members  = memGet('sys_members');
+  //$this->states   = memGet('sys_states');
 }
 
 // --------
 
 public static function GetStatusName($str='A')
 {
-	if ( !isset($_SESSION[QT]['sys_statuses']) ) $_SESSION[QT]['sys_statuses'] = cVIP::GetStatuses();
-	if ( empty($_SESSION[QT]['sys_statuses'][$str]['statusname']) ) return 'unkown status';
-	return $_SESSION[QT]['sys_statuses'][$str]['statusname'];
+  $arr = memGet('sys_statuses');
+  if ( empty($arr[$str]['statusname']) ) return 'unkown status';
+  return $arr[$str]['statusname'];
 }
 public static function GetStatusIconFile($str='A')
 {
-	if ( !isset($_SESSION[QT]['sys_statuses']) ) $_SESSION[QT]['sys_statuses'] = cVIP::GetStatuses();
-	if ( empty($_SESSION[QT]['sys_statuses'][$str]['icon']) ) return 'status_0.gif';
-	return $_SESSION[QT]['sys_statuses'][$str]['icon'];
+  $arr = memGet('sys_statuses');
+	if ( empty($arr[$str]['icon']) ) return 'status_0.gif';
+	return $arr[$str]['icon'];
 }
 public static function GetStatusIcon($str='A',$class='ico i-status')
 {
 	if ( !is_string($str) || !is_string($class) ) die('Wrong argument in cVIP::GetStatusIcon');
-	if ( !isset($_SESSION[QT]['sys_statuses']) ) $_SESSION[QT]['sys_statuses'] = cVIP::GetStatuses();
 	return '<img '.(empty($class) ? '' : 'class="'.$class.'"').' src="'.$_SESSION[QT]['skin_dir'].'/'.cVIP::GetStatusIconFile($str).'"/>';
 }
 // --------
 
 public static function GetStatuses()
 {
-  $ar = array();
+  $arr = array();
 
-  global $oDB;  $oDB->Query('SELECT * FROM '.TABSTATUS.' ORDER BY id' );
+  global $oDB; $oDB->Query('SELECT * FROM '.TABSTATUS.' ORDER BY id' );
   while($row=$oDB->Getrow())
   {
-    $ar[$row['id']]['statusname'] = ucfirst(str_replace('_',' ',$row['name']));
-    $ar[$row['id']]['statusdesc'] = '';
-    $ar[$row['id']]['name'] = $row['name'];
-    $ar[$row['id']]['icon'] = $row['icon'];
-    $ar[$row['id']]['color'] = $row['color'];
+    $arr[$row['id']]['statusname'] = ucfirst(str_replace('_',' ',$row['name']));
+    $arr[$row['id']]['statusdesc'] = '';
+    $arr[$row['id']]['name'] = $row['name'];
+    $arr[$row['id']]['icon'] = $row['icon'];
+    $arr[$row['id']]['color'] = $row['color'];
   }
 
   // find translations
 
-  $arL = cLang::Get('status',QTiso(),'*');
-  foreach ($arL as $id=>$str)
+  $arrL = cLang::Get('status',QTiso(),'*');
+  foreach ($arrL as $id=>$str)
   {
-    if ( !empty($str) ) $ar[$id]['statusname'] = $str;
+    if ( !empty($str) ) $arr[$id]['statusname'] = $str;
   }
-  $arL = cLang::Get('statusdesc',QTiso(),'*');
-  foreach ($arL as $id=>$str)
+  $arrL = cLang::Get('statusdesc',QTiso(),'*');
+  foreach ($arrL as $id=>$str)
   {
-    if ( !empty($str) ) $ar[$id]['statusdesc'] = $str;
+    if ( !empty($str) ) $arr[$id]['statusdesc'] = $str;
   }
 
-  return $ar;
+  return $arr;
 }
 
 // --------
@@ -268,7 +268,7 @@ public static function StatusAdd($id='',$name='',$icon='',$color='')
 
   // Exit
 
-  if ( isset($_SESSION[QT]['sys_statuses']) ) unset($_SESSION[QT]['sys_statuses']);
+  memUnset('sys_statuses');
   return $error;
 }
 
@@ -293,7 +293,7 @@ public static function StatusDelete($id='',$to='A')
 
   // Exit
 
-  if ( isset($_SESSION[QT]['sys_statuses']) ) unset($_SESSION[QT]['sys_statuses']);
+  memUnset('sys_statuses');
 }
 
 // --------
@@ -331,7 +331,7 @@ public static function StatusChangeId($id='',$to='')
 
   // Exit
 
-  if ( isset($_SESSION[QT]['sys_statuses']) ) unset($_SESSION[QT]['sys_statuses']);
+  memUnset('sys_statuses');
   return $error;
 }
 

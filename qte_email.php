@@ -159,7 +159,8 @@ if ( $intCount==0 )
     $oDB->Query('SELECT count(*) as countid FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id WHERE l.sid='.$oSEC->id.' AND u.status="Z"');
     $row = $oDB->Getrow();
     $i = intval($row);
-    if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$oVIP->statuses['Z']['statusname']),')</p>';
+    $arr = memGet('sys_statuses');
+    if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$arr['Z']['statusname']),')</p>';
   }
   include 'qte_inc_ft.php';
   return;

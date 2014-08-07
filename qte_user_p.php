@@ -217,14 +217,15 @@ case 'lastname':
   break;
 
 case 'status':
+  $arr = memGet('sys_statuses');
   if ( $_SESSION[QT]['editing'] && sUser::IsStaff() )
   {
-  $strCol2 = '<select class="profile" id="status" name="status" onchange="bEdited=true; SetStatusIcon(this.value);">'.QTasTag($oVIP->statuses,$oItem->status).'</select> ';
-  foreach($_SESSION[QT]['sys_statuses'] as $key=>$arr) $strCol2 .= AsImg($_SESSION[QT]['skin_dir'].'/'.$arr['icon'],'',$arr['statusname'],'ico i-status hiddenicon','display:none','','statusicon_'.$key);
+  $strCol2 = '<select class="profile" id="status" name="status" onchange="bEdited=true; SetStatusIcon(this.value);">'.QTasTag($arr,$oItem->status).'</select> ';
+  foreach($arr as $key=>$arr) $strCol2 .= AsImg($_SESSION[QT]['skin_dir'].'/'.$arr['icon'],'',$arr['statusname'],'ico i-status hiddenicon','display:none','','statusicon_'.$key);
   }
   else
   {
-  $strCol2 = (isset($oVIP->statuses[$oItem->status]) ? $oVIP->statuses[$oItem->status]['statusname'].'&nbsp;'.AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$oItem->status]['icon'],'['.$oItem->status.']',$oVIP->statuses[$oItem->status]['statusdesc'],'ico i-status') : '(unknown status)');
+  $strCol2 = (isset($arr[$oItem->status]) ? $arr[$oItem->status]['statusname'].'&nbsp;'.AsImg($_SESSION[QT]['skin_dir'].'/'.$arr[$oItem->status]['icon'],'['.$oItem->status.']',$arr[$oItem->status]['statusdesc'],'ico i-status') : '(unknown status)');
   }
   break;
 

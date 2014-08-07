@@ -37,7 +37,6 @@ define('JQUERYUI_CSS_OFF', 'bin/css/jquery-ui/themes/base/jquery-ui.css');
 // ---------------
 // Interface constants (can be changed by webmasters)
 // ---------------
-define('QTE_USE_MEMCACHE', true);            // Store frequently used values in memcache server (instead of session cache)
 define('QTE_CHANGE_USERNAME', true);         // allow users to change their username (login). False = only administrators can change the username.
 define('QTE_SHOW_TIME',     true);           // show time in the bottom bar
 define('QTE_SHOW_MODERATOR',true);           // show moderator in the bottom bar
@@ -49,11 +48,17 @@ define('QTE_DIR_DOC',$qte_root.'document/'); // directory of the document (with 
 define('QTE_DIR_PIC',$qte_root.'picture/');  // directory of user's photo (with final /)
 define('QTE_WEEKSTART', 1);                  // Start of the week (use code 1=monday,...,7=sunday)
 define('QTE_JAVA_MAIL', true);               // Protect e-mail by a javascript
-define('QTE_SEARCH_AGE', 13);                 // used as default search age (for example coppa limit is 13)
+define('QTE_SEARCH_AGE', 13);                // used as default search age (for example coppa limit is 13)
+
 define('QTE_URLREWRITE', false);
 // URL rewriting (for expert only):
 // Rewriting url requires that your server is configured with following rule for the application folder: RewriteRule ^(.+)\.html(.*) qte_$1.php$2 [L]
 // This can NOT be activated if you application folder contains html pages (they will not be accessible anymore when urlrewriting is acticated)
+
+define('QTE_MEMCACHE_HOST', 'localhost');    // Memcache allow storing frequently used values in memcache server (instead of runnning sql requests)
+define('QTE_MEMCACHE_PORT', 11211);          // memcahce port (integer). Default port is 11211.
+// If memcache is not available on your server use false as host. Ex: define('QTE_MEMCACHE_HOST', false);
+// otherwise define your host name. Ex: define('QTE_MEMCACHE_HOST', 'localhost');
 
 // -----------------
 // JQUERY (this can be changed by webmaster)
@@ -109,13 +114,14 @@ if ( empty($qte_install) )
 }
 
 // --------------
-// Initialise Classes
+// Initialise Classes and Memcache
 // --------------
 $error = ''; // Required when server uses register_global_on
 $warning = ''; // Required when server uses register_global_on
 $arrExtData = array(); // Can be used by extensions
-$memcache=false;
-if ( QTE_USE_MEMCACHE && class_exists('Memcache') ) { $memcache = new Memcache; } else { $warning='Memcache library not found. Turn this option to false in qte_init...'; }
+
+$memcache = memcacheCreate($warning); // returns false or memcache object (can also issue a $warning message if connection failed)
+
 $oDB  = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br />Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
 $oVIP = new cVIP();
@@ -144,9 +150,9 @@ if ( $str!=QTiso() && !empty($str) )
     if ( isset($_COOKIE[QT.'_cooklang']) ) setcookie(QT.'_cooklang', $str, time()+60*60*24*100, '/');
     // unset dictionnaries
     $_SESSION['L'] = array();
-    if ( isset($_SESSION[QT]['sys_domains']) ) unset($_SESSION[QT]['sys_domains']);
+    memUnset('sys_domains');
     if ( isset($_SESSION[QT]['sys_sections']) ) unset($_SESSION[QT]['sys_sections']);
-    if ( isset($_SESSION[QT]['sys_statuses']) ) unset($_SESSION[QT]['sys_statuses']);
+    memUnset('sys_statuses');
   }
   else
   {

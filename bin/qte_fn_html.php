@@ -20,10 +20,11 @@ function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAl
     if ( count($arrReject)>0 ) { foreach($arrReject as $id) if ( isset($arr[$id]) ) unset($arr[$id]); }
 
     // format
-    if ( count($arr)>3 && count($oVIP->domains)>1 )
+    $arrDomains = memGet('sys_domains');
+    if ( count($arr)>3 && count($arrDomains)>1 )
     {
       $arr = GetSections(sUser::Role(),-2,$arrReject);// get all sections at once (grouped by domain)
-      foreach ($oVIP->domains as $intDom=>$strDom)
+      foreach ($arrDomains as $intDom=>$strDom)
       {
         if ( isset($arr[$intDom]) ) {
         if ( count($arr[$intDom])>0 ) {
@@ -58,7 +59,7 @@ if ( is_int($content) )
   $oHtml->Msgbox('!');
   if ( $content===99 )
   {
-    $content = Translate('sys_offline.txt');
+    $content = Translate('sys_offline.txt',false);
     if ( file_exists($content) ) { include $content; } else { echo Error(99); }
   }
   else

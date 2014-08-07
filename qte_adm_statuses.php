@@ -30,7 +30,8 @@ $oVIP->selfurl = 'qte_adm_statuses.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';
 $oVIP->selfname = '<span class="upper">'.$L['Adm_content'].'</span><br />'.$L['Statuses'];
 $oVIP->exitname = $L['Statuses'];
-
+$arrStatuses = memGet('sys_statuses');
+  
 // --------
 // SUBMITTED
 // --------
@@ -43,7 +44,8 @@ if ( isset($_POST['ok_add']) )
   if ( !preg_match('/[A-Y]/',$id) ) $error="Id $id ".$L['E_invalid']." (A-Y)";
   $name = trim($_POST['name']); if ( get_magic_quotes_gpc() ) $name = stripslashes($name);
   if ( $name=='' ) $error = $L['Status'].S.$L['E_invalid'];
-  if ( array_key_exists($id,$oVIP->statuses) ) $error = $L['Status'].' ['.$id.'] '.strtolower($L['E_already_used']);
+
+  if ( array_key_exists($id,$arrStatuses) ) $error = $L['Status'].' ['.$id.'] '.strtolower($L['E_already_used']);
 
   // add and exit
 
@@ -89,7 +91,7 @@ echo '<form method="post" action="',$oVIP->selfurl,'">
 </tr>
 ';
 
-foreach( $oVIP->statuses as $id=>$arrStatus  )
+foreach( $arrStatuses as $id=>$arrStatus  )
 {
   echo '<tr class="rowlight">',PHP_EOL;
   echo '<td class="center">',$id,'</td>',PHP_EOL;
@@ -121,7 +123,7 @@ echo '
 <td><select id="show_Z" name="show_Z" onchange="bEdited=true;">
 <option value="0"',($_SESSION[QT]['show_Z']=='0' ? QSEL : ''),'>',$L['N'],'</option>
 <option value="1"',($_SESSION[QT]['show_Z']=='1' ? QSEL : ''),'>',$L['Y'],'</option>
-</select> <span class="small">',sprintf($L['H_Show_z'],$oVIP->statuses['Z']['statusname']),'</span></td>
+</select> <span class="small">',sprintf($L['H_Show_z'],$arrStatuses['Z']['statusname']),'</span></td>
 <td><input type="submit" name="ok_show" value="',$L['Ok'],'"/></td>
 </tr>
 </table>

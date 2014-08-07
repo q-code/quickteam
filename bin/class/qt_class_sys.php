@@ -4,23 +4,79 @@
 
 // ========
 
+// Memcache usage: This mechanism put in memory frequently used objects (i.e. list of domains, sections, statuses...)
+// memcacheCreate() initialize and open connection (if QTE_MEMCACHE_HOST is defined). Can return false with a warning message.
+// memGet()
+// memSet() use memcache library OR session variables (i.e. when memcache is disable or when memcache daemon faill to respond)
+// memcacheGet()
+// memcacheSet() use memcache only
+// Note: These functions return FALSE in case of failure (when memcache not enabled or daemon not responding). It's thus not recommanded to use metSet to store FALSE
+
+// About memGet()
+// As memcache has a timeout (or daemon may be not responding),
+// memGet() is designed to REGENERATE the values when they cannot be fecthed from memory.
+// Using memGet() to initialize memory is thus recommanded, for these frequently used objects values.
+// BUT if you use memGet() with other keys, these may be regenerated to $default value ! (at your own risk)
+
+function memcacheCreate(&$warning)
+{
+  $memcache=false;
+  if ( QTE_MEMCACHE_HOST )
+  {
+    if ( class_exists('Memcache') )
+    {
+    $memcache = new Memcache;
+    if ( !$memcache->connect(QTE_MEMCACHE_HOST,QTE_MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in qte_init...'; $memcache=false; }
+    }
+    else
+    { 
+    $warning='Memcache library not found. Turn this option to false in qte_init...';
+    $memcache=false;
+    }
+  }
+  return $memcache;
+}
+function memGet($key,$default=false)
+{
+  $obj = memcacheGet($key);
+  if ( $obj===false )
+  {
+    // Check session if not in memcache
+    if ( isset($_SESSION[QT][$key]) ) return $_SESSION[QT][$key];
+    // Regenerate when not in memory
+    switch($key)
+    {
+    case 'sys_domains': $obj = GetDomains(sUser::Role()); memSet($key,$obj); break;
+    case 'sys_sections': $obj = QTarrget(GetSections(sUser::Role())); memSet($key,$obj); break;
+    case 'sys_statuses': $obj = cVIP::GetStatuses(); memSet($key,$obj); break;
+    case 'sys_members': $obj = cVIP::SysCount('members'); memSet($key,$obj); break;
+    case 'sys_states': $obj = cVIP::SysCount('states'); memSet($key,$obj); break;
+    default: $obj = $default;
+    }
+  }
+  return $obj;
+}
+function memSet($key,$obj,$timeout=300)
+{
+  if ( memcacheSet($key,$obj,$timeout)===false ) $_SESSION[QT][$key]=$obj;
+}
 function memcacheGet($key)
 {
   global $memcache; return ($memcache) ? $memcache->get($key) : false;
 }
-function memcacheSet($key,$object,$timeout=300)
+function memcacheSet($key,$obj,$timeout=300)
 {
-  global $memcache; return ($memcache) ? $memcache->set($key,$object,false,$timeout) : false;
+  global $memcache; return ($memcache) ? $memcache->set($key,$obj,false,$timeout) : false;
 }
-// Caching a sql query a few minutes
 function memcacheQuery($key,$sql,$timeout=300)
 {
+  // Caching a sql query a few minutes
   if ( empty($key) ) $key = md5('query'.$sql);
 
   // Get the cache from memcache
   if ( ($cache=memcacheGet($key))!==false )
   {
-    // If no cache response, runs the query to populate $cache (then save into memcache)
+    // If no cache response, runs the query to populate $cache
     $cache = false;
     global $oDB;
     $oDB->Query($sql);
@@ -30,6 +86,14 @@ function memcacheQuery($key,$sql,$timeout=300)
     memcacheSet($key,$cache,$timeout);
   }
   return $cache;
+}
+function memUnset($key)
+{
+   memcacheUnset($key); if ( isset($_SESSION[QT][$key]) ) unset($_SESSION[QT][$key]);
+}
+function memcacheUnset($key)
+{
+  global $memcache; return ($memcache) ? $memcache->delete($key) : false;
 }
 
 // ========

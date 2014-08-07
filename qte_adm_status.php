@@ -31,6 +31,7 @@ $oVIP->selfurl = 'qte_adm_status.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';
 $oVIP->selfname = '<span class="upper">'.$L['Adm_content'].'</span><br />'.$L['Status_upd'];
 $oVIP->exitname = '&laquo; '.$L['Statuses'];
+$arrStatuses = memGet('sys_statuses');
 
 // --------
 // SUBMITTED
@@ -115,7 +116,7 @@ if (isset($_POST['ok']))
 
     // Exit
 
-    Unset($_SESSION[QT]['sys_statuses']);
+    memUnset('sys_statuses');
     $oVIP->selfname = $L['Status_upd'];
     $oHtml->PageMsgAdm(NULL,$L['S_update'].'<br /><br /><span class="warning">'.$warning.'</span>',(!empty($warning) ? 0: 2));
   }
@@ -134,8 +135,8 @@ include APP.'_adm_inc_hd.php';
 echo '<table class="hidden">
 <tr>
 <td style="width:20px">',$id,'</td>
-<td style="width:30px">',AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$id]['icon'],'-',$oVIP->statuses[$id]['statusdesc'],'ico i-status'),'</td>
-<td style="width:100px;padding:3px 10px 3px 10px;text-align:center;background-color:',(strlen($oVIP->statuses[$id]['color'])>1 ? $oVIP->statuses[$id]['color'] : 'transparent'),'; border-style:solid; border-color:#dddddd; border-width:1px">',$oVIP->statuses[$id]['statusname'],'</td>
+<td style="width:30px">',AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$id]['icon'],'-',$arrStatuses[$id]['statusdesc'],'ico i-status'),'</td>
+<td style="width:100px;padding:3px 10px 3px 10px;text-align:center;background-color:',(strlen($arrStatuses[$id]['color'])>1 ? $arrStatuses[$id]['color'] : 'transparent'),'; border-style:solid; border-color:#dddddd; border-width:1px">',$arrStatuses[$id]['statusname'],'</td>
 <td>&nbsp;</td>
 </tr>
 </table>
@@ -158,22 +159,22 @@ else
 echo '</td>
 </tr>
 ';
-$str = QTconv($oVIP->statuses[$id]['name'],'I');
+$str = QTconv($arrStatuses[$id]['name'],'I');
 echo '<tr>
 <td class="headfirst"><label for="name">Name</label></td>
-<td><input type="text" id="name" name="name" size="24" maxlength="24" value="',$str,'" style="background-color:#FFFF99" onchange="bEdited=true;"/>',(strstr($str,'&amp;') ?  ' <span class="disabled">'.$oVIP->statuses[$id]['name'].'</span>' : ''),'</td>
+<td><input type="text" id="name" name="name" size="24" maxlength="24" value="',$str,'" style="background-color:#FFFF99" onchange="bEdited=true;"/>',(strstr($str,'&amp;') ?  ' <span class="disabled">'.$arrStatuses[$id]['name'].'</span>' : ''),'</td>
 </tr>
 ';
 echo '<tr>
 <td class="headfirst"><label for="icon">Icon</label></td>
-<td><input type="text" id="icon" name="icon" size="24" maxlength="64" value="',$oVIP->statuses[$id]['icon'],'" onchange="bEdited=true;"/>&nbsp;',AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$id]['icon'],'-',$oVIP->statuses[$id]['statusdesc'],'ico i-status'),'&nbsp;&nbsp;<a href="qte_ext_statusico.php" target="_blank">show icons</a></td>
+<td><input type="text" id="icon" name="icon" size="24" maxlength="64" value="',$arrStatuses[$id]['icon'],'" onchange="bEdited=true;"/>&nbsp;',AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$id]['icon'],'-',$arrStatuses[$id]['statusdesc'],'ico i-status'),'&nbsp;&nbsp;<a href="qte_ext_statusico.php" target="_blank">show icons</a></td>
 </tr>
 ';
 echo '<tr>
 <td class="headfirst"><label for="color">',$L['Status_background'],'</label></td>
 <td>
-<input type="text" id="color" name="color" size="10" maxlength="24" value="',(empty($oVIP->statuses[$id]['color']) ? '#' : $oVIP->statuses[$id]['color']),'" onchange="document.getElementById(\'colorpicker\').value=document.getElementById(\'color\').value;bEdited=true;" />
-&nbsp;<input type="color" id="colorpicker" size="10" maxlength="24" value="',(empty($oVIP->statuses[$id]['color']) ? '#ffffff' : $oVIP->statuses[$id]['color']),'" onchange="document.getElementById(\'color\').value=document.getElementById(\'colorpicker\').value;" /><br/>
+<input type="text" id="color" name="color" size="10" maxlength="24" value="',(empty($arrStatuses[$id]['color']) ? '#' : $arrStatuses[$id]['color']),'" onchange="document.getElementById(\'colorpicker\').value=document.getElementById(\'color\').value;bEdited=true;" />
+&nbsp;<input type="color" id="colorpicker" size="10" maxlength="24" value="',(empty($arrStatuses[$id]['color']) ? '#ffffff' : $arrStatuses[$id]['color']),'" onchange="document.getElementById(\'color\').value=document.getElementById(\'colorpicker\').value;" /><br/>
 <span class="small">',$L['H_Status_background'],'</span>
 </td>
 </tr>
@@ -185,7 +186,7 @@ echo '<h2 class="subtitle">',$L['Translations'],'</h2>
 <table class="t-data">
 <tr class="t-data">
 <td class="headfirst">',$L['Title'],'</td>
-<td><p style="margin:4px">',sprintf($L['E_no_translation'],ucfirst(str_replace('_',' ',$oVIP->statuses[$id]['name']))),'</p>
+<td><p style="margin:4px">',sprintf($L['E_no_translation'],ucfirst(str_replace('_',' ',$arrStatuses[$id]['name']))),'</p>
 <table>
 ';
 $arrTrans = cLang::Get('status','*',$id);
@@ -233,7 +234,7 @@ echo '</table>
 ';
 echo '<p class="submit">
 <input type="hidden" name="oldid" value="',$id,'"/>
-<input type="hidden" name="oldname" value="',QTconv($oVIP->statuses[$id]['name'],'1'),'"/>
+<input type="hidden" name="oldname" value="',QTconv($arrStatuses[$id]['name'],'1'),'"/>
 <input type="submit" name="ok" value="',$L['Save'],'"/>
 </p>
 </form>

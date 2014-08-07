@@ -209,7 +209,8 @@ if ( $intCount==0 )
     $oDB->Query('SELECT count(*) as countid FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id WHERE l.sid='.$oSEC->id.' AND u.status="Z"');
     $row = $oDB->Getrow();
     $i = intval($row);
-    if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$oVIP->statuses['Z']['statusname']),')</p>';
+    $arr = memGet('sys_statuses');
+    if ( $i>0 ) echo '<p class="disabled">',$L['Hidden'],': ',strtolower(L('User',$i).' ('.$L['Status'].' '.$arr['Z']['statusname']),')</p>';
   }
   include 'qte_inc_ft.php';
   return;
@@ -236,7 +237,7 @@ if ( !array_key_exists($strOrder,$arrFLD) )$strOrder='fullname'; if ( !array_key
 if ( isset($arrFLD['status']) )
 {
 $arrStatusStyles=array();
-foreach($oVIP->statuses as $id=>$arrStatus) if ( !empty($arrStatus['color']) ) $arrStatusStyles[$id]=$arrStatus['color'];
+foreach(memGet('sys_statuses') as $id=>$arrStatus) if ( !empty($arrStatus['color']) ) $arrStatusStyles[$id]=$arrStatus['color'];
 }
 
 $bLink = true;
@@ -280,7 +281,7 @@ foreach($table->th as $key=>$th) { $table->td[$key] = new cTableData('td','','c-
 // prepare dynamic attributes for column 'status'
 if ( isset($table->td['status']) )
 {
-  foreach($oVIP->statuses as $id=>$arr) if ( !empty($arr['color']) ) $table->td['status']->dynamicValues[$id]='background-color:'.$arr['color'].';';
+  foreach(memGet('sys_statuses') as $id=>$arr) if ( !empty($arr['color']) ) $table->td['status']->dynamicValues[$id]='background-color:'.$arr['color'].';';
 }
 
 // === TABLE START DISPLAY ===

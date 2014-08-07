@@ -140,7 +140,7 @@ foreach ($arr as $intKey => $strValue) $arrSections['S'.$intKey]=$strValue;
 // --------
 
 $strStatuses='';
-foreach($oVIP->statuses as $key=>$arr) $strStatuses .= 'var status_'.$key.'="'.(isset($arr['statusname']) ? $arr['statusname'] : 'null' ).'"; var icon_'.$key.'="'.(isset($arr['icon']) ? $arr['icon'] : 'null' ).'";'.PHP_EOL;
+foreach(memGet('sys_statuses') as $key=>$arr) $strStatuses .= 'var status_'.$key.'="'.(isset($arr['statusname']) ? $arr['statusname'] : 'null' ).'"; var icon_'.$key.'="'.(isset($arr['icon']) ? $arr['icon'] : 'null' ).'";'.PHP_EOL;
 
 $oHtml->scripts_jq[] = '
 $(function() {
@@ -226,7 +226,7 @@ if ( $oSEC->members>10 && (count($arrShowsection)>10 || $showsectionstatus!=='al
 {
   // list of statuses as [key - status]
   $str = '<option value="all"'.($showsectionstatus==='all' ? QSEL : '').'>&nbsp;&nbsp;&nbsp;('.L('all').')</option>'.PHP_EOL;
-  foreach($oVIP->statuses as $key=>$arrStatus)
+  foreach(memGet('sys_statuses') as $key=>$arrStatus)
   {
   $str .= '<option value="'.$key.'" style="padding-right:5px;background:#ffffff url('.$_SESSION[QT]['skin_dir'].'/'.cVIP::GetStatusIconFile($key).') no-repeat right top"'.($showsectionstatus===$key ? QSEL : '').'>'.$key.'&nbsp;&nbsp;'.$arrStatus['statusname'].'</option>'.PHP_EOL;
   }
@@ -290,7 +290,7 @@ if ( $_SESSION[QT]['sys_members']>10 && (count($arrShowusers)>10 || $showsystems
 {
   // list of statuses as [key - status]
   $str = '<option value="all"'.($showsystemstatus==='all' ? QSEL : '').'>&nbsp;&nbsp;&nbsp;('.L('all').')</option>'.PHP_EOL;
-  foreach($oVIP->statuses as $key=>$arrStatus)
+  foreach(memGet('sys_statuses') as $key=>$arrStatus)
   {
   $str .= '<option value="'.$key.'" style="padding-right:5px;background:#ffffff url('.$_SESSION[QT]['skin_dir'].'/'.cVIP::GetStatusIconFile($key).') no-repeat right top"'.($showsystemstatus===$key ? QSEL : '').'>'.$key.'&nbsp;&nbsp;'.$arrStatus['statusname'].'</option>'.PHP_EOL;
   }

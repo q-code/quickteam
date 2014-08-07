@@ -118,7 +118,7 @@ if ( $intMembership>0 ) {
 // -----------
 
 $arrSections = GetMembership($id,true);
-foreach($oVIP->domains as $intDomid=>$strDomtitle)
+foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
 {
   if ( isset($arrSections[$intDomid]) ) {
   if ( count($arrSections[$intDomid])>0 ) {

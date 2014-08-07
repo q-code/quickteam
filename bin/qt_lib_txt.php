@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
 qt_lib_txt.php
 ------------
 version: 4.4 build:20140610
@@ -8,26 +8,26 @@ This is a library of public functions
 -------------
 Requires a function GetSetting() that can provide an application settings
 ------------
-* QTargs
-* QTasTag
-* QTdateclean
-* QTdatestr
-* QTbbc
-* QTconv
-* QTdatestr
-* QTislogin
-* QTispassword
-* QTismail
-* QTisbetween
-* QTisvaliddate
-* QTargimplode
-* QTargexplode
-* QTarradd
-* QTexplode
-* QTimplode
-* QTunbbc
-* QTcompact
-* QThttpvar
+QTargs
+QTasTag
+QTdateclean
+QTdatestr
+QTbbc
+QTconv
+QTdatestr
+QTislogin
+QTispassword
+QTismail
+QTisbetween
+QTisvaliddate
+QTargimplode
+QTargexplode
+QTarradd
+QTexplode
+QTimplode
+QTunbbc
+QTcompact
+QThttpvar
 */
 
 // This function allow cheching argument types: The value in $arrArgs must be of type specified in $arrTypes
@@ -35,7 +35,7 @@ Requires a function GetSetting() that can provide an application settings
 // Note 1: The type 'empty' means that the application stops if the value IS empty.
 // Note 2: When $arrTypes is one type, this type is converted to a list of types
 
-function QTargs($str='Error',$arrArgs,$arrTypes='str')
+function QTargs($str='Err or',$arrArgs,$arrTypes='str')
 {
   if ( !is_string($str) ) die('QTargs: Argument #1 must be a string');
   if ( !is_array($arrArgs) ) die('QTargs: Argument #2 must be an array');
@@ -46,7 +46,7 @@ function QTargs($str='Error',$arrArgs,$arrTypes='str')
 
   // Process
   $n = count($arrArgs);
-  for($i=0;$i<$n;++$i) {
+  for($i=0;$i<$n;$i++) {
   switch($arrTypes[$i]) {
   case 'str': if ( !is_string($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be a string'); break;
   case 'int': if ( !is_int($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be an int'); break;
@@ -122,21 +122,19 @@ function QTdateclean($s='now')
   return '';
 }
 
-/**
- * QTdatestr
- *
- * Convert a date [string] to a formatted date [string] and translate it.
- *
- * @$sDate    The date string, can be 'YYYYMMDD[HH][MM][SS]' or 'now'. It can include [.][/][-][ ]
- * @$sOutDate The format for the date (or '$' to use the system format)
- * @$sOutTime The format for the time (or '$' to use the system format). If not empty, it is added to the date format (or to the short date)
- * @$bFriendlyDate Replace $OutDate by 'Today','Yesterday' when possible.
- * @$bDropOldTime  Don't show time for date > 2 days.
- *
- * When $sDate is '0' or empty, or when the input date format is unsupported returns $e '?'
- * The translation uses $L['dateSQL'], if existing, and the default php words if not.
- * Also accept $sOutDate='RFC-3339' (this will ignore other parametres)
- */
+// QTdatestr
+//
+// Convert a date [string] to a formatted date [string] and translate it.
+//
+// @$sDate    The date string, can be 'YYYYMMDD[HH][MM][SS]' or 'now'. It can include [.][/][-][ ]
+// @$sOutDate The format for the date (or '$' to use the system format)
+// @$sOutTime The format for the time (or '$' to use the system format). If not empty, it is added to the date format (or to the short date)
+// @$bFriendlyDate Replace $OutDate by 'Today','Yesterday' when possible.
+// @$bDropOldTime  Don't show time for date > 2 days.
+//
+// When $sDate is '0' or empty, or when the input date format is unsupported returns $e '?'
+// The translation uses $L['dateSQL'], if existing, and the default php words if not.
+// Also accept $sOutDate='RFC-3339' (this will ignore other parametres)
 
 function QTdatestr($sDate='now',$sOutDate='$',$sOutTime='$',$bFriendlyDate=false,$bDropOldTime=false,$bTitle=false,$e='?')
 {
@@ -144,7 +142,7 @@ function QTdatestr($sDate='now',$sOutDate='$',$sOutTime='$',$bFriendlyDate=false
 
   // Stop if input is a year only
 
-  if ( strlen($sDate)==4 ) return $sDate;
+  if ( strlen($sDate)===4 ) return $sDate;
 
   // check requested formats
 
@@ -152,12 +150,14 @@ function QTdatestr($sDate='now',$sOutDate='$',$sOutTime='$',$bFriendlyDate=false
   if ( $sOutDate==='$' )
   {
     $sOutDate='Ymd'; // system date format cannot be empty
-    if ( !empty(GetSetting('formatdate')) ) $sOutDate = GetSetting('formatdate');
+    $str = GetSetting('formatdate');
+    if ( !empty($str) ) $sOutDate = $str;
   }
   if ( $sOutTime==='$' )
   {
     $sOutTime='';  // system time format can be empty
-    if ( !empty(GetSetting('formattime')) ) $sOutTime = GetSetting('formattime');
+    $str = GetSetting('formattime');
+    if ( !empty($str) ) $sOutTime = $str;
   }
 
   // Analyse date time
@@ -221,20 +221,20 @@ function QTdatestr($sDate='now',$sOutDate='$',$sOutTime='$',$bFriendlyDate=false
   return trim($sDate);
 }
 
-/* ============
- * QTbbc
- * ------------
- * Convert bbc to html
- * ------------
- * $str       : [mandatory] a string than can contains bbc tags
- * $nl        : convert \r\n, \r or \n to $nl. Use FALSE to not convert.
- * $beforediv : (optional) tag to use before a bloc ([quote] or [code])
- * $afterdiv  : (optional) tag to use after a bloc ([quote] or [code])
- * ------------
- * Examples
- * QTbbc( '[b]Text[/b]')        -->   <b>Text</b>
- * QTbbc( '[i]<b>Text<b>[/i]')  -->   <i>&lt;b&gt;Text&lt;/b&gt;</i>
- * ============ */
+// ============
+// QTbbc
+// ------------
+// Convert bbc to html
+// ------------
+// $str       : [mandatory] a string than can contains bbc tags
+// $nl        : convert \r\n, \r or \n to $nl. Use FALSE to not convert.
+// $beforediv : (optional) tag to use before a bloc ([quote] or [code])
+// $afterdiv  : (optional) tag to use after a bloc ([quote] or [code])
+// ------------
+// Examples
+// QTbbc( '[b]Text[/b]')        -->   <b>Text</b>
+// QTbbc( '[i]<b>Text<b>[/i]')  -->   <i>&lt;b&gt;Text&lt;/b&gt;</i>
+// ============
 
 function QTbbc($str,$nl='<br />',$beforediv='',$afterdiv='')
 {
@@ -410,12 +410,12 @@ function QTconv($str,$to='1',$bConvAmp=false,$bDroptags=true)
     }
     break;
   case 'K':
-    $str=strtr($str,'éèêëÉÈÊËáàâäÁÀÂÄÅåíìîïÍÌÎÏóòôöÓÒÔÖõÕúùûüÚÙÛÜ','eeeeeeeeaaaaaaaaaaiiiiiiiioooooooooouuuuuuuu');
+    $str=strtr($str,'Ã©Ã¨ÃªÃ«Ã‰ÃˆÃŠÃ‹Ã¡Ã Ã¢Ã¤ÃÃ€Ã‚Ã„Ã…Ã¥Ã­Ã¬Ã®Ã¯ÃÃŒÃŽÃÃ³Ã²Ã´Ã¶Ã“Ã’Ã”Ã–ÃµÃ•ÃºÃ¹Ã»Ã¼ÃšÃ™Ã›Ãœ','eeeeeeeeaaaaaaaaaaiiiiiiiioooooooooouuuuuuuu');
     $str=strtolower($str);
     $str=preg_replace('/[^a-z0-9_\-\.]/', '_', $str);
     break;
   case 'F':
-    $str=strtr($str,'éèêëÉÈÊËáàâäÁÀÂÄÅåíìîïÍÌÎÏóòôöÓÒÔÖõÕúùûüÚÙÛÜ','eeeeeeeeaaaaaaaaaaiiiiiiiioooooooooouuuuuuuu');
+    $str=strtr($str,'Ã©Ã¨ÃªÃ«Ã‰ÃˆÃŠÃ‹Ã¡Ã Ã¢Ã¤ÃÃ€Ã‚Ã„Ã…Ã¥Ã­Ã¬Ã®Ã¯ÃÃŒÃŽÃÃ³Ã²Ã´Ã¶Ã“Ã’Ã”Ã–ÃµÃ•ÃºÃ¹Ã»Ã¼ÃšÃ™Ã›Ãœ','eeeeeeeeaaaaaaaaaaiiiiiiiioooooooooouuuuuuuu');
     $str=strtolower($str);
     $str=preg_replace('/[^a-z0-9_\-]/', '_', $str); // replace symbol by '_' (but keep the '.' and '-')
     break;
@@ -458,7 +458,7 @@ function QTislogin($str,$intMin=4,$intMax=24)
   if ( strstr($str,'>') ) return false;
   if ( strstr($str,'&lt;') ) return false;
   if ( strstr($str,'&gt;') ) return false;
-  if ( !preg_match("/^[#-z éèçôîêñß§\!]+$/",$str) ) return false;
+  if ( !preg_match("/^[#-z Ã©Ã¨Ã§Ã´Ã®ÃªÃ±ÃŸÂ§\!]+$/",$str) ) return false;
   if ( $str!=strip_tags($str) ) return false;
   if ( strlen($str)>$intMax ) return false;
   if ( strlen($str)<$intMin ) return false;

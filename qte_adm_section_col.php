@@ -225,6 +225,7 @@ foreach ($_SESSION['fields'] as $strField)
 echo '</tr>',PHP_EOL;
 
 // value sample
+$arr = memGet('sys_statuses');
 echo '<tr class="tr">';
 
 foreach ($_SESSION['fields'] as $strField)
@@ -232,10 +233,10 @@ foreach ($_SESSION['fields'] as $strField)
   switch ($strField)
   {
   case 'status_i':
-    echo '<td style="text-align:center">',AsImg($_SESSION[QT]['skin_dir'].'/'.$oVIP->statuses[$oItem->status]['icon']),'</td>',PHP_EOL;
+    echo '<td style="text-align:center">',AsImg($_SESSION[QT]['skin_dir'].'/'.$arr[$oItem->status]['icon']),'</td>',PHP_EOL;
     break;
   case 'status':
-    echo '<td style="text-align:center">',$oVIP->statuses[$oItem->status]['statusname'],'</td>',PHP_EOL;
+    echo '<td style="text-align:center">',$arr[$oItem->status]['statusname'],'</td>',PHP_EOL;
     break;
   case 'picture':
     if ( count($_SESSION['fields'])>6 )

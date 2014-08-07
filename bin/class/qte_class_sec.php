@@ -261,21 +261,23 @@ static function RenderFields($arrFLD,$oItem,$qte_root='',$bAllowLinkToUser=true,
   // render
 
 	$arrRender=array();
+  $arrStatuses = memGet('sys_statuses');
+
 	foreach ($arrFLD as $key=>$aField)
 	{
 		$str='&nbsp;'; // default if unknown field
     switch($key)
     {
     	case 'status_i':
-        if ( !empty($oItem->status) && !empty($_SESSION[QT]['sys_statuses'][$oItem->status]) )
+        if ( !empty($oItem->status) && !empty($arrStatuses[$oItem->status]) )
         {
-        $status = $_SESSION[QT]['sys_statuses'][$oItem->status];
+        $status = $arrStatuses[$oItem->status];
         $str = AsImg($qte_root.$_SESSION[QT]['skin_dir'].'/'.$status['icon'],$oItem->status,$status['statusname'],'ico i-status','',($bAllowLinkToUser ? $qte_root.'qte_user.php?id='.$oItem->id : ''));
         }
         break;
     	case 'status':
         if ( !empty($oItem->status) ) $str = $oItem->status;
-        if ( !empty($_SESSION[QT]['sys_statuses'][$oItem->status]['statusname']) ) $str = $_SESSION[QT]['sys_statuses'][$oItem->status]['statusname'];
+        if ( !empty($arrStatuses[$oItem->status]['statusname']) ) $str = $arrStatuses[$oItem->status]['statusname'];
         break;
       case 'role':
         $str = 'V';
@@ -337,6 +339,7 @@ static function RenderFieldsCSV($arrFLD,$oItem,$qte_root='',$bMap=false)
 	// render
 
 	$arrRender=array();
+  $arrStatuses=memGet('sys_statuses');
 	foreach ($arrFLD as $key=>$aField)
 	{
 		$str=''; // default if unknown field
@@ -345,7 +348,7 @@ static function RenderFieldsCSV($arrFLD,$oItem,$qte_root='',$bMap=false)
 			case 'status_i':
 			case 'status':
 				if ( !empty($oItem->status) ) $str = $oItem->status;
-				if ( !empty($_SESSION[QT]['sys_statuses'][$oItem->status]['statusname']) ) $str = $_SESSION[QT]['sys_statuses'][$oItem->status]['statusname'];
+        if ( !empty($arrStatuses[$oItem->status]['statusname']) ) $str = $arrStatuses[$oItem->status]['statusname'];
 				break;
 			case 'role':
 				$str = 'V';

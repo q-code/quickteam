@@ -177,7 +177,8 @@ $(function() {
 
 include APP.'_adm_inc_hd.php';
 
-$arrDest = $oVIP->domains;
+$arrDomains = memGet('sys_domains');
+$arrDest = $arrDomains;
 Unset($arrDest[$oSEC->pid]);
 
 // FORM
@@ -197,7 +198,7 @@ echo '<form method="post" action="',$oVIP->selfurl,'" onsubmit="return ValidateF
 <tr class="t-data">
 <td class="headfirst">',$L['Domain'],'</td>
 <td><select name="domain" onchange="bEdited=true;">
-<option value="',$oSEC->pid,'"',QSEL,'>',$oVIP->domains[$oSEC->pid],'</option>',QTasTag($arrDest,'',array('format'=>$L['Move_to'].': %s')),'</select></td>
+<option value="',$oSEC->pid,'"',QSEL,'>',$arrDomains[$oSEC->pid],'</option>',QTasTag($arrDest,'',array('format'=>$L['Move_to'].': %s')),'</select></td>
 </tr>
 </table>
 ';
