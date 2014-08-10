@@ -61,16 +61,12 @@ include 'qte_inc_hd.php';
 switch($oDB->type)
 {
 // Select month
-case 'mysql4':
-case 'mysql':
-case 'sqlsrv':
-case 'mssql':
-case 'pg': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.',5,2)="'.$strMonth.'" OR SUBSTRING('.$v.',5,2)="'.$strMonthN.'"'); break;
+case 'pdo.mysql': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.',5,2)="'.$strMonth.'" OR SUBSTRING('.$v.',5,2)="'.$strMonthN.'"'); break;
 case 'ibase': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.' FROM 5 FOR 2)="'.$strMonth.'" OR SUBSTRING('.$v.' FROM 5 FOR 2)="'.$strMonthN.'"'); break;
 case 'sqlite':
 case 'db2':
 case 'oci': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTR('.$v.',5,2)="'.$strMonth.'" OR SUBSTR('.$v.',5,2)="'.$strMonthN.'"'); break;
-default: die('Unknown db type '.$oDB->type);
+default: $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.',5,2)="'.$strMonth.'" OR SUBSTRING('.$v.',5,2)="'.$strMonthN.'"');
 }
 while($row=$oDB->Getrow())
 {

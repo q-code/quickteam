@@ -20,7 +20,8 @@ case 'kwd':
 	$oVIP->selfname = $L['Search_by_key'];
 	if ( empty($v) ) $error = $L['Keywords'].' '.Error(1);
 	if ( strlen($v)>64 ) die('Invalid argument #v');
-	$oSEC->descr = '"'.$v.'"'.($s>=0 ? ' '.L('In_section').' "'.$oVIP->sections[$s].'"' : '');
+  $arrSections = memGet('sys_sections');
+  $oSEC->descr = '"'.$v.'"'.($s>=0 ? ' '.L('In_section').' "'.$arrSections[$s].'"' : '');
 
   $strFlds  = ' u.*,i.ufield,i.ukey';
   $strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABINDEX.' i ON i.userid=u.id'.($s>=0 ? ' INNER JOIN '.TABS2U.' l ON l.userid = u.id' : '');
@@ -32,7 +33,8 @@ case 'sta':
 	$oVIP->selfname = $L['Search_by_status'];
 	if ( empty($v) ) $error = $L['Status'].' '.Error(1);
 	if ( strlen($v)>64 ) die('Invalid argument #v');
-	$oSEC->descr = $L['Status'].' "'.cVIP::GetStatusName($v).'"'.($s>=0 ? ' '.L('In_section').' "'.$oVIP->sections[$s].'"' : '');
+  $arrSections = memGet('sys_sections');
+	$oSEC->descr = $L['Status'].' "'.cVIP::GetStatusName($v).'"'.($s>=0 ? ' '.L('In_section').' "'.$arrSections[$s].'"' : '');
 
   $strFlds  = ' u.*';
   $strFrom  = ' FROM '.TABUSER.' u'.($s>=0 ? ' INNER JOIN '.TABS2U.' l ON l.userid = u.id' : '');
@@ -42,11 +44,12 @@ case 'sta':
 
 case 'age':
 	$oVIP->selfname = $L['Search_by_age'];
+  $arrSections = memGet('sys_sections');
 	$str = ' < '.$v;
 	if ($w=='u') $str = ' >= '.$v;
 	if ($w=='e') $str = ' = '.$v;
 	if ($w.$v==='=0' || $w==='0') $str = ' '.L('undefined');
-	$oSEC->descr = L('Age').$str.($s>=0 ? ' '.L('In_section').' "'.$oVIP->sections[$s].'"' : '');
+	$oSEC->descr = L('Age').$str.($s>=0 ? ' '.L('In_section').' "'.$arrSections[$s].'"' : '');
 
 	$intDate = $v.'000';
 	$intDate = (int)date('Ymd') - (int)$intDate;
@@ -95,7 +98,8 @@ case 'uwt':
 
 case 'ui0':
 	$oVIP->selfname = L('Search_result');
-	$str = (isset($_SESSION[QT]['sys_sections'][0]) ? $_SESSION[QT]['sys_sections'][0] : 'team 0');
+  $arrSections = memGet('sys_sections');
+	$str = (isset($arrSections[0]) ? $arrSections[0] : 'team 0');
 	$oSEC->descr = sprintf(L('Users_in_0_only'),$str);
   $strFlds  = ' u.*,sum(l.sid) as sumsid';
 	$strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id';
@@ -118,16 +122,13 @@ case 'bdm': // brithday on month $v
 	switch($oDB->type)
 	{
 	// Select month
-	case 'mysql4':
-	case 'mysql':
-	case 'sqlsrv':
-	case 'mssql':
+  case 'pdo.mysql': $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"'; break;
 	case 'pg':    $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"'; break;
 	case 'ibase': $strWhere .= ' AND SUBSTRING(u.birthdate FROM 5 FOR 2)="'.$v.'"'; break;
 	case 'sqlite':
 	case 'db2':
 	case 'oci':   $strWhere .= ' AND SUBSTR(u.birthdate,5,2)="'.$v.'"'; break;
-	default: die('Unknown db type '.$oDB->type);
+  default: $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"';
 	}
 
   $strCount = 'SELECT count(*) as countid'.$strFrom.$strWhere;

@@ -129,7 +129,7 @@ $arrSections = GetSectionTitles(sUser::Role());
 echo '
 <form method="get" action="',Href(),'">
 <p class="right" style="margin:2px">',$L['Year'],' <select name="year" id="year" class="small">',QTasTag($arrAllYears,$year),'</select>
-',(count($_SESSION[QT]['sys_sections'])>0 ? '<select class="small" name="s" id="s"><option value="-1">'.$L['In_all_sections'].'</option>'.Sectionlist($s).'</select>' : '&nbsp;'),'
+',(count($arrSections)>0 ? '<select class="small" name="s" id="s"><option value="-1">'.$L['In_all_sections'].'</option>'.Sectionlist($s).'</select>' : '&nbsp;'),'
 <input type="submit" name="ok" id="submit" class="small" value="',$L['Ok'],'" />
 </p>
 </form>

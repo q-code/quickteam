@@ -9,11 +9,7 @@ echo '
 // LINE END
 
 $bSectionlist = false;
-if ( $oVIP->selfurl!='qte_index.php' ) {
-if ( QTE_SHOW_GOTOLIST ) {
-if ( count($_SESSION[QT]['sys_sections'])>1 ) {
-  $bSectionlist = true;
-}}}
+if ( $oVIP->selfurl!='qte_index.php' && QTE_SHOW_GOTOLIST ) $bSectionlist = true;
 
 echo '
 <!-- bottom bar -->
@@ -66,7 +62,6 @@ echo '
 if ( isset($oSEC) )
 {
   echo ObjTrans('sec',"s$s",$oSEC->name),':<br />';
-
   if ( $_SESSION[QT]['show_Z'] )
   {
     echo '&bull; ',L('User',$oSEC->members),'<br /><br />';
@@ -77,16 +72,13 @@ if ( isset($oSEC) )
     $arr = memGet('sys_statuses');
     echo '<br />&bull; ',(isset($arr['Z']['statusname']) ? $arr['Z']['statusname'] : 'Not member'),': ',($oSEC->membersZ==0 ? strtolower($L['None']) : $oSEC->membersZ),'<br /><br />';
   }
-
 }
 
 // application info
 
-echo ObjTrans('index','i',$_SESSION[QT]['index_name']),':<br />';
-if ( isset($_SESSION[QT]['sys_members']) )
-{
-echo '&bull; ',L('User',$_SESSION[QT]['sys_members']);
-}
+echo ObjTrans('index','i'),':<br />';
+$iM = memGet('sys_members');
+if ( $iM!==false ) echo '&bull; ',L('User',$iM);
 
 // new user info
 
@@ -98,35 +90,13 @@ echo '<br /><br />',$L['Welcome_to'],'<a class="small" href="',Href('qte_user.ph
 
 // birthday
 
-if ( QTE_SHOW_BIRTHDAYS ) {
-if ( isset($_SESSION[QT]['sys_members']) ) {
-if ( $_SESSION[QT]['sys_members']>1 ) {
+if ( QTE_SHOW_BIRTHDAYS && $iM) {
 if ( strpos($_SESSION[QT]['fields_u'],'birthdate')!==FALSE ) {
 
-  switch($oDB->type)
-  {
-  // Select month
-  case 'mysql4':
-  case 'mysql': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
-  case 'sqlsrv':
-  case 'mssql': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
-  case 'pg':    $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
-  case 'ibase': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate FROM 5 FOR 4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate FROM 5 FOR 4)="'.Date('md').'"'); break;
-  case 'sqlite': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-  case 'db2':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-  case 'oci':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-  default: die('Unknown db type '.$oDB->type);
-  }
-  $arr = array();
-  while($row=$oDB->Getrow())
-  {
-    if ( empty($row['lastname']) ) $row['lastname']='('.$row['username'].')';
-    $arr[] = '<a class="small" href="'.Href('qte_user.php').'?id='.$row['id'].'">'.(empty($row['firstname']) ? '' : $row['firstname'].' ').$row['lastname'].'</a>';
-    if ( count($arr)>4 ) break;
-  }
+  $arr = memGet('sys_brithdays');
   if ( !empty($arr) ) echo '<br /><br />',$L['Happy_birthday'],implode(', ',$arr);
 
-}}}}
+}}
 
 echo '</div>',PHP_EOL;
 echo '</td>',PHP_EOL;
@@ -207,8 +177,8 @@ echo cHtml::Page(END);
 
 if ( isset($oDB->stats) )
 {
-  $oDB->stats['end'] = (float)(vsprintf('%d.%06d', gettimeofday()));
-  echo '<br/>&nbsp;',$oDB->stats['num'],' queries in ',round($oDB->stats['end']-$oDB->stats['start'],4),' sec';
+  $end = (float)vsprintf('%d.%06d', gettimeofday());
+  echo '<br/>&nbsp;',$oDB->stats['num'],' queries in ',round($end-$oDB->stats['start'],4),' sec';
 }
 
 echo $oHtml->End();

@@ -87,6 +87,8 @@ define('JQUERYUI_CSS_CDN', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/them
 // ---------------
 require $qte_root.'bin/qt_lib_sys.php';
 require $qte_root.'bin/qt_lib_txt.php';
+require $qte_root.'bin/qte_fn_base.php';
+require $qte_root.'bin/qte_fn_html.php';
 require $qte_root.'bin/class/qt_class_db.php';
 require $qte_root.'bin/class/qt_abstracts.php';
 require $qte_root.'bin/class/qt_class_html.php';
@@ -97,8 +99,6 @@ require $qte_root.'bin/class/qte_class_vip.php';
 require $qte_root.'bin/class/qte_class_user.php';
 require $qte_root.'bin/class/qte_class_sec.php';
 require $qte_root.'bin/class/qte_class_item.php';
-require $qte_root.'bin/qte_fn_base.php';
-require $qte_root.'bin/qte_fn_html.php';
 
 // ---------------
 //  Installation wizard (if file exists)
@@ -120,7 +120,7 @@ $error = ''; // Required when server uses register_global_on
 $warning = ''; // Required when server uses register_global_on
 $arrExtData = array(); // Can be used by extensions
 
-$memcache = memcacheCreate($warning); // returns false or memcache object (can also issue a $warning message if connection failed)
+$memcache = memcacheCreate($warning); // returns memcache object or false (can also issue a $warning message if connection failed)
 
 $oDB  = new cDB($qte_dbsystem,$qte_host,$qte_database,$qte_user,$qte_pwd);
 if ( !empty($oDB->error) ) die ('<p><font color="red">Connection with database failed.<br />Please contact the webmaster for further information.</font></p><p>The webmaster must check that server is up and running, and that the settings in the config file are correct for the database.</p>');
@@ -151,7 +151,7 @@ if ( $str!=QTiso() && !empty($str) )
     // unset dictionnaries
     $_SESSION['L'] = array();
     memUnset('sys_domains');
-    if ( isset($_SESSION[QT]['sys_sections']) ) unset($_SESSION[QT]['sys_sections']);
+    memUnset('sys_sections');
     memUnset('sys_statuses');
   }
   else
@@ -179,9 +179,14 @@ QTcheckL('index;domain;sec;secdesc;field;ffield');
 include $qte_root.GetLang().'qte_main.php';
 
 // ----------------
-// Define types,statuses and initialise statistics
+// Load memcache
 // ----------------
-$oVIP->SetSys(); // must be at the end because uses language
+
+memGet('sys_domains');
+memGet('sys_sections'); // store all sections
+memGet('sys_statuses');
+memGet('sys_members');
+memGet('sys_states');
 
 // ----------------
 // Default HTML settings

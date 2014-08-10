@@ -162,7 +162,8 @@ if ( isset($_GET['a']) || isset($_GET['s']) || isset($_SESSION[QT]['section']) |
   	echo '<a href="',Href('qte_section.php'),'?q=role&amp;v=S">',$L['Userrole_Ms'],'</a> &middot; ';
   	echo L('Administration').'&nbsp;<select id="adv_q" size="1" name="q" onchange="document.getElementById(\'adv_form\').submit();"><option value="" selected="selected"></option>';
     echo '<option value="uwt">',L('Users_without_section'),'</option>';
-    $str = (isset($_SESSION[QT]['sys_sections'][0]) ? $_SESSION[QT]['sys_sections'][0] : 'team 0');
+    $arrSections = memGet('sys_sections');
+    $str = (isset($arrSections[0]) ? $arrSections[0] : 'team 0');
     echo '<option value="ui0">',sprintf(L('Users_in_0_only'),$str),'</option>';
     echo '</select>',PHP_EOL;
   	echo '<input type="submit" id="adv_ok" name="ok" value="ok"><script type="text/javascript">document.getElementById("adv_ok").style.display="none";</script></form>',PHP_EOL;

@@ -45,10 +45,18 @@ function __construct($aSection=null)
     if ( is_int($aSection) )
     {
       if ( $aSection<0 ) die('Wrong id in cSection');
+      $arr = memGet('sys_sections');
+      if ( isset($arr[$aSection]) )
+      {
+      $row = $arr[$aSection];
+      }
+      else
+      {
       global $oDB;
       $oDB->Query('SELECT * FROM '.TABSECTION.' WHERE id='.$aSection);
       $row = $oDB->Getrow();
       if ( $row===False ) die('No section '.$aSection);
+      }
       $this->MakeFromArray($row);
     }
     elseif ( is_array($aSection) )
@@ -150,7 +158,7 @@ public static function Create($title,$parentid)
   global $oDB, $error;
   $id = $oDB->Nextid(TABSECTION);
   $oDB->QueryErr('INSERT INTO '.TABSECTION.' (domainid,id,title,type,status,stats,options,vorder,forder,modid,modname,template,ontop) VALUES ('.$parentid.','.$id.',"'.addslashes($title).'","0","0","members=0","logo=0",0,NULL,0,"Admin","T","0")', $error);
-  unset($_SESSION[QT]['sys_sections']);
+  memUnset('sys_sections');
   return $id;
 }
 
@@ -162,7 +170,7 @@ public static function Drop($id)
   global $oDB, $error;
   $oDB->QueryErr('DELETE FROM '.TABSECTION.' WHERE id='.$id, $error);
   cLang::Delete(array('sec','secdesc'),'s'.$id);
-  unset($_SESSION[QT]['sys_sections']);
+  memUnset('sys_sections');
   $_SESSION['L'] = array();
 }
 

@@ -29,7 +29,7 @@ function memcacheCreate(&$warning)
     if ( !$memcache->connect(QTE_MEMCACHE_HOST,QTE_MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in qte_init...'; $memcache=false; }
     }
     else
-    { 
+    {
     $warning='Memcache library not found. Turn this option to false in qte_init...';
     $memcache=false;
     }
@@ -46,13 +46,15 @@ function memGet($key,$default=false)
     // Regenerate when not in memory
     switch($key)
     {
-    case 'sys_domains': $obj = GetDomains(sUser::Role()); memSet($key,$obj); break;
-    case 'sys_sections': $obj = QTarrget(GetSections(sUser::Role())); memSet($key,$obj); break;
-    case 'sys_statuses': $obj = cVIP::GetStatuses(); memSet($key,$obj); break;
-    case 'sys_members': $obj = cVIP::SysCount('members'); memSet($key,$obj); break;
-    case 'sys_states': $obj = cVIP::SysCount('states'); memSet($key,$obj); break;
+    case 'sys_domains': $obj = GetDomains(); break;
+    case 'sys_sections': $obj = GetSections('A'); break; // attention this get ALL sections
+    case 'sys_statuses': $obj = cVIP::GetStatuses(); break;
+    case 'sys_members': $obj = cVIP::SysCount('members'); break;
+    case 'sys_states': $obj = cVIP::SysCount('states'); break;
+    case 'sys_birthdays': $obj = cVIP::SysCount('birthdays'); break;
     default: $obj = $default;
     }
+    memSet($key,$obj);
   }
   return $obj;
 }

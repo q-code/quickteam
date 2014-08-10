@@ -146,8 +146,7 @@ if ( isset($_POST['ok']) )
     // Unregister global sys (will be recomputed on next page)
 
     cSection::UpdateStats($intDest);
-    Unset($_SESSION[QT]['sys_members']);
-    Unset($_SESSION[QT]['sys_newuserid']);
+    memUnset('sys_members');
 
     // End message (pause)
     if ( $intCounts==0 )

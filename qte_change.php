@@ -66,13 +66,11 @@ case 'deletesection':
     // list content
     if ( $oSEC->members>0 )
     {
-      $arrDest = array(); // array_diff_key() not supported in php<5.1
-      foreach ($oVIP->sections as $intKey => $strValue) { if ( $intKey!=$s ) $arrDest[$intKey] = $strValue; }
-
+      // destination "d" is the list all sections (GetSections) except $s himself
       $strList = '<tr class="tr">
       <td class="headfirst">'.$L['Users'].'</td>
       <td>
-      <select name="d" size="1" class="small">'.QTasTag($arrDest,'',array('format'=>$L['Move_to'].': %s')).'</select>
+      <select name="d" size="1" class="small">'.QTasTag(GetSections('A',-1,$s),'',array('format'=>$L['Move_to'].': %s')).'</select>
       </td>
       </tr>';
     }
@@ -137,7 +135,7 @@ case 'deletedomain':
   if ( empty($ok) )
   {
     $arrDomains = memGet('sys_domains');
-    $strTitle = (isset($arrDomains[$s]) ? $arrDomains[$s] : 'untitled');  //!! $oVIP->domains[$s];
+    $strTitle = (isset($arrDomains[$s]) ? $arrDomains[$s] : 'untitled');
     $arrTeams = GetSectionTitles(sUser::Role(),$s);
 
     // list the domain content
@@ -569,7 +567,7 @@ case 'deleteuser':
   $oItem->Delete();
 
   // Unregister global sys (will be recomputed on next page)
-  Unset($_SESSION[QT]['sys_members']);
+  memUnset('sys_members');
   Unset($_SESSION[QT]['sys_states']);
 
   // EXIT

@@ -60,24 +60,22 @@ if ( substr($size,0,1)=='p' ) $_GET['page'] = substr($size,1);
 // Initialise
 
 $oSEC = new cSection($s);
+$oVIP->selfname = L('Section');
+$oVIP->exitname = ObjTrans('index','i');
 
 if ( $oSEC->type==1 && !sUser::IsStaff() )
 {
   // exit
-  $oVIP->selfname = $L['Section'];
-  $oVIP->exitname = ObjTrans('index','i',$_SESSION[QT]['index_name']);
   $oHtml->PageMsg(NULL,$L['R_staff']);
 }
 if ( $oSEC->type==2 && sUser::Role()=='V' )
 {
   // exit
-  $oVIP->selfname = $L['Section'];
-  $oVIP->exitname = ObjTrans('index','i',$_SESSION[QT]['index_name']);
   $oHtml->PageMsg(NULL,$L['R_user']);
 }
 
 $oVIP->selfurl = 'qte_section.php';
-$oVIP->selfname = $L['Section'].': '.$oSEC->name;
+$oVIP->selfname = L('Section').': '.$oSEC->name;
 
 $strFlds  = ' u.*';
 $strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id';

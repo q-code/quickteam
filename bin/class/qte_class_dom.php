@@ -54,8 +54,8 @@ function Rename($str='')
   if ( !$r ) return false;
 
   // Clear session to allow reload values
-  if ( isset($_SESSION[QT]['sys_domains']) ) Unset($_SESSION[QT]['sys_domains']);
-  if ( isset($_SESSION[QT]['sys_sections']) ) Unset($_SESSION[QT]['sys_sections']);
+  memUnset('sys_domains');
+  memUnset('sys_sections');
   return true;
 }
 
@@ -83,7 +83,7 @@ public static function Drop($id)
   $oDB->QueryErr('DELETE FROM '.TABDOMAIN.' WHERE id='.$id, $error);
   cLang::Delete('domain','d'.$id);
   memUnset('sys_domains');
-  unset($_SESSION[QT]['sys_sections']);
+  memUnset('sys_sections');
   $_SESSION['L'] = array();
 }
 

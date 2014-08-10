@@ -15,6 +15,7 @@ public $type; // server type
 public $error = '';
 public $debug = false;
 public $pdo; // pdo object when using pdo.mysql
+public $stats;
 
 private $host; // server host name
 private $db;   // database name
@@ -30,6 +31,7 @@ function __construct($type,$host,$db,$user,$pwd)
   $this->db = $db;
   $this->user = $user;
   $this->pwd = $pwd;
+  if ( !empty($_SESSION['QTstatsql']) ) $this->StartStats();
   
   // Use PDO or CONNECT
   if ( $this->type==='pdo.mysql')
@@ -150,7 +152,7 @@ function Query($sql,$bShowError=true)
   default: die('db_type ['.$this->type.'] not supported.');
   }
 
-  if ( isset($this->stats) ) $this->stats['num']++;
+  if ( isset($this->stats) ) ++$this->stats['num'];
   if ( !$this->qry ) return $this->qtHalt($bShowError); // puts error message in $this->error, echos error message, and returns false
   return true; // success
 }
@@ -265,6 +267,13 @@ function Halt($bShowError=true,$bStop=false)
   if ( $bShowError && !empty($this->error) ) echo '<br/>'.$this->error;
   if ( $bStop ) exit;
   return false;
+}
+
+// --------
+
+public function StartStats()
+{
+  if ( empty($this->stats) ) $this->stats=array( 'num'=>0, 'start'=>(float)vsprintf('%d.%06d', gettimeofday()) );
 }
 
 // --------

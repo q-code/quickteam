@@ -21,10 +21,7 @@ public $coockieconfirm = false; // Will be set to TRUE when login is performed v
 public $fullname ='';
 public $picture = '';
 
-public $domains = array();  // list of domains (translated) visible for the curent user (sUser::Role())
 public $sections = array(); // list of sectionstitles (translated) visible for the curent user (sUser::Role())
-public $types = array();    // list of types
-public $statuses = array(); // list of statuses
 public $states = array();   // other info
 public $css = array();
 public $output = 'screen'; // output media (screen,print)
@@ -91,7 +88,7 @@ static function PageCode($str,$prefixsize=4)
   $arr = explode('.',substr($str,$prefixsize));
   return $arr[0];
 }
-  
+
 // --------
 
 function GetTypes()
@@ -164,24 +161,6 @@ public static function CanViewStats()
   if ( $_SESSION[QT]['show_stats']=='V' ) return true;
   if ( $_SESSION[QT]['show_stats']=='U' && sUser::Role()!='V' ) return true;
   return sUser::IsStaff();
-}
-
-// --------
-
-public function SetSys()
-{
-  memGet('sys_domains');  echo 'memGet ok<br/>';
-  memGet('sys_sections'); echo 'memGet ok<br/>';
-  memGet('sys_statuses'); echo 'memGet ok<br/>';
-  memGet('sys_members');  echo 'memGet ok<br/>';
-  memGet('sys_states');    echo 'memGet ok<br/>';
-
-  /* !! must be removed */
-  //$this->domains  = memGet('sys_domains');
-  $this->sections = memGet('sys_sections');
-  //$this->statuses = memGet('sys_statuses');
-  //$this->members  = memGet('sys_members');
-  //$this->states   = memGet('sys_states');
 }
 
 // --------
@@ -348,14 +327,36 @@ public static function SysCount($strObject='members',$strWhere='')
     return intval($row['countid']);
     break;
   case 'states':
-    $ar = array();
+    $arr = array();
       $oDB->Query('SELECT max(id) as countid FROM '.TABUSER); // where close is not used
       $row = $oDB->Getrow();
-    $ar['newuserid'] = intval($row['countid']);
+    $arr['newuserid'] = intval($row['countid']);
       $oDB->Query('SELECT username,firstname,lastname FROM '.TABUSER.' WHERE id='.$row['countid'] );
       $row = $oDB->Getrow();
-    $ar['newusername'] =  $row['firstname'].' '.$row['lastname']; if ( strlen($ar['newusername'])<3 ) $ar['newusername'] = $row['username'];
-    return $ar;
+    $arr['newusername'] =  $row['firstname'].' '.$row['lastname']; if ( strlen($arr['newusername'])<3 ) $arr['newusername'] = $row['username'];
+    return $arr;
+    break;
+  case 'brithdays':
+    switch($oDB->type)
+    {
+    // Select month
+    case 'pdo.mysql':
+    case 'mysql': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pg':    $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'ibase': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate FROM 5 FOR 4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate FROM 5 FOR 4)="'.Date('md').'"'); break;
+    case 'sqlite':$oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'db2':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'oci':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
+    default:      $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    }
+    $arr = array();
+    while($row=$oDB->Getrow())
+    {
+      if ( empty($row['lastname']) ) $row['lastname']='('.$row['username'].')';
+      $arr[] = '<a class="small" href="'.Href('qte_user.php').'?id='.$row['id'].'">'.(empty($row['firstname']) ? '' : $row['firstname'].' ').$row['lastname'].'</a>';
+      if ( isset($arr[4]) ) break; // max 5 users
+    }
+    return $arr;
     break;
   default:
   	die('SysCount: Invalid argument');

@@ -66,7 +66,7 @@ if ( isset($_POST['neworder']) )
       default: die('invalid command');
     }
     memUnset('sys_domains');
-    if ( isset($_SESSION[QT]['sys_sections']) ) Unset($_SESSION[QT]['sys_sections']);
+    memUnset('sys_sections');
     $_SESSION['pagedialog'] = 'O|'.$L['S_update'];
   }
 }
@@ -114,12 +114,12 @@ if ( !empty($a) )
     $arrList = array();
     while($row=$oDB->Getrow()) $arrList[]=intval($row['id']);
     $arrO = array_values(arrShift($arrList,$d,substr($a,2)));
-    foreach($arrO as $intKey=>$intId) 
+    foreach($arrO as $intKey=>$intId)
     {
     if ( empty($error) ) $oDB->QueryErr('UPDATE '.TABDOMAIN.' SET vorder='.$intKey.' WHERE id='.$intId, $error);
     }
     memUnset('sys_domains');
-    Unset($_SESSION[QT]['sys_sections']);
+    memUnset('sys_sections');
   }
   if ( $a=='f_up' || $a=='f_down' )
   {
@@ -131,7 +131,7 @@ if ( !empty($a) )
     {
     if ( empty($error) ) $oDB->QueryErr('UPDATE '.TABSECTION.' SET vorder='.$intKey.' WHERE id='.$intId, $error);
     }
-    Unset($_SESSION[QT]['sys_sections']);
+    memUnset('sys_sections');
   }
 }
 

@@ -21,8 +21,8 @@ $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION
 
 // Check validation (regv is created by qtx_registration and extended 15 minutes for this form)
 
-if ( !empty($_SESSION[QT]['regv']) && time()<$_SESSION[QT]['regv'] ) 
-{  
+if ( !empty($_SESSION[QT]['regv']) && time()<$_SESSION[QT]['regv'] )
+{
   $_SESSION[QT]['regv']=time()+15*60;
 }
 else
@@ -164,7 +164,7 @@ if ( isset($_POST['ok']) )
 	    }
 
 	    // Unregister global sys (will be recomputed on next page)
-	    Unset($_SESSION[QT]['sys_members']);
+	    memUnset('sys_members');
 	    Unset($_SESSION[QT]['sys_states']);
 
 	    // send email
@@ -196,7 +196,7 @@ if ( isset($_POST['ok']) )
 	    if ($_SESSION[QT]['register_mode']=='email')
 	    {
 	      $oVIP->exiturl = 'qte_index.php';
-	      $oVIP->exitname = ObjTrans('index','i',$_SESSION[QT]['index_name']);
+        $oVIP->exitname = ObjTrans('index','i');
         $oHtml->PageMsg(NULL,'<h2>'.$L['Register_completed'].'</h2><p>'.$L['Reg_mail'].'</p>');
 	    }
 	    else

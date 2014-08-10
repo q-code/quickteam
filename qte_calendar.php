@@ -75,16 +75,12 @@ if ( $a==0 ) { $strInner='INNER JOIN '.TABS2U.' s ON u.id=s.userid WHERE s.sid='
 switch($oDB->type)
 {
 // Select 2 months
-case 'mysql4':
-case 'mysql':
-case 'sqlsrv':
-case 'mssql':
-case 'pg': $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.',5,2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.',5,2)="'.$strMonthN.'")'); break;
+case 'pdo.mysql': $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.',5,2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.',5,2)="'.$strMonthN.'")'); break;
 case 'ibase': $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.' FROM 5 FOR 2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.' FROM 5 FOR 2)="'.$strMonthN.'")'); break;
 case 'sqlite':
 case 'db2':
 case 'oci': $oDB->Query('SELECT u.id,u.username,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTR(u.'.v.',5,2)="'.$strMonth.'" OR SUBSTR(u.'.$v.',5,2)="'.$strMonthN.'")'); break;
-default: die('Unknown db type '.$oDB->type);
+default: $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.',5,2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.',5,2)="'.$strMonthN.'")');
 }
 while($row=$oDB->Getrow())
 {

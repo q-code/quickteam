@@ -37,7 +37,7 @@ $ps = 0; // section users page
 $pa = 0; // all users page
 
 QThttpvar('s n ps pa','int str int int');
-if ( !isset($_SESSION[QT]['sys_members']) ) $_SESSION[QT]['sys_members']=0;
+$iN = memGet('sys_members');
 
 if ( $s<0 ) die('Wrong id in '.$oVIP->selfurl);
 // name display: l=lastname, f=firstnamen, u=username
@@ -49,7 +49,7 @@ $arrN = array('lf'=>"$strLastname $strFirstname",'lfu'=>"$strLastname $strFirstn
 if ( !array_key_exists($n,$arrN) ) die('Wrong parameter n');
 
 $showsection = 'all'; if ( isset($_POST['showsection']) ) $showsection =$_POST['showsection'];
-$showusers = ($_SESSION[QT]['sys_members']>25 ? 'lost' : 'all'); if ( isset($_POST['showusers']) ) $showusers = $_POST['showusers'];
+$showusers = ($iN>25 ? 'lost' : 'all'); if ( isset($_POST['showusers']) ) $showusers = $_POST['showusers'];
 $showsystemstatus = 'all'; if ( isset($_POST['showsystemstatus']) ) $showsystemstatus = $_POST['showsystemstatus'];
 $showsectionstatus = 'all'; if ( isset($_POST['showsectionstatus']) ) $showsectionstatus = $_POST['showsectionstatus'];
 
@@ -271,7 +271,7 @@ echo '<td class="reg">',PHP_EOL;
 
 echo '<span class="small">',$L['Show'],':</span><br />',PHP_EOL;
 echo '<select name="showusers" id="showusers" size="1" onchange="filterusers_chg();">',PHP_EOL;
-if ( $_SESSION[QT]['sys_members']>10 )
+if ( $iN>10 )
 {
 echo '<optgroup label="'.L('System').'">',PHP_EOL;
 echo '<option value="all"',($showusers==='all' ? QSEL : ''),'>',$L['Users_reg'],'</option>';
@@ -286,7 +286,7 @@ echo '<option value="all"',($showusers==='all' ? QSEL : ''),'>',$L['Users_reg'],
 echo '<option value="lost"',($showusers==='lost' ? QSEL : ''),'>',$L['Users_not_in_team'],'</option>',PHP_EOL;
 }
 echo '</select>',PHP_EOL;
-if ( $_SESSION[QT]['sys_members']>10 && (count($arrShowusers)>10 || $showsystemstatus!=='all') )
+if ( $iN>10 && (count($arrShowusers)>10 || $showsystemstatus!=='all') )
 {
   // list of statuses as [key - status]
   $str = '<option value="all"'.($showsystemstatus==='all' ? QSEL : '').'>&nbsp;&nbsp;&nbsp;('.L('all').')</option>'.PHP_EOL;
@@ -345,7 +345,7 @@ if ( $s==0 ) echo '<p class="small">'.$L['H_Moving_0'].'</p>';
 // HTML END
 // --------
 
-if ( !$bShowtoc ) { $oVIP->exiturl='qte_index.php'; $oVIP->exitname=ObjTrans('index','i',$_SESSION[QT]['index_name']); }
+if ( !$bShowtoc ) { $oVIP->exiturl='qte_index.php'; $oVIP->exitname=ObjTrans('index','i'); }
 
 echo '<p><a href="',$oVIP->exiturl,'">',$oVIP->exitname,'</a> &middot; ',$L['Goto'],' <a href="qte_section.php?s=',$oSEC->id,'" target="_top">',$oSEC->name,'</a></p>';
 

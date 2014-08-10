@@ -7,16 +7,17 @@ function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAl
   if ( is_int($arrReject) || is_string($arrReject) ) $arrReject = array((int)$arrReject);
   if ( is_int($arrDisabled) || is_string($arrDisabled) ) $arrDisabled = array((int)$arrDisabled);
   QTargs('Sectionlist',array($arrReject,$arrDisabled,$strAll),array('arr','arr','str'));
-  global $oVIP;
+
   $str = '';
+  $arrSections = memGet('sys_sections');
 
   if ( !empty($strAll) ) $str ='<option value="*"'.($selected==='*' ? QSEL : '').(in_array('*',$arrDisabled,true) ? ' disabled="disabled"': '').'>'.(strlen($strAll)>20 ? substr($strAll,0,19).'...' : $strAll).'</option>';
 
-  if ( isset($oVIP->sections) ) {
-  if ( count($oVIP->sections)>0 ) {
+  if ( is_array($arrSections) && isset($arrSections[0]) )
+  {
 
     // reject
-    $arr = $oVIP->sections;
+    $arr = arrSections;
     if ( count($arrReject)>0 ) { foreach($arrReject as $id) if ( isset($arr[$id]) ) unset($arr[$id]); }
 
     // format
@@ -39,7 +40,7 @@ function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAl
       foreach($arr as $id=>$strSection) $str .= '<option value="'.$id.'"'.($id===$selected ? QSEL : '').(in_array($id,$arrDisabled,true) ? ' disabled="disabled"': '').'>'.$strSection.'</option>';
     }
 
-  }}
+  }
   return $str;
 }
 

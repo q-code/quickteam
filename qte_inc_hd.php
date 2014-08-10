@@ -91,7 +91,7 @@ $arrMenus[]=array('h'=>true, 'f'=>true, 'n'=>$_SESSION[QT]['home_name'], 'u'=>$_
 }
 $arrMenus[]=array('h'=>false,'f'=>true, 'n'=>L('Legal'), 'u'=>'qte_privacy.php');
 //$arrMenus[]=array('h'=>false,'f'=>true, 'n'=>L('FAQ'), 'u'=>'qte_faq.php');
-$arrMenus[]=array('h'=>true, 'f'=>false,'n'=>ObjTrans('index','i',$_SESSION[QT]['index_name']), 'u'=>'qte_index.php', 's'=>'qte_index.php qte_section.php qte_calendar.php qte_privacy.php', 'secondary'=>true);
+$arrMenus[]=array('h'=>true, 'f'=>false,'n'=>ObjTrans('index','i'), 'u'=>'qte_index.php', 's'=>'qte_index.php qte_section.php qte_calendar.php qte_privacy.php', 'secondary'=>true);
 $arrMenus[]=array('h'=>true, 'f'=>true, 'n'=>L('Search'), 'u'=>( $_SESSION[QT]['board_offline']=='1' || (sUser::Role()=='V' && $_SESSION[QT]['visitor_right']<3) ? '' : 'qte_search.php'),'s'=>'qte_search.php');
 if ( cVIP::CanViewStats() )
 {
@@ -162,11 +162,11 @@ echo '
 echo '
 <!-- top bar -->
 <div class="bodyhd">
-<div class="bodyhdleft"><a class="body_hd" href="',Href('qte_index.php'),'"',($oVIP->selfurl=='qte_index.php' ? ' onclick="return false;"' : ''),'>',ObjTrans('index','i',$_SESSION[QT]['index_name']),'</a>';
+<div class="bodyhdleft"><a class="body_hd" href="',Href('qte_index.php'),'"',($oVIP->selfurl=='qte_index.php' ? ' onclick="return false;"' : ''),'>',ObjTrans('index','i'),'</a>';
 if ( isset($_SESSION[QT]['section']) && $_SESSION[QT]['section']>=0 )
 {
 	if ( !isset($q) ) $q='';
-  echo QTE_CRUMBTRAIL,'<a class="body_hd" href="',Href('qte_section.php'),'?s=',$_SESSION[QT]['section'],'"',($oVIP->selfurl=='qte_section.php' && empty($q) ? ' onclick="return false;"' : ''),'>',ObjTrans('sec','s'.$_SESSION[QT]['section'],(isset($oSEC) ? $oSEC->name : $_SESSION[QT]['sys_sections'][$_SESSION[QT]['section']])),'</a>';
+  echo QTE_CRUMBTRAIL,'<a class="body_hd" href="',Href('qte_section.php'),'?s=',$_SESSION[QT]['section'],'"',($oVIP->selfurl=='qte_section.php' && empty($q) ? ' onclick="return false;"' : ''),'>',ObjTrans('sec','s'.$_SESSION[QT]['section'],(isset($oSEC) ? $oSEC->name : true)),'</a>';
 }
 
 echo '</div>

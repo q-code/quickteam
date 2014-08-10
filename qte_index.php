@@ -31,8 +31,8 @@ if ( $_SESSION[QT]['visitor_right']<1 && sUser::Role()=='V' ) { $oHtml->PageMsg(
 // INITIALIZE
 // --------
 
-if ( isset($_SESSION[QT]['section']) ) unset($_SESSION[QT]['section']); // previous section
-$arrSections = GetSections(sUser::Role(),-2); // Get all sections at once (grouped by domain)
+unset($_SESSION[QT]['section']); // previous section
+$arrSections = SectionsByDomain(sUser::Role());
 
 // --------
 // HTML START
@@ -73,10 +73,9 @@ $intSec = 0;
 
 foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
 {
-	if ( isset($arrSections[$intDomid]) ) {
-  if ( count($arrSections[$intDomid])>0 ) {
-
-    $intDom++;
+  ++$intDom;
+  if ( isset($arrSections[$intDomid]) )
+  {
     if ( $intDom>1 ) echo '<div class="dom-sep"></div>',PHP_EOL;
     echo '<!-- domain ',$intDomid,': ',$strDomtitle,' -->',PHP_EOL;
     $table->row = new cTableRow('', 't-sec');
@@ -91,7 +90,7 @@ foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
 
     foreach($arrSections[$intDomid] as $intSection=>$arrSection)
     {
-      $intSec++;
+      ++$intSec;
       $oSEC = new cSection($arrSection,(isset($arrLastPostId[$intSection]) ? $arrLastPostId[$intSection] : false)); //use query optimisation
       $table->row = new cTableRow('wayin_'.$oSEC->id, 't-sec '.$strAlt.' hover wayin');
       $table->td[0]->content = AsImg($oSEC->GetIcon(),'F',$L['Ico_section_'.$oSEC->type.'_'.$oSEC->status],'i-sec','',Href('qte_section.php?s='.$oSEC->id));
@@ -104,8 +103,7 @@ foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
     }
     echo '</tbody>',PHP_EOL;
     echo '</table>',PHP_EOL;
-
-  }}
+  }
 }
 
 // No public section

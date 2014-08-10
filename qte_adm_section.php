@@ -110,8 +110,7 @@ if ( isset($_POST['ok']) )
 
     $_SESSION['L']['sec'] = cLang::Get('sec',QTiso(),'*');
     $_SESSION['L']['secdesc'] = cLang::Get('secdesc',QTiso(),'*');
-    Unset($oVIP->sections);
-    Unset($_SESSION[QT]['sys_notifysections']);
+    memUnset('sys_sections');
 
     // edit saved
     $_SESSION['pagedialog'] = 'O|'.$L['S_update'];

@@ -138,8 +138,7 @@ case 'qte_adm_users.php':
     if ( empty($error) )
     {
       // Unregister global sys (will be recomputed on next page)
-      Unset($_SESSION[QT]['sys_members']);
-      Unset($_SESSION[QT]['sys_newuserid']);
+      memUnset('sys_members');
 
       // send email
       if ( isset($_POST['notify']) )

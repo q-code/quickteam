@@ -18,13 +18,12 @@ function GetSetting($key='',$default='',$db=true)
   global $oDB;
   $oDB->Query('SELECT setting FROM '.TABSETTING.' WHERE param="'.$key.'"');
   $row=$oDB->Getrow();
-  if ( isset($row['setting']) ) return (string)$row['setting'];
+  if ( isset($row['setting']) ) { $_SESSION[QT][$key] = (string)$row['setting']; return $_SESSION[QT][$key]; }
   }
 
   // Uses default
   return $default;
 }
-
 
 // --------
 
@@ -55,30 +54,31 @@ function EmptyFloat($i)
 
 // --------
 
-function ObjTrans($strType,$strId,$strGenerate=' ',$intMax=0,$strTrunc='...')
+function ObjTrans($strType,$strId,$generate=true,$intMax=0,$strTrunc='...')
 {
   // This function returns the translation of the objid
-  // When translation is not defined and generate is true, returns the ucfirst(objid)
-  // otherwise, returns ''
+  // When translation is not defined, the function can generate it ($generate=true or a string)
+  // When $generate is true (no string) the most appropriate replacement is generated
   // When $intMax>1, the text is truncated to intMax characters and the $strTrunc is added.
 
   $str = '';
   if ( isset($_SESSION['L'][$strType][$strId]) ) $str = $_SESSION['L'][$strType][$strId];
-  if ( empty($str) && $strGenerate )
+  if ( empty($str) && $generate )
   {
     switch($strType)
     {
-    case 'field': $str = ucfirst(str_replace('_',' ',$strId)); break;
-    case 'ffield': $str = $strGenerate; break;
-    case 'tab': $str = ucfirst(str_replace('_',' ',$strId)); break;
-    case 'tabdesc': $str = $strGenerate; break;
-    case 'index': $str = GetSetting('index_name','Index'); break;
-    case 'domain': $str = $strGenerate; break;
-    case 'sec': $str = $strGenerate; break;
-    case 'secdesc': $str = $strGenerate; break;
+    case 'index': $str = (is_string($generate) ? $generate : GetSetting('index_name','Index')); break;
+    case 'domain':
+    case 'sec':
+    case 'field':
+    case 'tab': $str = (is_string($generate) ? $generate : ucfirst($strType.' '.$strId)); break;
+    case 'ffield': $str = (is_string($generate) ? $generate : '%s'); break;
+    case 'secdesc':
+    case 'tabdesc': $str = (is_string($generate) ? $generate : ''); break;
+    default: $str = (is_string($generate) ? $generate : ucfirst(str_replace('_',' ',$strId))); break;
     }
   }
-  if ( $intMax>1 && strlen($str)>$intMax ) return substr($str,0,$intMax).$strTrunc;
+  if ( $intMax>1 && isset($str[$intMax]) ) return substr($str,0,$intMax).$strTrunc;
   return $str;
 }
 
@@ -92,8 +92,7 @@ function LimitSQL($strState,$strOrder,$intStart=0,$intLength=50)
 	$strOrder = trim($strOrder); if ( substr($strOrder,-3,3)!='ASC' && substr($strOrder,-4,4)!='DESC' ) $strOrder .= ' ASC';
 	switch($oDB->type)
 	{
-		case 'mysql4':
-		case 'mysql': return "SELECT $strState ORDER BY $strOrder LIMIT $intStart,$intLength"; break;
+    case 'pdo.mysql': return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
 		case 'sqlsrv':
 		case 'mssql': return ($intStart==0 ? "SELECT TOP $intLength $strState ORDER BY $strOrder" : "WITH OrderedRows AS (SELECT ROW_NUMBER() OVER (ORDER BY $strOrder) AS RowNumber, $strState) SELECT * FROM OrderedRows WHERE RowNumber BETWEEN ".($intStart+1)." AND ".($intStart+$intLength)); break;
 		case 'pg': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
@@ -101,7 +100,7 @@ function LimitSQL($strState,$strOrder,$intStart=0,$intLength=50)
 		case 'sqlite': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
 		case 'db2': return ($intStart==0 ? "SELECT $strState ORDER BY $strOrder FETCH FIRST $intLength ROWS ONLY" : "SELECT * FROM (SELECT ROW_NUMBER() OVER() AS RN, $strState) AS cols WHERE RN BETWEEN ($intStart+1) AND ($intStart+1+$intLength)"); break;
 		case 'oci': return ($intStart==0 ? "SELECT * FROM (SELECT $strState ORDER BY $strOrder) WHERE ROWNUM<$intLength" : "SELECT * FROM (SELECT a.*, rownum RN FROM (SELECT $strState ORDER BY $strOrder) a WHERE rownum<$intStart+1+$intLength) WHERE rn>=$intStart"); break;
-		default: die('LimitSQL: Unknown db type '.$oDB->type);
+    default: return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
 	}
 }
 
@@ -110,8 +109,7 @@ function FirstCharCase($strField,$strCase='u',$len=1)
 	global $oDB;
 	switch($oDB->type)
 	{
-		case 'mysql4':
-		case 'mysql':
+    case 'pdo.mysql':
 			if ( $strCase=='u' ) return "UPPER(LEFT($strField,$len))";
       if ( $strCase=='l' ) return "LOWER(LEFT($strField,$len))";
 			if ( $strCase=='a-z' ) return "UPPER($strField) NOT REGEXP '^[A-Z]'";
@@ -144,7 +142,10 @@ function FirstCharCase($strField,$strCase='u',$len=1)
 			if ( $strCase=='a-z' ) return "(ASCII(UPPER(SUBSTR($strField,1,1)))<65 OR ASCII(UPPER(SUBSTR($strField,1,1)))>90)";
 			break;
 		default:
-			die('FirstCharCase: Unknown db type '.$oDB->type);
+      if ( $strCase=='u' ) return "UPPER(LEFT($strField,$len))";
+      if ( $strCase=='l' ) return "LOWER(LEFT($strField,$len))";
+      if ( $strCase=='a-z' ) return "UPPER($strField) NOT REGEXP '^[A-Z]'";
+      break;
 	}
 }
 
@@ -155,16 +156,13 @@ function SqlDateCondition($strDate='',$strField='firstpostdate',$intLength=4,$st
   if ( $strDate==='old' ) { $strDate = '<"'.(Date('Y')-3).'"'; } else { $strDate = $strComp.'"'.$strDate.'"'; }
   switch($oDB->type)
   {
-  case 'mysql4':
-  case 'mysql':
-  case 'sqlsrv':
-  case 'mssql': return 'LEFT('.$strField.','.$intLength.')'.$strDate; break;
+  case 'pdo.mysql': return 'LEFT('.$strField.','.$intLength.')'.$strDate; break;
   case 'pg': return 'SUBSTRING('.$strField.',1,'.$intLength.')'.$strDate; break;
   case 'ibase': return 'SUBSTRING('.$strField.' FROM 1 FOR '.$intLength.')'.$strDate; break;
   case 'sqlite':
   case 'db2':
   case 'oci': return 'SUBSTR('.$strField.',1,'.$intLength.')'.$strDate; break;
-  default: die('Unknown db type '.$oDB->type);
+  default: return 'LEFT('.$strField.','.$intLength.')'.$strDate;
   }
 }
 
@@ -180,7 +178,7 @@ function explodeall($sep=';,',$str,$max=null,$bClean=true,$bTrim=true)
   if ( is_string($sep) ) $sep = str_split($sep);
   if ( !is_array($sep) || !is_string($str) || !is_bool($bClean) || !is_bool($bTrim) ) die('explodeall: invalid argument');
   if ( count($sep)==1 ) return (isset($max) ? explode($sep[0],$str,$max) : explode($sep[0],$str) );
-  
+
   if ( $bTrim ) $str = trim($str);
   $str = str_replace($sep, $sep[0], $str); // all separators are translated to primary separator
   if ( $bClean ) while ( strpos($str,$sep[0].$sep[0])!==false ) $str = str_replace($sep[0].$sep[0],$sep[0],$str); // remove duplicate separator
@@ -557,20 +555,18 @@ function GetDomains()
 
 function GetSections($strRole='V',$intDomain=-1,$arrReject=array(),$strExtra='',$strOrder='d.vorder,s.vorder')
 {
-  // Returns an array of [key] section id, array of [values] section
-  // Use $intDomain to get section in this domain only
-  // $intDomain=-1 mean in alls domains. -2 means in all domains but grouped by domain
-  // Attention: using $intDomain -2, when a domains does NOT contains sections, this key is NOT existing in the returned list !
-  if ( is_int($arrReject) || is_string($arrReject) ) $arrReject = array($arrReject);
+  // Returns an array of sections. The format is $arrSection[sectionid] = array of section info (all fields from the database)
+  // Use $intDomain to get sections in this domain only.
+  // $intDomain=-1 returns sections in all domains.
+  // $intDomain=-2 returns sections grouped by domain (see definition in SectionsByDomain)
+  if ( is_int($arrReject) || is_string($arrReject) ) $arrReject = array((int)$arrReject);
   QTargs( 'GetSections',array($strRole,$intDomain,$arrReject,$strExtra,$strOrder),array('str','int','arr','str','str') );
-
-  global $oDB;
-
   if ( $intDomain>=0 ) { $strWhere = 's.domainid='.$intDomain; } else { $strWhere = 's.domainid>=0'; }
-  if ( $strRole=='V' || $strRole=='U' ) $strWhere .= ' AND s.type<>"1"';
+  if ( $strRole==='V' || $strRole==='U' ) $strWhere .= ' AND s.type<>"1"';
   if ( !empty($strExtra) ) $strWhere .= ' AND '.$strExtra;
-
   $arrSections = array();
+  
+  global $oDB;
   $oDB->Query('SELECT s.* FROM '.TABSECTION.' s INNER JOIN '.TABDOMAIN.' d ON s.domainid=d.id WHERE '.$strWhere.' ORDER BY '.$strOrder);
   while($row=$oDB->Getrow())
   {
@@ -586,7 +582,7 @@ function GetSections($strRole='V',$intDomain=-1,$arrReject=array(),$strExtra='',
     // compile sections
     if ( $intDomain==-2 )
     {
-    $arrSections[(int)$arr[$id]['domainid']][$id] = $arr[$id];
+    $arrSections = SectionsByDomain($strRole,$arr);
     }
     else
     {
@@ -594,6 +590,25 @@ function GetSections($strRole='V',$intDomain=-1,$arrReject=array(),$strExtra='',
     }
   }
   return $arrSections;
+}
+
+// --------
+
+function SectionsByDomain($role='',$arrSections=array())
+{
+  // Returns an array of domains+sections. The format is $arr[domainid][sectionid] = array of section info 
+  // Role is used to hide the protected sections.
+  // If an argument is empty, uses the current role/list of sections. 
+  // When a domain don't have sections, it is not returned ($arr[domainid] is not set). 
+  $arr = array();
+  if ( empty($arrSections) ) $arrSections = memGet('sys_sections');  
+  if ( empty($role) ) $role = sUser::Role();
+  foreach($arrSections as $id=>$arrSection)
+  {
+    if ( ($role==='V' || $role==='U') && isset($arrSection[$id]['type']) && $arrSection[$id]['type']==='1' ) continue;
+    $arr[(int)$arrSection['domainid']][$id] = $arrSection;
+  }
+  return $arr;
 }
 
 // --------
@@ -624,20 +639,16 @@ function GetSectionTitles($strRole='V',$intDomain=-1,$intReject=-1,$strExtra='')
   $oDB->Query('SELECT id,title FROM '.TABSECTION.' WHERE '.$strWhere.' ORDER BY vorder' );
   while ( $row = $oDB->Getrow() )
   {
-    $id = intval($row['id']);
-    $arr[$id] = stripslashes($row['title']);
-    // search translation
-    if ( isset($oVIP->sections[$id]) ) {
-    if ( !empty($oVIP->sections[$id]) ) {
-      $arr[$id] = $oVIP->sections[$id];
-    }}
+    $id = (int)$row['id'];
+    $arr[$id] = $row['title'];
+    // search translation (without auto generate)
+    $str = ObjTrans('sec',$id,false);
+    if ( !empty($str) ) $arr[$id] = $str;
   }
 
-  if ( count($arr)>0 )
-  {
-    // reject
-    if ( $intReject>=0 ) unset($arr[$intReject]);
-  }
+  // if reject
+  if ( $intReject>=0 && isset($arr[$intReject]) ) unset($arr[$intReject]);
+
   return $arr;
 }
 

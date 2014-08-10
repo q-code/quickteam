@@ -34,7 +34,7 @@ $_SESSION[QT]['section']= $s; // previous section
 
 $oVIP->selfurl = 'qte_section.php';
 $oVIP->selfname = $L['Section'];
-$oVIP->exitname = ObjTrans('index','i',ObjTrans('index','i',$_SESSION[QT]['index_name']));
+$oVIP->exitname = ObjTrans('index','i');
 
 $strFlds  = ' u.*';
 $strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id';
@@ -308,7 +308,7 @@ $arrRow=array(); // rendered row. To remove duplicate in seach result
 $intRow=0; // count row displayed
 
 while($row=$oDB->Getrow())
-{ 
+{
 
   if ( in_array((int)$row['id'], $arrRow) ) continue; // this remove duplicate users in case of search result
   if ( empty($row['lastname']) ) $row['lastname']='('.L('unknown').')';
