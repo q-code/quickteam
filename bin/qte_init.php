@@ -55,10 +55,10 @@ define('QTE_URLREWRITE', false);
 // Rewriting url requires that your server is configured with following rule for the application folder: RewriteRule ^(.+)\.html(.*) qte_$1.php$2 [L]
 // This can NOT be activated if you application folder contains html pages (they will not be accessible anymore when urlrewriting is acticated)
 
-define('QTE_MEMCACHE_HOST', 'localhost');    // Memcache allow storing frequently used values in memcache server (instead of runnning sql requests)
-define('QTE_MEMCACHE_PORT', 11211);          // memcahce port (integer). Default port is 11211.
-// If memcache is not available on your server use false as host. Ex: define('QTE_MEMCACHE_HOST', false);
-// otherwise define your host name. Ex: define('QTE_MEMCACHE_HOST', 'localhost');
+define('MEMCACHE_HOST', 'localhost');    // Memcache allow storing frequently used values in memcache server (instead of runnning sql requests)
+define('MEMCACHE_PORT', 11211);          // memcahce port (integer). Default port is 11211.
+// If memcache is not available on your server use false as host. Ex: define('MEMCACHE_HOST', false);
+// otherwise define your host name. Ex: define('MEMCACHE_HOST', 'localhost');
 
 // -----------------
 // JQUERY (this can be changed by webmaster)

@@ -5,7 +5,7 @@
 // ========
 
 // Memcache usage: This mechanism put in memory frequently used objects (i.e. list of domains, sections, statuses...)
-// memcacheCreate() initialize and open connection (if QTE_MEMCACHE_HOST is defined). Can return false with a warning message.
+// memcacheCreate() initialize and open connection (if MEMCACHE_HOST is defined). Can return false with a warning message.
 // memGet()
 // memSet() use memcache library OR session variables (i.e. when memcache is disable or when memcache daemon faill to respond)
 // memcacheGet()
@@ -21,16 +21,16 @@
 function memcacheCreate(&$warning)
 {
   $memcache=false;
-  if ( QTE_MEMCACHE_HOST )
+  if ( MEMCACHE_HOST )
   {
     if ( class_exists('Memcache') )
     {
     $memcache = new Memcache;
-    if ( !$memcache->connect(QTE_MEMCACHE_HOST,QTE_MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in qte_init...'; $memcache=false; }
+    if ( !$memcache->connect(MEMCACHE_HOST,MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in qte_init...'; $memcache=false; }
     }
     else
     {
-    $warning='Memcache library not found. Turn this option to false in qte_init...';
+    $warning='Memcache library not found. Turn this option to false in '.APP.'_init...';
     $memcache=false;
     }
   }
@@ -44,16 +44,7 @@ function memGet($key,$default=false)
     // Check session if not in memcache
     if ( isset($_SESSION[QT][$key]) ) return $_SESSION[QT][$key];
     // Regenerate when not in memory
-    switch($key)
-    {
-    case 'sys_domains': $obj = GetDomains(); break;
-    case 'sys_sections': $obj = GetSections('A'); break; // attention this get ALL sections
-    case 'sys_statuses': $obj = cVIP::GetStatuses(); break;
-    case 'sys_members': $obj = cVIP::SysCount('members'); break;
-    case 'sys_states': $obj = cVIP::SysCount('states'); break;
-    case 'sys_birthdays': $obj = cVIP::SysCount('birthdays'); break;
-    default: $obj = $default;
-    }
+    $obj = cVIP::SysInit($key,$default);
     memSet($key,$obj);
   }
   return $obj;
@@ -76,7 +67,7 @@ function memcacheQuery($key,$sql,$timeout=300)
   if ( empty($key) ) $key = md5('query'.$sql);
 
   // Get the cache from memcache
-  if ( ($cache=memcacheGet($key))!==false )
+  if ( ($cache=memcacheGet($key))===false )
   {
     // If no cache response, runs the query to populate $cache
     $cache = false;

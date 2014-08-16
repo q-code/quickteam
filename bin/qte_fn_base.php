@@ -31,15 +31,14 @@ function GetParam($bRegister=false,$strWhere='')
 {
   global $oDB;
   $arrParam = array();
-  $oDB->Query('SELECT param,setting FROM '.TABSETTING.(empty($strWhere) ? '' : ' WHERE '.$strWhere));
-  while($row=$oDB->Getrow())
+  $oDB->Query('SELECT param,setting FROM '.TABSETTING.(empty($strWhere) ? '' : ' WHERE '.$strWhere) );
+  while ($row = $oDB->Getrow())
   {
-  $arrParam[$row['param']]=$row['setting'];
-  if ( $bRegister ) $_SESSION[QT][$row['param']]=$row['setting'];
+  $arrParam[$row['param']]=strval($row['setting']);
+  if ( $bRegister ) $_SESSION[QT][$row['param']]=strval($row['setting']);
   }
-  Return $arrParam;
+  return $arrParam;
 }
-
 
 // --------
 

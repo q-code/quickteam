@@ -35,7 +35,6 @@ class cHtml
 {
 
 public $dtd = '<!DOCTYPE html>'; // default is html 5
-public $file;
 public $html = '<html>'; // can be use to include xml attributes (see constructor)
 public $title = '';
 public $metas = array(); // List of meta declarations. Recommandation: Use the meta 'name' as array key to void double metas when adding a new meta
@@ -89,12 +88,12 @@ return implode(PHP_EOL,$this->scripts_end).PHP_EOL.'</body>'.PHP_EOL.'</html>';
 
 // ------
 
-public static function Page($i=1)
+public static function Page($i=1,$extraclass='')
 {
 
 switch($i)
 {
-case 1:  return PHP_EOL.'<!-- START PAGE -->'.PHP_EOL.'<div class="page">'.PHP_EOL.PHP_EOL; break;
+case 1:  return PHP_EOL.'<!-- START PAGE -->'.PHP_EOL.'<div class="page'.(empty($extraclass) ? '' : ' '.$extraclass).'">'.PHP_EOL.PHP_EOL; break;
 case -1: return PHP_EOL.'<!-- END PAGE -->'.PHP_EOL.'</div><div id="pagedialog"></div>'.PHP_EOL.PHP_EOL; break;
 default: die('Unknown Html->page value');
 }
@@ -156,26 +155,26 @@ echo '<div'.(isset($arrBoxBody['id']) ? ' id="'.$arrBoxBody['id'].'"' : '').(iss
 }
 
 // --------
-// Page box is replaced by PageMsg()
+// PageBox is replaced by PageMsg()
 function PageBox($strTitle,$strMessage='Access denied',$strSkin='admin',$intTime=0,$strWidth='300px',$strTitleId='msgboxtitle',$strBodyId='msgbox') { $this->PageMsg($strTitle,$strMessage,$intTime,$strWidth,$strTitleId,$strBodyId,'',$strSkin); }
-function PageMsgAdm($strTitle,$strMessage='Access denied',$intTime=0,$strWidth='300px',$strTitleId='msgboxtitle',$strBodyId='msgbox',$qte_root='') { $this->PageMsg($strTitle,$strMessage,$intTime,$strWidth,$strTitleId,$strBodyId,$qte_root,'admin'); }
-function PageMsg($strTitle,$strMessage='Access denied',$intTime=0,$strWidth='300px',$strTitleId='msgboxtitle',$strBodyId='msgbox',$qte_root='',$strSkin='')
+function PageMsgAdm($strTitle,$strMessage='Access denied',$intTime=0,$strWidth='300px',$strTitleId='msgboxtitle',$strBodyId='msgbox',$root='') { $this->PageMsg($strTitle,$strMessage,$intTime,$strWidth,$strTitleId,$strBodyId,$root,'admin'); }
+function PageMsg($strTitle,$strMessage='Access denied',$intTime=0,$strWidth='300px',$strTitleId='msgboxtitle',$strBodyId='msgbox',$root='',$strSkin='')
 {
 
 global $oVIP;
 if ( empty($strTitle) ) $strTitle = $oVIP->selfname;
 if ( empty($strSkin) && !empty($_SESSION[QT]['skin_dir']) ) $strSkin = $_SESSION[QT]['skin_dir'];
-if ( empty($strSkin) ) $strSkin = $qte_root.'admin';
+if ( empty($strSkin) ) $strSkin = $root.'admin';
 
 $this->links   = array();
-$this->links[] = '<link rel="shortcut icon" href="'.$strSkin.'/'.$this->file.'_icon.ico" />';
+$this->links[] = '<link rel="shortcut icon" href="'.$strSkin.'/'.APP.'_icon.ico" />';
 $this->links[] = '<link rel="stylesheet" type="text/css" href="'.$strSkin.'/qt_base.css" />';
-$this->links[] = '<link rel="stylesheet" type="text/css" href="'.$strSkin.'/'.$this->file.'_layout.css" />';
+$this->links[] = '<link rel="stylesheet" type="text/css" href="'.$strSkin.'/'.APP.'_layout.css" />';
 $this->links[] = '<link rel="prev" id="exiturl" href="'.$oVIP->exiturl.'" />';
 
 echo $this->Head();
 echo $this->Body();
-echo cHtml::Page(START);
+echo cHtml::Page(1,'pagemsg');
 
 // in case of error code
 if ( is_int($strTitle) )
@@ -183,7 +182,7 @@ if ( is_int($strTitle) )
   $e = $strTitle;
   if ( $e==99 )
   {
-  $strFile = Translate('sys_offline.txt');
+  $strFile = $root.Translate('sys_offline.txt',false);
   if ( file_exists($strFile) ) { $strMessage=file_get_contents($strFile); } else { $strMessage=Error(10); }
   }
   else
@@ -196,8 +195,8 @@ if ( is_int($strTitle) )
 $this->Msgbox($strTitle,array('style'=>'width:'.$strWidth),array('id'=>$strTitleId),array('id'=>$strBodyId));
 echo $strMessage,'
 <p><a id="exiturl" href="',Href($oVIP->exiturl),'">',$oVIP->exitname,'</a></p>';
-$this->Msgbox(END);
-echo cHtml::Page(END);
+$this->Msgbox(-1);
+echo cHtml::Page(-1);
 
 if ( $intTime>0 )
 {

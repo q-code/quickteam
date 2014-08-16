@@ -377,4 +377,19 @@ public function Logout()
 
 // --------
 
+public static function SysInit($key,$default=false)
+{
+  switch($key)
+  {
+  case 'sys_domains': $obj = GetDomains(); break;
+  case 'sys_sections': $obj = GetSections('A'); break; // attention this get ALL sections
+  case 'sys_statuses': $obj = cVIP::GetStatuses(); break;
+  case 'sys_members': $obj = cVIP::SysCount('members'); break;
+  case 'sys_states': $obj = cVIP::SysCount('states'); break;
+  case 'sys_birthdays': $obj = cVIP::SysCount('birthdays'); break;
+  default: $obj = $default;
+  }
+  return $obj;
+}
+
 }

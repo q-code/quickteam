@@ -71,8 +71,8 @@ public function Connect()
   switch($this->type)
   {
   case 'mysql4':
-  case 'mysql': $this->con = mysql_connect($this->dsn,$this->user,$this->pwd); break;
-  case 'pg': $this->con = pg_connect('host='.$this->dsn.' dbname='.$this->db.' user='.$this->user.' password='.$this->pwd); break;
+  case 'mysql': $this->con = mysql_connect($this->host,$this->user,$this->pwd); break;
+  case 'pg': $this->con = pg_connect('host='.$this->host.' dbname='.$this->db.' user='.$this->user.' password='.$this->pwd); break;
   case 'ibase': $this->con = ibase_connect($this->host.':'.$this->db,$this->user,$this->pwd); break;
   case 'sqlite': $this->con = sqlite_open($this->db,0666,$e) or die($e); break;
   case 'sqlsrv':
@@ -153,12 +153,19 @@ function Query($sql,$bShowError=true)
   }
 
   if ( isset($this->stats) ) ++$this->stats['num'];
-  if ( !$this->qry ) return $this->qtHalt($bShowError); // puts error message in $this->error, echos error message, and returns false
+  if ( !$this->qry ) return $this->Halt($bShowError); // puts error message in $this->error, echos error message, and returns false
   return true; // success
+}
+function ExecErr($strSql,&$error,$bShowError=false)
+{
+  // same as Query but add the error in $error (passed by reference) and direct display is disabled
+  if ( !$this->Exec($strSql,$bShowError) ) { $error = $this->error; return false; }
+  return true;
 }
 function Exec($sql,$bShowError=true)
 {
   if ( $this->debug || isset($_SESSION['QTdebugsql']) ) printf('<p class="small" style="margin:1px">SQL: %s</p>',$sql);
+  if ( isset($this->stats) ) ++$this->stats['num'];
   if ( $this->type==='pdo.mysql' )
   {
       try
@@ -273,7 +280,8 @@ function Halt($bShowError=true,$bStop=false)
 
 public function StartStats()
 {
-  if ( empty($this->stats) ) $this->stats=array( 'num'=>0, 'start'=>(float)vsprintf('%d.%06d', gettimeofday()) );
+  $t = (float)vsprintf('%d.%06d', gettimeofday());
+  $this->stats=array( 'num'=>0, 'start'=>$t, 'pagestart'=>$t );
 }
 
 // --------
