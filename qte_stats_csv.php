@@ -47,7 +47,7 @@ $arrUs = array();// Users sum
 foreach($arrYears as $intYear)
 {
   $arrU[$intYear] = array();
-  for ($i=1;$i<=12;$i++)
+  for ($i=1;$i<=12;++$i)
   {
   $arrA[$i]=$L['dateMM'][$i];
   $arrU[$intYear][$i]=null;
@@ -56,7 +56,7 @@ foreach($arrYears as $intYear)
 }
 
 foreach($arrYears as $intYear) {
-for ($intBt=1;$intBt<=12;$intBt++) {
+for ($intBt=1;$intBt<=12;++$intBt) {
 
   // check limits (startdate/enddate)
 
@@ -76,7 +76,7 @@ for ($intBt=1;$intBt<=12;$intBt++) {
 // Table header
 
 $strCSV .= '"'.$L['Year'].'";';
-for ($i=1;$i<=12;$i++) $strCSV .= '"'.$L['dateMM'][$i].'";';
+for ($i=1;$i<=12;++$i) $strCSV .= '"'.$L['dateMM'][$i].'";';
 $strCSV .= '"'.$L['Total'].'"'.PHP_EOL;
 
 // -----
@@ -87,7 +87,7 @@ foreach($arrYears as $y) {
 // Table body
 
   $strCSV .= '"'.$y.'";';
-  for ($intBt=1;$intBt<=12;$intBt++) { $strCSV .= (isset($arrU[$y][$intBt]) ? $arrU[$y][$intBt] : '0').';'; }
+  for ($intBt=1;$intBt<=12;++$intBt) { $strCSV .= (isset($arrU[$y][$intBt]) ? $arrU[$y][$intBt] : '0').';'; }
   $strCSV .= $arrUs[$y].PHP_EOL;
 
 

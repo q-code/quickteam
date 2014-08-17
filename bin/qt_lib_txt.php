@@ -46,7 +46,7 @@ function QTargs($str='Err or',$arrArgs,$arrTypes='str')
 
   // Process
   $n = count($arrArgs);
-  for($i=0;$i<$n;$i++) {
+  for($i=0;$i<$n;++$i) {
   switch($arrTypes[$i]) {
   case 'str': if ( !is_string($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be a string'); break;
   case 'int': if ( !is_int($arrArgs[$i]) ) die($str.': Argument #'.$i.' must be an int'); break;

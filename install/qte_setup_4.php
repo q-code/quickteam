@@ -81,6 +81,7 @@ if ( $row['setting']=='1.6' )
 {
   switch($oDB->type)
   {
+  case 'pdo.mysql':
   case 'mysql':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY firstname varchar(32)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY midname varchar(32)');
@@ -90,6 +91,7 @@ if ( $row['setting']=='1.6' )
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY y decimal(13,10)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY z decimal(13,2)');
     break;
+  case 'pdo.sqlsrv':
   case 'sqlsrv':
   case 'mssql':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN firstname varchar(32)');
@@ -100,6 +102,7 @@ if ( $row['setting']=='1.6' )
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN y decimal(13,10)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN z decimal(13,2)');
     break;
+  case 'pdo.pg':
   case 'pg':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN firstname TYPE varchar(32)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN midname TYPE varchar(32)');
@@ -109,10 +112,12 @@ if ( $row['setting']=='1.6' )
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN y TYPE decimal(13,10)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN z TYPE decimal(13,2)');
     break;
+  case 'pdo.sqlite':
   case 'sqlite':
     // already text
     // already real
     break;
+  case 'pdo.ibase':
   case 'ibase':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN firstname TYPE varchar(32)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN midname TYPE varchar(32)');
@@ -122,6 +127,7 @@ if ( $row['setting']=='1.6' )
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN y TYPE decimal(13,10)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN z TYPE decimal(13,2)');
     break;
+  case 'pdo.db2':
   case 'db2':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN firstname SET DATA TYPE varchar(32)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN midname SET DATA TYPE varchar(32)');
@@ -131,6 +137,7 @@ if ( $row['setting']=='1.6' )
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN y SET DATA TYPE decimal(13,10)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ALTER COLUMN z SET DATA TYPE decimal(13,2)');
     break;
+  case 'pdo.oci':
   case 'oci':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY firstname varchar(32)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser MODIFY midname varchar(32)');
@@ -184,6 +191,7 @@ if ( $row['setting']=='1.8' )
     )');
     break;
 
+  case 'pdo.mysql':
   case 'mysql':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype varchar(10),
@@ -194,6 +202,7 @@ if ( $row['setting']=='1.8' )
     )');
     break;
 
+  case 'pdo.sqlsrv':
   case 'sqlsrv':
   case 'mssql':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
@@ -205,6 +214,7 @@ if ( $row['setting']=='1.8' )
     )');
     break;
 
+  case 'pdo.pg':
   case 'pg':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype varchar(10),
@@ -215,6 +225,7 @@ if ( $row['setting']=='1.8' )
     )');
     break;
 
+  case 'pdo.sqlite':
   case 'sqlite':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype text,
@@ -225,6 +236,7 @@ if ( $row['setting']=='1.8' )
     )' );
     break;
 
+  case 'pdo.ibase':
   case 'ibase':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype varchar(10),
@@ -235,6 +247,7 @@ if ( $row['setting']=='1.8' )
     )' );
     break;
 
+  case 'pdo.db2':
   case 'db2':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype varchar(10),
@@ -245,6 +258,7 @@ if ( $row['setting']=='1.8' )
     )');
     break;
 
+  case 'pdo.oci':
   case 'oci':
     $oDB->Query('CREATE TABLE '.$qte_prefix.'qtelang (
     objtype varchar2(10),
@@ -378,10 +392,12 @@ if ( $row['setting']=='2.0' || $row['setting']=='2.1' )
 {
   switch($oDB->type)
   {
+  case 'pdo.sqlite':
   case 'sqlite':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qtesection ADD stats text');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qtesection ADD options text');
     break;
+  case 'pdo.oci':
   case 'oci':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qtesection ADD stats varchar2(255)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qtesection ADD options varchar2(255)');
@@ -430,10 +446,12 @@ if ( $row['setting']=='2.2' || $row['setting']=='2.3' || $row['setting']=='2.4' 
   $oDB->Exec('UPDATE '.$qte_prefix.'qtesetting SET setting="2.5" WHERE param="version"');
   switch($oDB->type)
   {
+  case 'pdo.sqlite':
   case 'sqlite':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ADD secret_q text');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ADD secret_a text');
     break;
+  case 'pdo.oci':
   case 'oci':
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ADD secret_q varchar2(255)');
     $oDB->Exec('ALTER TABLE '.$qte_prefix.'qteuser ADD secret_a varchar2(255)');
@@ -454,12 +472,17 @@ if ( $row['setting']=='2.5' )
   $oDB->Exec('UPDATE '.$qte_prefix.'qtesetting SET setting="3.0" WHERE param="version"');
   switch($oDB->type)
   {
+  case 'pdo.pg':
   case 'pg':
+  case 'pdo.ibase':
   case 'ibase':
     $oDB->Exec('UPDATE '.$qte_prefix.'qteuser SET picture=REPLACE(picture, "picture/", "") WHERE SUBSTRING(picture FROM 1 FOR 8)="picture/"');
     break;
+  case 'pdo.db2':
   case 'db2':
+  case 'pdo.oci':
   case 'oci':
+  case 'pdo.sqlite':
   case 'sqlite':
     $oDB->Exec('UPDATE '.$qte_prefix.'qteuser SET picture=REPLACE(picture, "picture/", "") WHERE SUBSTR(picture,1,8)="picture/"');
     break;
@@ -505,13 +528,13 @@ else
 if ( empty($error) )
 {
   $iY = intval(date('Y'));
-  for ($i=$iY;$i<=$iY+5;$i++)
+  for ($i=$iY;$i<=$iY+5;++$i)
   {
     if ( !is_dir('document/'.$i) )
     {
       if ( mkdir('document/'.$i) )
       {
-        for ($j=1;$j<=12;$j++)
+        for ($j=1;$j<=12;++$j)
         {
         mkdir('document/'.$i.'/'.($i*100+$j));
         }

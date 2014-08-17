@@ -16,18 +16,8 @@ case 'mysql':
   )';
   break;
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
-  id int NOT NULL default 0,
-  docdate varchar(8) NOT NULL default "0",
-  docname varchar(255),
-  docfile varchar(255),
-  docpath varchar(255)
-  )';
-  break;
-
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id int NOT NULL default 0,
   docdate varchar(8) NOT NULL default "0",
@@ -37,6 +27,7 @@ case 'mssql':
   )';
   break;
 
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id integer NOT NULL default 0,
@@ -47,6 +38,7 @@ case 'pg':
   )';
   break;
 
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id integer default 0,
@@ -57,6 +49,7 @@ case 'ibase':
   )';
   break;
 
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id integer,
@@ -67,6 +60,7 @@ case 'sqlite':
   )';
   break;
 
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qtechild (
   id integer NOT NULL default 0,
@@ -77,6 +71,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qtedoc (
   id number(32) default 0 NOT NULL,
@@ -88,7 +83,7 @@ case 'oci':
   break;
 
 default:
-  die('Database type ['.$this->type.'] not supported... Must be mysql, sqlsrv, mssql, pg, ibase, db2, oci');
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, db2, sqlite, ibase, oci');
 }
 
 echo '<span style="color:blue;">';

@@ -285,7 +285,7 @@ foreach($arrDomains as $intDomain=>$strDomain)
   echo '<td class="colgroup">&nbsp;</td>',PHP_EOL;
   echo '</tr>',PHP_EOL;
 
-  $i++;
+  ++$i;
   $j = 0;
 
   if ( isset($arrSections[$intDomain]) ) {
@@ -313,7 +313,7 @@ foreach($arrDomains as $intDomain=>$strDomain)
         if ( $j<count($arrSections[$intDomain])-1 ) $strDw = '<a href="qte_adm_sections.php?d='.$intDomain.'&amp;s='.$intSecid.'&amp;a=f_down"><img class="ctrl" src="admin/ico_dw.gif" alt="dw" title="'.L('Down').'"/></a>';
       }
       echo $strUp.'&nbsp;'.$strDw;
-      $j++;
+      ++$j;
       echo '</td>';
       echo '<td>',$oSEC->members,' &middot; <a class="small" href="qte_adm_users_move.php?s=',$oSEC->id,'">',$L['User_man'],'</a></td>';
       echo '</tr>',PHP_EOL;

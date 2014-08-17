@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /* ============
 * qt_class_smtp.php
@@ -527,7 +527,7 @@ class PHPMailer {
   function MailSend($header, $body) {
 
     $to = '';
-    for($i = 0; $i < count($this->to); $i++) {
+    for($i = 0; $i < count($this->to);++$i) {
       if($i != 0) { $to .= ', '; }
       $to .= $this->AddrFormat($this->to[$i]);
     }
@@ -592,24 +592,24 @@ class PHPMailer {
     }
 
     /* Attempt to send attach all recipients */
-    for($i = 0; $i < count($this->to); $i++) {
+    for($i = 0; $i < count($this->to);++$i) {
       if(!$this->smtp->Recipient($this->to[$i][0])) {
         $bad_rcpt[] = $this->to[$i][0];
       }
     }
-    for($i = 0; $i < count($this->cc); $i++) {
+    for($i = 0; $i < count($this->cc);++$i) {
       if(!$this->smtp->Recipient($this->cc[$i][0])) {
         $bad_rcpt[] = $this->cc[$i][0];
       }
     }
-    for($i = 0; $i < count($this->bcc); $i++) {
+    for($i = 0; $i < count($this->bcc);++$i) {
       if(!$this->smtp->Recipient($this->bcc[$i][0])) {
         $bad_rcpt[] = $this->bcc[$i][0];
       }
     }
 
     if(count($bad_rcpt) > 0) { // Create error message
-      for($i = 0; $i < count($bad_rcpt); $i++) {
+      for($i = 0; $i < count($bad_rcpt);++$i) {
         if($i != 0) {
           $error .= ', ';
         }
@@ -678,7 +678,7 @@ class PHPMailer {
           }
         }
       }
-      $index++;
+      ++$index;
     }
     if(!$connection) {
       $this->SetError($this->Lang('connect_host'));
@@ -748,7 +748,7 @@ class PHPMailer {
     $addr_str = $type . ': ';
     $addr_str .= $this->AddrFormat($addr[0]);
     if(count($addr) > 1) {
-      for($i = 1; $i < count($addr); $i++) {
+      for($i = 1; $i < count($addr);++$i) {
         $addr_str .= ', ' . $this->AddrFormat($addr[$i]);
       }
     }
@@ -792,10 +792,10 @@ class PHPMailer {
 
     $line = explode($this->LE, $message);
     $message = '';
-    for ($i=0 ;$i < count($line); $i++) {
+    for ($i=0 ;$i < count($line);++$i) {
       $line_part = explode(' ', $line[$i]);
       $buf = '';
-      for ($e = 0; $e<count($line_part); $e++) {
+      for ($e = 0; $e<count($line_part);++$e) {
         $word = $line_part[$e];
         if ($qp_mode and (strlen($word) > $length)) {
           $space_left = $length - strlen($buf) - 1;
@@ -981,7 +981,7 @@ class PHPMailer {
     }
 
     // Add custom headers
-    for($index = 0; $index < count($this->CustomHeader); $index++) {
+    for($index = 0; $index < count($this->CustomHeader);++$index) {
       $result .= $this->HeaderLine(trim($this->CustomHeader[$index][0]), $this->EncodeHeader(trim($this->CustomHeader[$index][1])));
     }
     if (!$this->sign_key_file) {
@@ -1221,7 +1221,7 @@ class PHPMailer {
     $mime = array();
 
     /* Add all attachments */
-    for($i = 0; $i < count($this->attachment); $i++) {
+    for($i = 0; $i < count($this->attachment);++$i) {
       /* Check for string attachment */
       $bString = $this->attachment[$i][5];
       if ($bString) {
@@ -1423,7 +1423,7 @@ class PHPMailer {
         $offset = $avgLength - $lookBack;
         $chunk = mb_substr($str, $i, $offset, $this->CharSet);
         $chunk = base64_encode($chunk);
-        $lookBack++;
+        ++$lookBack;
       }
       while (strlen($chunk) > $length);
 
@@ -1449,7 +1449,7 @@ class PHPMailer {
     while( list(, $line) = each($lines) ) {
       $linlen = strlen($line);
       $newline = '';
-      for($i = 0; $i < $linlen; $i++) {
+      for($i = 0; $i < $linlen;++$i) {
         $c = substr( $line, $i, 1 );
         $dec = ord( $c );
         if ( ( $i == 0 ) && ( $dec == 46 ) ) { // convert first point in the line into =2E
@@ -1579,7 +1579,7 @@ class PHPMailer {
    */
   function InlineImageExists() {
     $result = false;
-    for($i = 0; $i < count($this->attachment); $i++) {
+    for($i = 0; $i < count($this->attachment);++$i) {
       if($this->attachment[$i][6] == 'inline') {
         $result = true;
         break;
@@ -1664,7 +1664,7 @@ class PHPMailer {
    * @return void
    */
   function SetError($msg) {
-    $this->error_count++;
+    ++$this->error_count;
     $this->ErrorInfo = $msg;
   }
 

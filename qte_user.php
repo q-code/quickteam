@@ -115,7 +115,7 @@ if ( $tt=='d' && $_SESSION[QT]['editing'] && ( $_SESSION[QT]['upload']=='1' || s
   {
     var checkboxes = document.getElementsByName(checkboxname);
     var n = 0;
-    for (var i=0; i<checkboxes.length; i++) if ( checkboxes[i].checked ) n++;
+    for (var i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ++n;
     if ( n>0 )
     {
     var doc = document.getElementById("form_docs");
@@ -167,7 +167,7 @@ if ( $tt=='d' && $_SESSION[QT]['editing'] && ( $_SESSION[QT]['upload']=='1' || s
       {
         var start = $("input[name=\'t1_cb[]\']").index(this);
         var end = $("input[name=\'t1_cb[]\']").index(lastChecked1);
-        for(var i=Math.min(start,end);i<=Math.max(start,end);i++)
+        for(var i=Math.min(start,end);i<=Math.max(start,end);++i)
         {
         $("input[name=\'t1_cb[]\']")[i].checked = lastChecked1.checked;
         qtHighlight("tr_"+$("input[name=\'t1_cb[]\']")[i].id,lastChecked1.checked);

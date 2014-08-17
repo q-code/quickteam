@@ -56,7 +56,7 @@ while (false !== ($file = readdir($intHandle)))
     {
     if ( substr($file,0,3)!='bg_' && substr($file,0,10)!='background' ) $arrFiles[] = $file;
     }
-    $i++;
+    ++$i;
   }
 }
 closedir($intHandle);

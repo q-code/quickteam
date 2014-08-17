@@ -340,14 +340,18 @@ public static function SysCount($strObject='members',$strWhere='')
     switch($oDB->type)
     {
     // Select month
-    case 'pdo.mysql':
-    case 'mysql': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
-    case 'pg':    $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pdo.mysql': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pdo.pg':
+    case 'pg': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pdo.ibase':
     case 'ibase': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate FROM 5 FOR 4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate FROM 5 FOR 4)="'.Date('md').'"'); break;
+    case 'pdo.sqlite':
     case 'sqlite':$oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-    case 'db2':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-    case 'oci':   $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
-    default:      $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pdo.db2':
+    case 'db2': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
+    case 'pdo.oci':
+    case 'oci': $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTR(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTR(birthdate,5,4)="'.Date('md').'"'); break;
+    default: $oDB->Query('SELECT id,username,firstname,lastname FROM '.TABUSER.' WHERE SUBSTRING(birthdate,5,4)="'.substr(DateAdd(Date('Ymd'),+1,'day'),4,4).'" OR SUBSTRING(birthdate,5,4)="'.Date('md').'"'); break;
     }
     $arr = array();
     while($row=$oDB->Getrow())

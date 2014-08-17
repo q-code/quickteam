@@ -16,18 +16,8 @@ case 'mysql':
   )';
   break;
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
-  objtype varchar(10),
-  objlang varchar(2),
-  objid varchar(24),
-  objname text,
-  PRIMARY KEY (objtype,objlang,objid)
-  )';
-  break;
-  
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype varchar(10) NOT NULL,
   objlang varchar(2) NOT NULL,
@@ -37,6 +27,7 @@ case 'mssql':
   )';
   break;
 
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype varchar(10),
@@ -47,6 +38,7 @@ case 'pg':
   )';
   break;
 
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype text,
@@ -57,6 +49,7 @@ case 'sqlite':
   )';
   break;
 
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype varchar(10),
@@ -67,6 +60,7 @@ case 'ibase':
   )';
   break;
 
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype varchar(10),
@@ -77,6 +71,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qtelang (
   objtype varchar2(10),
@@ -87,7 +82,7 @@ case 'oci':
   break;
 
 default:
-  die("Database type [{$oDB->type}] not supported... Must be mysql, sqlsrv, mssql, pg, sqlite, ibase, db2, oci");
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, db2, sqlite, ibase, oci');
 
 }
 

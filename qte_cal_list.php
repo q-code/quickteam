@@ -31,7 +31,7 @@ if ( isset($_GET['y']) ) $intYear = intval(strip_tags($_GET['y']));
 $intYearN  = $intYear;
 $intMonth  = intval(date('n'));
 if ( isset($_GET['m']) ) $intMonth = intval(strip_tags($_GET['m']));
-$intMonthN = $intMonth+1; if ( $intMonthN>12 ) { $intMonthN=1; $intYearN++; }
+$intMonthN = $intMonth+1; if ( $intMonthN>12 ) { $intMonthN=1; ++$intYearN; }
 $strMonth  = '0'.$intMonth; $strMonth = substr($strMonth,-2,2);
 $strMonthN = '0'.$intMonthN; $strMonthN = substr($strMonthN,-2,2);
 
@@ -62,9 +62,13 @@ switch($oDB->type)
 {
 // Select month
 case 'pdo.mysql': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.',5,2)="'.$strMonth.'" OR SUBSTRING('.$v.',5,2)="'.$strMonthN.'"'); break;
+case 'pdo.ibase':
 case 'ibase': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.' FROM 5 FOR 2)="'.$strMonth.'" OR SUBSTRING('.$v.' FROM 5 FOR 2)="'.$strMonthN.'"'); break;
+case 'pdo.sqlite':
 case 'sqlite':
+case 'pdo.db2':
 case 'db2':
+case 'pdo.oci':
 case 'oci': $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTR('.$v.',5,2)="'.$strMonth.'" OR SUBSTR('.$v.',5,2)="'.$strMonthN.'"'); break;
 default: $oDB->Query('SELECT id,username,title,firstname,midname,lastname,emails,alias,picture,'.$v.' FROM '.TABUSER.' WHERE SUBSTRING('.$v.',5,2)="'.$strMonth.'" OR SUBSTRING('.$v.',5,2)="'.$strMonthN.'"');
 }
@@ -74,8 +78,8 @@ while($row=$oDB->Getrow())
   {
     $strM = substr($row[$v],4,2); $intM = intval($strM);
     $strD = substr($row[$v],6,2); $intD = intval($strD);
-    if ( $strM==$strMonth ) { $arrEvents[$intD][]=$row; $intEvents++; }
-    if ( $strM==$strMonthN ) { $arrEventsN[$intD][]=$row; $intEventsN++; }
+    if ( $strM==$strMonth ) { $arrEvents[$intD][]=$row; ++$intEvents; }
+    if ( $strM==$strMonthN ) { $arrEventsN[$intD][]=$row; ++$intEventsN; }
   }
 }
 ksort($arrEvents);

@@ -65,7 +65,7 @@ function qte_web_login($strAction='',$intSection=-1,$strUsr='',$strPwd='',$qte_r
   case 'logout':
 
     if ( isset($_SESSION['qte_usr_auth']) ) unset($_SESSION['qte_usr_auth']);
-    for($i=1;$i<=9;$i++) if ( isset($_SESSION['qte'.$i.'_usr_auth']) ) unset($_SESSION['qte'.$i.'_usr_auth']);
+    for($i=1;$i<=9;++$i) if ( isset($_SESSION['qte'.$i.'_usr_auth']) ) unset($_SESSION['qte'.$i.'_usr_auth']);
     break;
 
   case 'login':

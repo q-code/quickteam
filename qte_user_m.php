@@ -123,14 +123,14 @@ foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
   if ( isset($arrSections[$intDomid]) ) {
   if ( count($arrSections[$intDomid])>0 ) {
 
-    $intDom++;
+    ++$intDom;
     if ( $intDom>1 ) echo '<div class="dom-sep"></div>',PHP_EOL;
     echo '<table class="t-data section">',PHP_EOL;
     echo '<tr><th>',$strDomtitle,'</th></tr>',PHP_EOL;
 
     foreach($arrSections[$intDomid] as $intSection=>$row)
     {
-      $intSec++;
+      ++$intSec;
       $oSEC = new cSection($row);
       if ( $oSEC->type!=0 ) $oSEC->name .= ' '.AsImg($_SESSION[QT]['skin_dir'].'/ico_section_'.$oSEC->type.'_'.$oSEC->status.'.gif','[+]',$L['Ico_section_'.$oSEC->type.'_'.$oSEC->status],'ico','width:25px');
       $oSEC->descr .= (empty($oSEC->descr) ? '' : '<br />').'<a href="'.Href('qte_section.php').'?s='.$oSEC->id.'" class="small">'.L('User',$oSEC->members).'</a>';

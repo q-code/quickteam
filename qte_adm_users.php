@@ -92,7 +92,7 @@ function datasetcontrol_click(checkboxname,action)
 {
   var checkboxes = document.getElementsByName(checkboxname);
   var n = 0;
-  for (var i=0; i<checkboxes.length; i++) if ( checkboxes[i].checked ) n++;
+  for (var i=0; i<checkboxes.length; ++i) if ( checkboxes[i].checked ) ++n;
   if ( n>0 )
   {
   var doc = document.getElementById("form_users");
@@ -131,7 +131,7 @@ $(function() {
     {
       var start = $("input[name=\'t1_cb[]\']").index(this);
       var end = $("input[name=\'t1_cb[]\']").index(lastChecked1);
-      for(var i=Math.min(start,end);i<=Math.max(start,end);i++)
+      for(var i=Math.min(start,end);i<=Math.max(start,end);++i)
       {
       $("input[name=\'t1_cb[]\']")[i].checked = lastChecked1.checked;
       qtHighlight("tr_"+$("input[name=\'t1_cb[]\']")[i].id,lastChecked1.checked);
@@ -277,7 +277,7 @@ if ( $intCount!=0 )
     $table->td['username']->content = $row['username'];
     echo $table->GetTDrow().PHP_EOL;
     if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
-    $intRow++; if ( $intRow>=$intIPP ) break;
+    ++$intRow; if ( $intRow>=$intIPP ) break;
 
   }
 

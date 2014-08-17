@@ -152,7 +152,7 @@ foreach($arrMenus as $arrMenu) {
 if ( $arrMenu['f'] ) {
   if ( !isset($arrMenu['s']) ) $arrMenu['s']=$arrMenu['u'];
   if ( $i!=0 ) echo ' &middot; ';
-  $i++;
+  ++$i;
   if ( empty($arrMenu['u']) )
   {
   echo $arrMenu['n'];

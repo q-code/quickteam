@@ -67,7 +67,7 @@ if ( isset($_POST['ok']) )
     if ( $i==0 ) printf( '<tr class="hidden"><td>%s</td></tr>',implode('</td><td>',array_keys($row)) );
     printf( '<tr class="hidden"><td>%s</td></tr>',implode('</td><td>',$row) );
     if ( $i>100 ) break;
-    $i++;
+    ++$i;
   }
   echo '</table>',PHP_EOL;
 

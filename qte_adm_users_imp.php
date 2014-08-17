@@ -68,7 +68,7 @@ if ( isset($_POST['ok']) )
       $intNextUser = $oDB->Nextid(TABUSER);
       while( ($row=fgetcsv($handle,500,$strDelimit))!==FALSE )
       {
-        $i++;
+        ++$i;
         if ( $strSkip=='Y' && $i==1 ) continue;
         if ( count($row)==1 ) continue;
         if ( count($row)==4 )
@@ -85,8 +85,8 @@ if ( isset($_POST['ok']) )
             if ( $oDB->Exec('INSERT INTO '.TABUSER.' (id,role,username,lastname,pwd,status,emails,children,firstdate) VALUES ('.$intNextUser.',"'.$strRole.'","'.$strLog.'","'.$strLog.'","'.$strPwd.'","'.$strStatus.'","'.$strMail.'","0","'.date('Ymd').'")') )
             {
               $oDB->Exec('INSERT INTO '.TABS2U.' (sid,userid,issuedate) VALUES ('.$_POST['section'].','.$intNextUser.',"'.date('Ymd').'")');
-              $intNextUser++;
-              $intCountUser++;
+              ++$intNextUser;
+              ++$intCountUser;
             }
             else
             {

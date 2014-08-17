@@ -15,19 +15,9 @@ case 'mysql':
   PRIMARY KEY (id)
   )';
   break;
-
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
-  id char(1),
-  name varchar(32),
-  icon varchar(32),
-  color varchar(32),
-  PRIMARY KEY (id)
-  )';
-  break;
   
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1) NOT NULL CONSTRAINT pk_'.$qte_prefix.'qtestatus PRIMARY KEY,
   name varchar(32) NULL default NULL,
@@ -36,6 +26,7 @@ case 'mssql':
   )';
   break;
   
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1),
@@ -46,6 +37,7 @@ case 'pg':
   )';
   break;
   
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id text,
@@ -56,6 +48,7 @@ case 'sqlite':
   )';
   break;
   
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1),
@@ -66,6 +59,7 @@ case 'ibase':
   )';
   break;
   
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1) NOT NULL,
@@ -76,6 +70,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qtestatus (
   id char(1),
@@ -86,7 +81,7 @@ case 'oci':
   break;
 
 default:
-  die("Database type [{$this->type}] not supported... Must be mysql, mssql, pg, ibase, db2, oci");
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, mssql, pg, db2, sqlite, oci');
 
 }
 

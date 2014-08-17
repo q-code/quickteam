@@ -119,6 +119,8 @@ if ( $s>=0 && empty($q) )
       break;
   }
   $strCount = 'SELECT count(*) as countid'.$strFrom.$strWhere;
+  
+  
 }
 elseif ( !empty($q) )
 {
@@ -129,11 +131,9 @@ else
   die('Missing argument $s or $q...');
 }
 
-// COUNT Members
+// COUNT Members using memcacheQuery (result must be in field 'countid')
 
-$oDB->Query($strCount);
-$row = $oDB->Getrow();
-$intCount = (int)$row['countid'];
+$intCount = memcacheQueryCount(0,$strCount);
 
 // Usermenu
 
@@ -368,7 +368,7 @@ while($row=$oDB->Getrow())
   echo $table->GetTDrow().PHP_EOL;
 
   if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
-  $intRow++; if ( $intRow>=$_SESSION[QT]['items_per_page'] ) break;
+  ++$intRow; if ( $intRow>=$_SESSION[QT]['items_per_page'] ) break;
 }
 
 // === TABLE END DISPLAY ===
@@ -450,7 +450,7 @@ if ( $bMap )
       foreach($arrExtData as $oMapPoint)
       {
       $str .= '<option value="'.$oMapPoint->y.','.$oMapPoint->x.'">'.$oMapPoint->title.'</option>';
-      $i++; if ( $i>20 ) break;
+      ++$i; if ( $i>20 ) break;
       }
       $str .= '</select></p>';
     }

@@ -123,11 +123,16 @@ case 'bdm': // brithday on month $v
 	{
 	// Select month
   case 'pdo.mysql': $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"'; break;
-	case 'pg':    $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"'; break;
-	case 'ibase': $strWhere .= ' AND SUBSTRING(u.birthdate FROM 5 FOR 2)="'.$v.'"'; break;
-	case 'sqlite':
-	case 'db2':
-	case 'oci':   $strWhere .= ' AND SUBSTR(u.birthdate,5,2)="'.$v.'"'; break;
+  case 'pdo.pg':
+  case 'pg': $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"'; break;
+  case 'pdo.ibase':
+  case 'ibase': $strWhere .= ' AND SUBSTRING(u.birthdate FROM 5 FOR 2)="'.$v.'"'; break;
+  case 'pdo.sqlite':
+  case 'sqlite':
+  case 'pdo.db2':
+  case 'db2':
+  case 'pdo.oci':
+  case 'oci': $strWhere .= ' AND SUBSTR(u.birthdate,5,2)="'.$v.'"'; break;
   default: $strWhere .= ' AND SUBSTRING(u.birthdate,5,2)="'.$v.'"';
 	}
 

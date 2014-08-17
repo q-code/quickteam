@@ -64,7 +64,8 @@ function memcacheSet($key,$obj,$timeout=300)
 function memcacheQuery($key,$sql,$timeout=300)
 {
   // Caching a sql query a few minutes
-  if ( empty($key) ) $key = md5('query'.$sql);
+  // Note this uses memcache only and NOT $_SESSION
+  if ( empty($key) ) $key = md5(APP.$sql);
 
   // Get the cache from memcache
   if ( ($cache=memcacheGet($key))===false )
@@ -72,11 +73,28 @@ function memcacheQuery($key,$sql,$timeout=300)
     // If no cache response, runs the query to populate $cache
     $cache = false;
     global $oDB;
-    $oDB->Query($sql);
+    if ( $oDB->Query($sql) )
+    {
     $i = 0;
     while( $row=$oDB->Getrow() ) { $cache[$i]=$row; ++$i; }
-    // Save $cache into the memchage. Attention if memcache daemon not running or not responding, this will failled (setCache just returns false)
+    // Save $cache into the memcache. Attention if memcache daemon not running or not responding, this will failled (setCache just returns false)
     memcacheSet($key,$cache,$timeout);
+    }
+  }
+  return $cache;
+}
+function memcacheQueryCount($key,$sql,$timeout=300)
+{
+  if ( empty($key) ) $key = md5(APP.$sql);
+  if ( ($cache=memcacheGet($key))===false )
+  {
+    $cache = false;
+    global $oDB;
+    if ( $oDB->Query($sql) )
+    {
+    $cache = (int)$oDB->Getrow();
+    memcacheSet($key,$cache,$timeout);
+    }
   }
   return $cache;
 }

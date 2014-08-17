@@ -57,7 +57,7 @@ public static function Login($username='',$password='',$bRemember=FALSE)
 
     // Reset parameters (because the Role can impact the lists)
     memUnset('sys_domains');
-    unset($_SESSION[QT]['sys_sections']);
+    memUnset('sys_sections');
   }
 
   return $_SESSION[QT.'_usr_auth'];
@@ -181,7 +181,7 @@ public static function LoginPostProc()
     // note when children is not defined, GetUserInfo returns NULL
     if ( sUser::GetUserInfo('children')=='2' )
     {
-    $oVIP->exitname = ObjTrans('index','i',$_SESSION[QT]['index_name']);
+    $oVIP->exitname = ObjTrans('index','i');
     sUser::SessionUnset();
     $oHtml->PageMsg(NULL,'<h2>'.L('Welcome').' '.sUser::Name().'</h2>'.L('E_access').'<br/>'.L('E_coppa_confirm'),0,'350px','login_header','login');
     }

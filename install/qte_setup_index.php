@@ -13,17 +13,9 @@ case 'mysql':
   ukey varchar(32) NOT NULL default "undefined"
   )';
   break;
-
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
-  userid int NOT NULL default 0,
-  ufield varchar(32) NOT NULL default "undefined",
-  ukey varchar(32) NOT NULL default "undefined"
-  )';
-  break;
   
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid int NOT NULL default 0,
   ufield varchar(32) NOT NULL default "undefined",
@@ -31,6 +23,7 @@ case 'mssql':
   )';
   break;
   
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid integer,
@@ -39,6 +32,7 @@ case 'pg':
   )';
   break;
 
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid integer,
@@ -47,6 +41,7 @@ case 'sqlite':
   )';
   break;
   
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid integer,
@@ -55,6 +50,7 @@ case 'ibase':
   )';
   break;
   
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid integer NOT NULL,
@@ -63,6 +59,7 @@ case 'db2':
   )';
   break;
   
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qteindex (
   userid number(32),
@@ -72,7 +69,7 @@ case 'oci':
   break;
 
 default:
-  die('Database type ['.$this->type.'] not supported... Must be mysql, sqlsrv, mssql, pg, db2, ibase, oci');
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, db2, sqlite, ibase, oci');
 
 }
 

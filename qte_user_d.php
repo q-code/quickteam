@@ -79,7 +79,7 @@ if ( isset($_POST['ok']) )
 
   // check uploaded files
 
-  for($f=0;$f<count($_FILES['fileselect']['name']);$f++)
+  for($f=0;$f<count($_FILES['fileselect']['name']);++$f)
   {
     if ($f==5) { $error = 'Maximum 5 files uploaded at once'; break; }
     $strFile = strtolower($_FILES['fileselect']['name'][$f]);

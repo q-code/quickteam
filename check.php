@@ -100,13 +100,11 @@ $error = '';
   if ( !isset($qte_prefix) ) $error .= 'Variable <b>$qte_prefix</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
   if ( !isset($qte_user) ) $error .= 'Variable <b>$qte_user</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
   if ( !isset($qte_pwd) ) $error .= 'Variable <b>$qte_pwd</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
-  if ( !isset($qte_port) ) $error .= 'Variable <b>$qte_port</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
-  if ( !isset($qte_dsn) ) $error .= 'Variable <b>$qte_dsn</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
 
   if ( !empty($error) )  die('<span class="nok">'.$error.'</span>');
 
   // check db type
-  if ( !in_array($qte_dbsystem,array('pdo.mysql','mysql4','mysql','sqlsrv','mssql','pg','ibase','sqlite','db2','oci')) ) die('Unknown db type '.$qte_dbsystem);
+  if ( !in_array($qte_dbsystem,array('pdo.mysql','mysql','pdo.sqlsrv','sqlsrv','pdo.pg','pg','pdo.ibase','ibase','pdo.sqlite','sqlite','pdo.db2','db2','pdo.oci','oci')) ) die('Unknown db type '.$qte_dbsystem);
   // check other values
   if ( empty($qte_host) ) $error .= 'Variable <b>$qte_host</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';
   if ( empty($qte_database) ) $error .= 'Variable <b>$qte_database</b> is not defined in the file <b>bin/config.php</b>. Communication with database is impossible.<br />';

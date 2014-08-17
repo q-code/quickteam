@@ -10,6 +10,7 @@ if ( isset($_GET['statsql']) )
 {
   if ( $_GET['statsql']==='0' ) { unset($_SESSION['QTstatsql']); } else { $_SESSION['QTstatsql']=true; var_dump($_SESSION['QTstatsql']); }
 }
+//!!
 if ( isset($_GET['memunset']) ) 
 {
   memUnset('sys_domains');

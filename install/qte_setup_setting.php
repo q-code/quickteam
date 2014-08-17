@@ -13,23 +13,16 @@ case 'mysql':
   PRIMARY KEY (param)
   )';
   break;
-
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
-  param varchar(24),
-  setting varchar(255),
-  PRIMARY KEY (param)
-  )';
-  break;
   
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param varchar(24) CONSTRAINT pk_'.$qte_prefix.'qtesetting PRIMARY KEY,
   setting varchar(255)
   )';
   break;
   
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param varchar(24),
@@ -38,6 +31,7 @@ case 'pg':
   )';
   break;
 
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param text,
@@ -46,6 +40,7 @@ case 'sqlite':
   )';
   break;
   
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param varchar(24),
@@ -54,6 +49,7 @@ case 'ibase':
   )';
   break;
   
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param varchar(24),
@@ -62,6 +58,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesetting (
   param varchar2(24),
@@ -70,7 +67,7 @@ case 'oci':
   break;
 
 default:
-  die('Database type ['.$oDB->type.'] not supported... Must be mysql, mssql, pg, db2, sqlite, oci');
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, db2, sqlite, oci');
 
 }
 

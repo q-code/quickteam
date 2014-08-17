@@ -92,13 +92,18 @@ function LimitSQL($strState,$strOrder,$intStart=0,$intLength=50)
 	switch($oDB->type)
 	{
     case 'pdo.mysql': return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
-		case 'sqlsrv':
-		case 'mssql': return ($intStart==0 ? "SELECT TOP $intLength $strState ORDER BY $strOrder" : "WITH OrderedRows AS (SELECT ROW_NUMBER() OVER (ORDER BY $strOrder) AS RowNumber, $strState) SELECT * FROM OrderedRows WHERE RowNumber BETWEEN ".($intStart+1)." AND ".($intStart+$intLength)); break;
-		case 'pg': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
-		case 'ibase': return "SELECT FIRST $intLength SKIP $intStart $strState ORDER BY $strOrder"; break;
-		case 'sqlite': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
-		case 'db2': return ($intStart==0 ? "SELECT $strState ORDER BY $strOrder FETCH FIRST $intLength ROWS ONLY" : "SELECT * FROM (SELECT ROW_NUMBER() OVER() AS RN, $strState) AS cols WHERE RN BETWEEN ($intStart+1) AND ($intStart+1+$intLength)"); break;
-		case 'oci': return ($intStart==0 ? "SELECT * FROM (SELECT $strState ORDER BY $strOrder) WHERE ROWNUM<$intLength" : "SELECT * FROM (SELECT a.*, rownum RN FROM (SELECT $strState ORDER BY $strOrder) a WHERE rownum<$intStart+1+$intLength) WHERE rn>=$intStart"); break;
+		case 'pdo.sqlsrv':
+    case 'sqlsrv': return ($intStart==0 ? "SELECT TOP $intLength $strState ORDER BY $strOrder" : "WITH OrderedRows AS (SELECT ROW_NUMBER() OVER (ORDER BY $strOrder) AS RowNumber, $strState) SELECT * FROM OrderedRows WHERE RowNumber BETWEEN ".($intStart+1)." AND ".($intStart+$intLength)); break;
+    case 'pdo.pg':
+    case 'pg': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
+    case 'pdo.ibase':
+    case 'ibase': return "SELECT FIRST $intLength SKIP $intStart $strState ORDER BY $strOrder"; break;
+    case 'pdo.sqlite':
+    case 'sqlite': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
+    case 'pdo.db2':
+    case 'db2': return ($intStart==0 ? "SELECT $strState ORDER BY $strOrder FETCH FIRST $intLength ROWS ONLY" : "SELECT * FROM (SELECT ROW_NUMBER() OVER() AS RN, $strState) AS cols WHERE RN BETWEEN ($intStart+1) AND ($intStart+1+$intLength)"); break;
+    case 'pdo.oci':
+    case 'oci': return ($intStart==0 ? "SELECT * FROM (SELECT $strState ORDER BY $strOrder) WHERE ROWNUM<$intLength" : "SELECT * FROM (SELECT a.*, rownum RN FROM (SELECT $strState ORDER BY $strOrder) a WHERE rownum<$intStart+1+$intLength) WHERE rn>=$intStart"); break;
     default: return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
 	}
 }
@@ -113,27 +118,32 @@ function FirstCharCase($strField,$strCase='u',$len=1)
       if ( $strCase=='l' ) return "LOWER(LEFT($strField,$len))";
 			if ( $strCase=='a-z' ) return "UPPER($strField) NOT REGEXP '^[A-Z]'";
 			break;
+    case 'pdo.sqlsrv':
 		case 'sqlsrv':
-		case 'mssql':
       if ( $strCase=='u' ) return "UPPER(LEFT($strField,$len))";
       if ( $strCase=='l' ) return "LOWER(LEFT($strField,$len))";
 			if ( $strCase=='a-z' ) return "(ASCII(UPPER(LEFT($strField,1)))<65 OR ASCII(UPPER(LEFT($strField,1)))>90)";
 			break;
-		case 'pg':
+    case 'pdo.pg':
+    case 'pg':
       if ( $strCase=='u' ) return "UPPER(SUBSTRING($strField,1,$len))";
       if ( $strCase=='l' ) return "LOWER(SUBSTRING($strField,1,$len))";
 			if ( $strCase=='a-z' ) return "UPPER($strField) !~ '^[A-Z]'";
 			break;
-		case 'ibase':
+    case 'pdo.ibase':
+    case 'ibase':
       if ( $strCase=='u' ) return "UPPER(SUBSTRING($strField FROM 1 FOR $len))";
       if ( $strCase=='l' ) return "LOWER(SUBSTRING($strField FROM 1 FOR $len))";
 			if ( $strCase=='a-z' ) return "(UPPER(SUBSTRING($strField FROM 1 FOR 1))<'A' OR UPPER(SUBSTRING($strField FROM 1 FOR 1))>'Z')";
 			break;
-		case 'sqlite':
+    case 'pdo.sqlite':
+    case 'sqlite':
       if ( $strCase=='u' ) return "UPPER(SUBSTR($strField,1,$len))";
       if ( $strCase=='l' ) return "LOWER(SUBSTR($strField,1,$len))";
 			if ( $strCase=='a-z' ) return "(UPPER(SUBSTR($strField,1,1))<'A' OR UPPER(SUBSTR($strField,1,1))>'Z')";
 			break;
+    case 'pdo.oci':
+    case 'pdo.db2':
     case 'oci':
 		case 'db2':
       if ( $strCase=='u' ) return "UPPER(SUBSTR($strField,1,$len))";
@@ -156,10 +166,15 @@ function SqlDateCondition($strDate='',$strField='firstpostdate',$intLength=4,$st
   switch($oDB->type)
   {
   case 'pdo.mysql': return 'LEFT('.$strField.','.$intLength.')'.$strDate; break;
+  case 'pdo.pg':
   case 'pg': return 'SUBSTRING('.$strField.',1,'.$intLength.')'.$strDate; break;
+  case 'pdo.ibase':
   case 'ibase': return 'SUBSTRING('.$strField.' FROM 1 FOR '.$intLength.')'.$strDate; break;
+  case 'pdo.sqlite':
   case 'sqlite':
+  case 'pdo.db2':
   case 'db2':
+  case 'pdo.oci':
   case 'oci': return 'SUBSTR('.$strField.',1,'.$intLength.')'.$strDate; break;
   default: return 'LEFT('.$strField.','.$intLength.')'.$strDate;
   }
@@ -456,12 +471,12 @@ function DateAdd($d='0',$i=-1,$str='year')
    case 'month': $intM += $i; break;
    case 'day': $intD += $i; break;
    }
-   if ( in_array($intM,array(1,3,5,7,8,10,12)) && $intD>31 ) { $intM++; $intD -= 31; }
-   if ( in_array($intM,array(4,6,9,11)) && $intD>30 ) { $intM++; $intD -= 30; }
-   if ( $intD<1 ) { $intM--; $intD += 30; }
-   if ( $intM>12 ) { $intY++; $intM -= 12; }
-   if ( $intM<1 ) { $intY--; $intM += 12; }
-   if ( $intM==2 && $intD>28 ) { $intM++; $intD -= 28; }
+   if ( in_array($intM,array(1,3,5,7,8,10,12)) && $intD>31 ) { ++$intM; $intD -= 31; }
+   if ( in_array($intM,array(4,6,9,11)) && $intD>30 ) { ++$intM; $intD -= 30; }
+   if ( $intD<1 ) { --$intM; $intD += 30; }
+   if ( $intM>12 ) { ++$intY; $intM -= 12; }
+   if ( $intM<1 ) { --$intY; $intM += 12; }
+   if ( $intM==2 && $intD>28 ) { ++$intM; $intD -= 28; }
    return strval($intY*10000+$intM*100+$intD).(strlen($d)>8 ? substr($d,8) : '');
 }
 
@@ -604,7 +619,7 @@ function SectionsByDomain($role='',$arrSections=array())
   if ( empty($role) ) $role = sUser::Role();
   foreach($arrSections as $id=>$arrSection)
   {
-    if ( ($role==='V' || $role==='U') && isset($arrSection[$id]['type']) && $arrSection[$id]['type']==='1' ) continue;
+    if ( ($role==='V' || $role==='U') && isset($arrSection['type']) && $arrSection['type']==='1' ) continue;
     $arr[(int)$arrSection['domainid']][$id] = $arrSection;
   }
   return $arr;

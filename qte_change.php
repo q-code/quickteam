@@ -803,7 +803,7 @@ case 'users_status':
   {
   var doc = document;
   var icons = doc.getElementsByClassName("hiddenicon");
-  for(var i=0; i<icons.length; i++) icons[i].style.display="none";
+  for(var i=0; i<icons.length; ++i) icons[i].style.display="none";
   if ( doc.getElementById("statusicon_"+id) ) doc.getElementById("statusicon_"+id).style.display="inline";
   }
   SetStatusIcon("A"); // make visible the current status (before using select)

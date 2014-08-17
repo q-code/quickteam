@@ -67,7 +67,7 @@ if ( isset($_POST['add']) && isset($_POST['sec_add']) )
   $i = 0;
   foreach($_POST['sec_add'] as $intKey)
   {
-  if ( cItem::InSection($s,'add',$intKey) ) $i++;
+  if ( cItem::InSection($s,'add',$intKey) ) ++$i;
   }
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.sprintf(L('Added_member',$i),$oSEC->name) : 'E|'.$error);
   $oSEC->stats = cSection::UpdateStats($s);
@@ -79,7 +79,7 @@ if ( isset($_POST['rem']) && isset($_POST['sec_del']) )
   $j = 0; // users unsuccessfully removed (because users without teams remains in section 0)
   foreach($_POST['sec_del'] as $intKey)
   {
-  if ( cItem::InSection($s,'rem',$intKey) ) { $i++; } else { $j++; }
+  if ( cItem::InSection($s,'rem',$intKey) ) { ++$i; } else { ++$j; }
   }
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.sprintf(L('Removed_member',$i),$oSEC->name) : 'E|'.$error);
   $oSEC->stats = cSection::UpdateStats($s);

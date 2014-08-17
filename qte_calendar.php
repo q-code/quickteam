@@ -39,7 +39,7 @@ $intYearN  = $intYear;
 
 $intMonth  = date('n');
 if ( isset($_GET['m']) ) $intMonth = strip_tags($_GET['m']);
-$intMonthN = $intMonth+1; if ( $intMonthN>12 ) { $intMonthN=1; $intYearN++; }
+$intMonthN = $intMonth+1; if ( $intMonthN>12 ) { $intMonthN=1; ++$intYearN; }
 $strMonth  = '0'.$intMonth; $strMonth = substr($strMonth,-2,2);
 $strMonthN = '0'.$intMonthN; $strMonthN = substr($strMonthN,-2,2);
 $arrWeekCss = array(1=>'monday','tuesday','wednesday','thursday','friday','saturday','sunday'); // system weekdays reference
@@ -76,9 +76,13 @@ switch($oDB->type)
 {
 // Select 2 months
 case 'pdo.mysql': $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.',5,2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.',5,2)="'.$strMonthN.'")'); break;
+case 'pdo.ibase':
 case 'ibase': $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.' FROM 5 FOR 2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.' FROM 5 FOR 2)="'.$strMonthN.'")'); break;
+case 'pdo.sqlite':
 case 'sqlite':
+case 'pdo.db2':
 case 'db2':
+case 'pdo.oci':
 case 'oci': $oDB->Query('SELECT u.id,u.username,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTR(u.'.v.',5,2)="'.$strMonth.'" OR SUBSTR(u.'.$v.',5,2)="'.$strMonthN.'")'); break;
 default: $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$v.' FROM '.TABUSER.' u '.$strInner.' (SUBSTRING(u.'.$v.',5,2)="'.$strMonth.'" OR SUBSTRING(u.'.$v.',5,2)="'.$strMonthN.'")');
 }
@@ -88,8 +92,8 @@ while($row=$oDB->Getrow())
   {
     $strM = substr($row[$v],4,2); $intM = intval($strM);
     $strD = substr($row[$v],6,2); $intD = intval($strD);
-    if ( $strM==$strMonth ) { $arrEvents[$intD][]=$row; $intEvents++; }
-    if ( $strM==$strMonthN ) { $arrEventsN[$intD]=$row; $intEventsN++; }
+    if ( $strM==$strMonth ) { $arrEvents[$intD][]=$row; ++$intEvents; }
+    if ( $strM==$strMonthN ) { $arrEventsN[$intD]=$row; ++$intEventsN; }
   }
 }
 
@@ -141,7 +145,7 @@ if ( date('l',$dFirstDay)!='Monday' )
   $dFirstMonday = strtotime('next monday',$dFirstDay);
   // correction for php 4.2
   // find last monday
-  for ($i=date('j',$dFirstDay);$i<32;$i++)
+  for ($i=date('j',$dFirstDay);$i<32;++$i)
   {
     $dI = mktime(0,0,0,date('n',$dFirstDay),$i,date('Y',$dFirstDay));
     if ( !$dI )
@@ -179,7 +183,7 @@ echo '<option value="1"',($a==1 ? QSEL : ''),'>',$L['Calendar_show_all'],'</opti
 echo '</select>';
 }
 echo ' ',$L['Month'],' <select name="m" onchange="document.getElementById(\'ok\').click();">';
-for ($i=1;$i<13;$i++)
+for ($i=1;$i<13;++$i)
 {
 echo '<option',($i==date('n') ? ' class="bold"' : ''),' value="',$i,'"',($i==$intMonth ? QSEL : ''),'>',$L['dateMMM'][$i],'</option>',PHP_EOL;
 }
@@ -194,20 +198,20 @@ echo '</select> <input type="submit" name="ok" id="ok" value="',$L['Ok'],'"/>
 echo '<table class="t-data"  style="width:700px">',PHP_EOL;
 echo '<tr class="t-data">',PHP_EOL;
 echo '<th class="week date_first">&nbsp;</th>';
-for ($i=1;$i<8;$i++)
+for ($i=1;$i<8;++$i)
 {
   echo '<th class="date',($i==7 ? ' date_last' : ''),'" style="width:95px">',$L['dateDDD'][$i],'</th>',PHP_EOL;
 }
 echo '</tr>',PHP_EOL;
 
   $iShift=0;
-  for ($intWeek=0;$intWeek<6;$intWeek++)
+  for ($intWeek=0;$intWeek<6;++$intWeek)
   {
     echo '<tr class="t-data">',PHP_EOL;
-    echo '<td class="week">',$intShiftWeek,'</td>'; $intShiftWeek++;
-    for ($intDay=1;$intDay<8;$intDay++)
+    echo '<td class="week">',$intShiftWeek,'</td>'; ++$intShiftWeek;
+    for ($intDay=1;$intDay<8;++$intDay)
     {
-      $d = strtotime("+$iShift days",$dFirstDay); $iShift++;
+      $d = strtotime("+$iShift days",$dFirstDay); ++$iShift;
       $intShiftYear = date('Y',$d);
       $intShiftMonth = date('n',$d);
       $intShiftDay = date('j',$d);
@@ -223,7 +227,7 @@ echo '</tr>',PHP_EOL;
           $intDayEvents = 0;
           Foreach ($arrEvents[$intShiftDay] as $intKey => $arrValues)
           {
-            $intDayEvents++;
+            ++$intDayEvents;
             $intAge = 0;
             if ( strpos($_SESSION[QT]['fields_c'],'age')!==FALSE ) $intAge = $intShiftYear - intval(substr($arrValues[$v],0,4));
             if ( $intDayEvents<4 )
@@ -266,7 +270,7 @@ echo '<td class="hidden" style="width:220px">',PHP_EOL;
     $dFirstMonday = strtotime('next monday',$dFirstDay);
     // correction for php 4.2
     // find last monday
-    for ($i=date('j',$dFirstDay);$i<32;$i++)
+    for ($i=date('j',$dFirstDay);$i<32;++$i)
     {
       $dI = mktime(0,0,0,date('n',$dFirstDay),$i,date('Y',$dFirstDay));
       if ( !$dI )
@@ -282,19 +286,19 @@ echo '<td class="hidden" style="width:220px">',PHP_EOL;
   echo '<h2>',$L['dateMMM'][date('n',$dCurrentDate)],'</h2>';
   echo '<table class="t-data"  style="width:200px">',PHP_EOL;
   echo '<tr class="t-data">',PHP_EOL;
-  for ($intDay=1;$intDay<8;$intDay++)
+  for ($intDay=1;$intDay<8;++$intDay)
   {
   echo '<th class="date_next">',$L['dateD'][$intDay],'</th>',PHP_EOL;
   }
   echo '</tr>',PHP_EOL;
 
     $iShift=0;
-    for ($intWeek=0;$intWeek<6;$intWeek++)
+    for ($intWeek=0;$intWeek<6;++$intWeek)
     {
       echo '<tr class="t-data">',PHP_EOL;
-      for ($intDay=1;$intDay<8;$intDay++)
+      for ($intDay=1;$intDay<8;++$intDay)
       {
-        $d = strtotime("+$iShift days",$dFirstDay); $iShift++;
+        $d = strtotime("+$iShift days",$dFirstDay); ++$iShift;
         $intShiftYear = date('Y',$d);
         $intShiftMonth = date('n',$d);
         $intShiftDay = date('j',$d);

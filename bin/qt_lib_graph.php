@@ -81,7 +81,7 @@ function QTarraymerge($arrK=array('A','B','C','D','E'),$arrV=array(100,20,30,50,
   $arrK = array_values($arrK);
   $arrV = array_values($arrV);
   $arr = array();
-  for ($i=0;$i<count($arrK);$i++)
+  for ($i=0;$i<count($arrK);++$i)
   {
     $arr[$arrK[$i]]=$arrV[$i];
     if ( $bZero && empty($arrV[$i]) ) $arr[$arrK[$i]]=0;
@@ -447,7 +447,7 @@ function QTpchart(
     if ( count($series)>1 )
     {
       $oChart->setFontProperties('pChart/Fonts/tahoma.ttf',7);
-      for ($intBt=1;$intBt<=count($arrV);$intBt++)
+      for ($intBt=1;$intBt<=count($arrV);++$intBt)
       {
       $i = QTtrend($arrS[$series[1]][$intBt],$arrS[$series[0]][$intBt],$ch['trend']=='p');
       if ( $i>0 ) $oChart->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),$series[1],$arrA[$intBt],'+'.$i.($ch['trend']=='p' ? '%' : ''),220,220,220);

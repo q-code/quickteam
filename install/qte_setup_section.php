@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 2.5
+// QuickTeam 3.0
 
 switch($oDB->type)
 {
@@ -25,27 +25,8 @@ case 'mysql':
   )';
   break;
 
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
-  id int,
-  domainid int NOT NULL default 0,
-  title varchar(32) NOT NULL default "untitled",
-  type char(1) NOT NULL default "0",
-  status char(1) NOT NULL default "0",
-  stats varchar(255),
-  options varchar(255),
-  vorder int NOT NULL default 255,
-  forder varchar(255),
-  modid int NOT NULL default 0,
-  modname varchar(32) NOT NULL default "Administrator",
-  template char(1) NOT NULL default "T",
-  ontop char(1) NOT NULL default "0",
-  PRIMARY KEY (id)
-  )';
-  break;
-
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id int NOT NULL CONSTRAINT pk_'.$qte_prefix.'qtesection PRIMARY KEY,
   domainid int NOT NULL default 0,
@@ -63,6 +44,7 @@ case 'mssql':
   )';
   break;
 
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id integer,
@@ -82,6 +64,7 @@ case 'pg':
   )';
   break;
 
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id integer,
@@ -101,6 +84,7 @@ case 'sqlite':
   )';
   break;
   
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id integer,
@@ -120,6 +104,7 @@ case 'ibase':
   )';
   break;
   
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id integer NOT NULL,
@@ -139,6 +124,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qtesection (
   id number(32),
@@ -158,7 +144,7 @@ case 'oci':
   break;
   
 default:
-  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, mssql, pg, ibase, db2, oci');
+  die('Database type ['.$oDB->type.'] not supported... Must be mysql, sqlsrv, pg, ibase, db2, oci');
  
 }
 

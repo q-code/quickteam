@@ -149,7 +149,7 @@ $intCol=0;
 
 foreach($arrTabs as $key=>$oTab)
 {
-  $intCol++;
+  ++$intCol;
   $strTab = '';
   $strTabDesc = '';
 

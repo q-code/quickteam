@@ -205,7 +205,7 @@ while ( $row=$oDB->Getrow() )
     $arrUsersEmails[] = $oItem->fullname.'&nbsp;&nbsp;<a class="small" href="mailto:'.strip_tags($oItem->emails).'" title="'.$oItem->fullname.'">'.$oItem->emails.'</a>'.(strstr($oItem->privacy,'emails') ? ' <span class="small">('.$L['Hidden'].')</span>' : '');
     $arr = explode(';',strip_tags($oItem->emails));
     foreach($arr as $str) $arrEmailsUsers[trim($str)] = trim($oItem->fullname).' <'.trim($str).'>';
-    $i++;
+    ++$i;
   }
 }
 

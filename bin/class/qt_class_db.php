@@ -1,12 +1,4 @@
-<?php
-
-/* ============
- * qt_db.php
- * ------------
- * version: 6.0 build:20140803
- * This is a library of public class
- * ------------
- * ============ */
+<?php // version 6.0 build:20140817
 
 class cDB
 {
@@ -34,40 +26,39 @@ function __construct($type,$host,$db,$user,$pwd)
   if ( !empty($_SESSION['QTstatsql']) ) $this->StartStats();
   
   // Use PDO or CONNECT
-  if ( $this->type==='pdo.mysql')
+  if ( substr($this->type,0,4)==='pdo.') return $this->PDOconnect();
+  return $this->Connect();
+}
+
+// This function connects the database
+// return boolean $is_connected Returns true if connection was successful otherwise false
+
+private function PDOconnect()
+{
+  try
   {
-    try
+    switch($this->type)
     {
-      $this->pdo = new PDO('mysql:host='.$this->host.';dbname='.$this->db, $this->user, $this->pwd);
-      return true;
+    case 'pdo.mysql': $this->pdo = new PDO('mysql:host='.$this->host.';dbname='.$this->db, $this->user, $this->pwd); return true; break;
+    case 'pdo.sqlsrv': $this->pdo = new PDO('sqlsrv:Server='.$this->host.';Database='.$this->db, $this->user, $this->pwd); return true; break;
+    case 'pdo.pg': $this->pdo = new PDO('pgsql:host='.$this->host.';dnname='.$this->db, $this->user, $this->pwd); return true; break;
+    case 'pdo.sqlite': $this->pdo = new PDO('sqlite:'.$this->host, $this->user, $this->pwd); return true; break;
+    case 'pdo.ibase': $this->pdo = new PDO('firebird:dbname='.$this->host, $this->user, $this->pwd); return true; break;
+    case 'pdo.oci': $this->pdo = new PDO('oci:dbname='.$this->host, $this->user, $this->pwd); return true; break;
     }
-    catch (PDOException $e)
-    {
-      $this->error = $e->getMessage();
-      $this->pdo = null;
-      echo '<p class="small error">'.$this->error.'</p>';
-      return false;
-    }
+    return false;
   }
-  else
+  catch (PDOException $e)
   {
-    return $this->Connect();
+    $this->error = $e->getMessage();
+    $this->pdo = null;
+    echo '<p class="small error">'.$this->error.'</p>';
+    return false;
   }
 }
 
-/*
- * This function connects the database
- * @return boolean $is_connected Returns true if connection was successful otherwise false
- * @desc This function connects to the database which is set in the constructor
- */
-public function Connect()
-{
-  // check type
-  if ( !in_array($this->type,array('pdo.mysql','mysql','mysql4','sqlsrv','mssql','pg','ibase','sqlite','db2','oci')) )
-  {
-    die('db_type ['.$this->type.'] not supported. Must be "mysql","sqlsrv","mssql","pg","ibase","sqlite","db2" or "oci"');
-  }
-  
+private function Connect()
+{  
   switch($this->type)
   {
   case 'mysql4':
@@ -81,24 +72,18 @@ public function Connect()
   if ( empty($this->user) && empty($this->pwd) ) $arr=array('Database'=>$this->db);
   $this->con = sqlsrv_connect($this->host,$arr);
   break;
-  case 'mssql': $this->con = mssql_connect($this->host,$this->user,$this->pwd); break;
   case 'db2':   $this->con = db2_connect($this->host,$this->user,$this->pwd); break;
   case 'oci':   $this->con = oci_connect($this->user,$this->pwd,$this->db); break;
-  default: die('db_type ['.$this->type.'] not supported.');
+  default: die('db_type ['.$this->type.'] not supported. Must be mysql, sqlsrv, pg, ibase, sqlite, db2 or oci');
   }
 
   // check connection
-  if ( !$this->con )
-  {
-    die( 'Wrong connection parameters! Cannot establish connection to host.');
-  }
+  if ( !$this->con ) die( 'Wrong connection parameters! Cannot establish connection to host.');
 
   // Selection database (if required)
   switch ($this->type)
   {
-  case 'mysql4':
-  case 'mysql': if ( mysql_select_db($this->db,$this->con) ) return true; break;
-  case 'mssql': if ( mssql_select_db($this->db,$this->con) ) return true; break; // no select with sqlsrv
+  case 'mysql': if ( mysql_select_db($this->db,$this->con) ) return true; break;// no select with sqlsrv
   case 'db2':   if ( db2_select_db($this->db,$this->con) ) return true; break;
   default: return true;
   }
@@ -107,14 +92,12 @@ public function Connect()
 
 // ---------
 
-function Disconnect()
+public function Disconnect()
 {
   $this->pdo = null;
   switch($this->type)
   {
-  case 'mysql4':
   case 'mysql': mysql_close($this->con); break;
-  case 'mssql': mssql_close($this->con); break;
   case 'sqlsrv': sqlsrv_close($this->con); break;
   case 'pg': pg_close($this->con); break;
   case 'ibase': ibase_close($this->con); break;
@@ -127,13 +110,13 @@ function Disconnect()
 
 // ---------
 
-function QueryErr($strSql,&$error,$bShowError=false)
+public function QueryErr($strSql,&$error,$bShowError=false)
 {
   // same as Query but add the error in $error (passed by reference) and direct display is disabled
   if ( !$this->Query($strSql,$bShowError) ) { $error = $this->error; return false; }
   return true;
 }
-function Query($sql,$bShowError=true)
+public function Query($sql,$bShowError=true)
 {
   if ( $this->debug || isset($_SESSION['QTdebugsql']) ) printf('<p class="small" style="margin:1px">SQL: %s</p>',$sql);
 
@@ -141,14 +124,18 @@ function Query($sql,$bShowError=true)
   {
   case 'pdo.mysql': $this->qry = $this->pdo->query($sql); break; // warning this->qry is now a PDOstatement object
   case 'mysql': $this->qry = mysql_query($sql,$this->con); break;
-  case 'mssql': $this->qry = mssql_query($sql,$this->con); break;
   case 'sqlsrv': $sql = str_replace('"',"'",$sql); $this->qry = sqlsrv_query($this->con,$sql); break;
   case 'pg': $sql = str_replace('"',"'",$sql); $this->qry = pg_query($this->con,$sql); break;
   case 'ibase': $this->qry = ibase_query($this->con,$sql); break;
   case 'sqlite':$this->qry = sqlite_query($this->con,$sql); break;
   case 'db2': $this->qry = db2_query($this->con,$sql); break;
   case 'oci': $sql = str_replace('"',"'",$sql); $this->qry = oci_parse($this->con,$sql); oci_execute($this->qry); break;
-  case 'mysql4': $this->qry = mysql_query($sql,$this->con); break;
+  case 'pdo.sqlsrv':
+  case 'pdo.pg':
+  case 'pdo.ibase':
+  case 'pdo.sqlite':
+  case 'pdo.db2':
+  case 'pdo.oci': $this->qry = $this->pdo->query($sql); break; // warning this->qry is now a PDOstatement object
   default: die('db_type ['.$this->type.'] not supported.');
   }
 
@@ -156,13 +143,13 @@ function Query($sql,$bShowError=true)
   if ( !$this->qry ) return $this->Halt($bShowError); // puts error message in $this->error, echos error message, and returns false
   return true; // success
 }
-function ExecErr($strSql,&$error,$bShowError=false)
+public function ExecErr($strSql,&$error,$bShowError=false)
 {
   // same as Query but add the error in $error (passed by reference) and direct display is disabled
   if ( !$this->Exec($strSql,$bShowError) ) { $error = $this->error; return false; }
   return true;
 }
-function Exec($sql,$bShowError=true)
+public function Exec($sql,$bShowError=true)
 {
   if ( $this->debug || isset($_SESSION['QTdebugsql']) ) printf('<p class="small" style="margin:1px">SQL: %s</p>',$sql);
   if ( isset($this->stats) ) ++$this->stats['num'];
@@ -185,7 +172,7 @@ function Exec($sql,$bShowError=true)
 
 // --------
 
-function Nextid($table='',$field='id',$where='')
+public function Nextid($table='',$field='id',$where='')
 {
   if ( !is_string($table) || empty($table) ) die('cDB->Nextid: argument #1 must be a string');
   if ( !is_string($field) || empty($field) ) die('cDB->Nextid: argument #2 must be a string');
@@ -200,7 +187,7 @@ function Nextid($table='',$field='id',$where='')
 // --------
 // attention: sqlite can return fieldname including the prefix alias (p.id)
 
-function Getrow()
+public function Getrow()
 {
   $row = false;
   switch ($this->type)
@@ -257,7 +244,7 @@ function Getrow()
 // Echos error message (if $bShowDbError)
 // Returns false (or stop if $bStop)
 
-function Halt($bShowError=true,$bStop=false)
+private function Halt($bShowError=true,$bStop=false)
 {
   switch($this->type)
   {
@@ -283,7 +270,5 @@ public function StartStats()
   $t = (float)vsprintf('%d.%06d', gettimeofday());
   $this->stats=array( 'num'=>0, 'start'=>$t, 'pagestart'=>$t );
 }
-
-// --------
 
 }

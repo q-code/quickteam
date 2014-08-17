@@ -279,7 +279,7 @@ class cTable extends cTableEntity
           break;
         default: die('SetProperty: invalid argument #1, must be th or td.');   
       }
-      $i++;
+      ++$i;
     }
   }
   

@@ -63,7 +63,7 @@ $arrUs = array();// Users sum
 foreach($arrYears as $intYear)
 {
   $arrU[$intYear] = array();
-  for ($i=1;$i<=12;$i++)
+  for ($i=1;$i<=12;++$i)
   {
   $arrA[$i]=$L['dateMM'][$i];
   $arrU[$intYear][$i]=null;
@@ -74,7 +74,7 @@ foreach($arrYears as $intYear)
 // COUNT Users
 
 foreach($arrYears as $intYear) {
-for ($intBt=1;$intBt<=12;$intBt++) {
+for ($intBt=1;$intBt<=12;++$intBt) {
 
   // check limits (startdate/enddate)
 
@@ -141,7 +141,7 @@ echo '<table class="t-data">
 <tr>
 <td class="headfirst" style="width:85px">&nbsp;</td>
 ';
-for ($i=1;$i<=12;$i++) { echo '<td class="headfirst" style="text-align:center;">',$L['dateMM'][$i],'</td>'; }
+for ($i=1;$i<=12;++$i) { echo '<td class="headfirst" style="text-align:center;">',$L['dateMM'][$i],'</td>'; }
 echo '<td class="headfirst" style="text-align:center;"><b>',$L['Year'],'</b></td>
 </tr>';
 
@@ -151,7 +151,7 @@ foreach($arrYears as $intYear)
 {
 echo '<tr>';
 echo '<td class="headfirst">',$intYear,'</td>';
-for ($intBt=1;$intBt<=12;$intBt++)
+for ($intBt=1;$intBt<=12;++$intBt)
 {
 echo '<td style="text-align:center;">',(isset($arrU[$intYear][$intBt]) ? $arrU[$intYear][$intBt] : '&middot;'),'</td>';
 }

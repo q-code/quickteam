@@ -97,7 +97,7 @@ case 'sec': // request secret question
   if ( !empty($ok) && !empty($p) && !empty($s) )
   {
     if ( !isset($_SESSION['try']) ) $_SESSION['try']=0;
-    $_SESSION['try']++;
+    ++$_SESSION['try'];
 
     if ( strtolower($row['secret_a'])==strtolower($s) )
     {

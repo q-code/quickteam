@@ -50,54 +50,8 @@ case 'mysql':
   )';
   break;
   
-case 'mysql4':
-  $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
-  id int NOT NULL default 0,
-  username varchar(32) NOT NULL UNIQUE,
-  pwd varchar(40),
-  role char(1) NOT NULL default "V",
-  type char(1),
-  status char(1) NOT NULL default "Z",
-  children char(1) NOT NULL default "0",
-  title varchar(8),
-  firstname varchar(32),
-  midname varchar(32),
-  lastname varchar(32),
-  alias varchar(32),
-  birthdate varchar(8) NOT NULL default "0",
-  nationality varchar(32),
-  sexe varchar(32),
-  picture varchar(255),
-  address varchar(255),
-  phones varchar(255),
-  emails varchar(255),
-  www varchar(255),
-  privacy varchar(255),
-  signature varchar(255),
-  descr varchar(255),
-  firstdate varchar(8) NOT NULL default "0",
-  teamid1 varchar(32),
-  teamid2 varchar(32),
-  teamrole1 varchar(32),
-  teamrole2 varchar(32),
-  teamdate1 varchar(8) NOT NULL default "0",
-  teamdate2 varchar(8) NOT NULL default "0",
-  teamvalue1 decimal(16,2),
-  teamvalue2 decimal(16,2),
-  teamflag1 varchar(32),
-  teamflag2 varchar(32),
-  x decimal(9,6),
-  y decimal(9,6),
-  z decimal(9,2),
-  ip varchar(24),
-  secret_q varchar(255),
-  secret_a varchar(255),
-  PRIMARY KEY (id)
-  )';
-  break;
-
+case 'pdo.sqlsrv':
 case 'sqlsrv':
-case 'mssql':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id int NOT NULL CONSTRAINT pk_'.$qte_prefix.'qteuser PRIMARY KEY,
   username varchar(32) NOT NULL CONSTRAINT uk_'.$qte_prefix.'qteuser UNIQUE,
@@ -142,6 +96,7 @@ case 'mssql':
   )';
   break;
 
+case 'pdo.pg':
 case 'pg':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id integer NOT NULL default 0,
@@ -188,6 +143,7 @@ case 'pg':
   )';
   break;
   
+case 'pdo.sqlite':
 case 'sqlite':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id integer,
@@ -234,6 +190,7 @@ case 'sqlite':
   )';
   break;
   
+case 'pdo.ibase':
 case 'ibase':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id integer default 0,
@@ -280,6 +237,7 @@ case 'ibase':
   )';
   break;
   
+case 'pdo.db2':
 case 'db2':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id integer NOT NULL,
@@ -326,6 +284,7 @@ case 'db2':
   )';
   break;
 
+case 'pdo.oci':
 case 'oci':
   $strQ='CREATE TABLE '.$qte_prefix.'qteuser (
   id number(32) default 0 NOT NULL,
@@ -373,7 +332,7 @@ case 'oci':
   break;
   
 default:
-  die('Database type ['.$this->type.'] not supported... Must be mysql, sqlsrv, mssql, pg, sqlite, ibase, db2, oci');
+  die('Database type ['.$this->type.'] not supported... Must be mysql, sqlsrv, pg, sqlite, ibase, db2, oci');
 }
 
 echo '<span style="color:blue;">';

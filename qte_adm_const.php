@@ -58,7 +58,7 @@ echo '<p>Here are the database connection parameters (except passwords)</p>';
 echo $table->Start().PHP_EOL;
 $table->td[0] = new cTableData('','','headfirst'); $table->td[0]->Add('style','width:200px;');
 $table->td[1] = new cTableData();
-foreach(array('dbsystem','host','database','prefix','user','port','dsn','install') as $str)
+foreach(array('dbsystem','host','database','prefix','user','port','install') as $str)
 {
   $str = APP.'_'.$str;
   $table->SetTDcontent( array('$'.$str, (isset($$str) ? ConstantToString($$str) : '&nbsp;')) );

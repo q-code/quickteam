@@ -133,7 +133,7 @@ function SetAge()
   if ( isset($_SESSION[QT]['fields_c']) ) {
   if ( strstr($_SESSION[QT]['fields_c'],'age') ) {
     $this->age = date('Y') - intval(substr(strval($this->birthdate),0,4)) - 1;
-    if ( date('md') >= intval(substr(strval($this->birthdate),4,4)) ) $this->age++;
+    if ( date('md') >= intval(substr(strval($this->birthdate),4,4)) ) ++$this->age;
     if ( $this->age<0 ) $this->age=0;
   }}}}}
 }
@@ -203,9 +203,9 @@ function Delete($bStat=true)
 
   // update stats
 
-  if ( $bStat && isset($_SESSION[QT]['sys_sections']) )
+  if ( $bStat )
   {
-  foreach($_SESSION[QT]['sys_sections'] as $intId=>$arr) cSection::UpdateStats($intId);
+  foreach(memGet('sys_sections') as $id=>$arr) cSection::UpdateStats($id);
   }
 }
 
