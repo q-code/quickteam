@@ -143,26 +143,34 @@ public function Query($sql,$bShowError=true)
   if ( !$this->qry ) return $this->Halt($bShowError); // puts error message in $this->error, echos error message, and returns false
   return true; // success
 }
-public function ExecErr($strSql,&$error,$bShowError=false)
+public function ExecErr($strSql,&$error,$bShowError=true)
 {
   // same as Query but add the error in $error (passed by reference) and direct display is disabled
-  if ( !$this->Exec($strSql,$bShowError) ) { $error = $this->error; return false; }
+  $n = $this->Exec($strSql,$bShowError);
+  if ( $n===false ) { $error = $this->error; return false; }
   return true;
 }
 public function Exec($sql,$bShowError=true)
 {
   if ( $this->debug || isset($_SESSION['QTdebugsql']) ) printf('<p class="small" style="margin:1px">SQL: %s</p>',$sql);
   if ( isset($this->stats) ) ++$this->stats['num'];
-  if ( $this->type==='pdo.mysql' )
+  if ( substr($this->type,0,4)==='pdo.' )
   {
       try
       {
-        return $this->pdo->exec($sql); // Returns the number of affected rows. With CREATE TABLE, returns false if table exists
+        $n =  $this->pdo->exec($sql); // Returns the number of affected rows. With CREATE TABLE, returns false if table exists
+        if ( $n===false )
+        {
+          $this->error = 'Unable to execute: '.$sql; 
+          if ( $bShowError ) echo '<p class="small error">'.$this->error.'</p>';
+          return false;
+        }
+        return $n;
       }
       catch (PDOException $e)
       {
         $this->error = $e->getMessage();
-        echo '<p class="small error">'.$this->error.'</p>';
+        if ( $bShowError ) echo '<p class="small error">'.$this->error.'</p>';
         return false;
     }
   }

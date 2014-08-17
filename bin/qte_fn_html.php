@@ -75,8 +75,6 @@ else
 }
 
 include 'qte_inc_ft.php';
-exit;
-
 }
 
 // --------
