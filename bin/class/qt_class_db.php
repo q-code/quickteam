@@ -24,7 +24,7 @@ function __construct($type,$host,$db,$user,$pwd)
   $this->user = $user;
   $this->pwd = $pwd;
   if ( !empty($_SESSION['QTstatsql']) ) $this->StartStats();
-  
+
   // Use PDO or CONNECT
   if ( substr($this->type,0,4)==='pdo.') return $this->PDOconnect();
   return $this->Connect();
@@ -39,18 +39,20 @@ private function PDOconnect()
   {
     switch($this->type)
     {
-    case 'pdo.mysql': $this->pdo = new PDO('mysql:host='.$this->host.';dbname='.$this->db, $this->user, $this->pwd); return true; break;
-    case 'pdo.sqlsrv': $this->pdo = new PDO('sqlsrv:Server='.$this->host.';Database='.$this->db, $this->user, $this->pwd); return true; break;
-    case 'pdo.pg': $this->pdo = new PDO('pgsql:host='.$this->host.';dnname='.$this->db, $this->user, $this->pwd); return true; break;
-    case 'pdo.sqlite': $this->pdo = new PDO('sqlite:'.$this->host, $this->user, $this->pwd); return true; break;
-    case 'pdo.ibase': $this->pdo = new PDO('firebird:dbname='.$this->host, $this->user, $this->pwd); return true; break;
-    case 'pdo.oci': $this->pdo = new PDO('oci:dbname='.$this->host, $this->user, $this->pwd); return true; break;
+    case 'pdo.mysql': $this->pdo = new PDO('mysql:host='.$this->host.';dbname='.$this->db, $this->user, $this->pwd); break;
+    case 'pdo.sqlsrv': $this->pdo = new PDO('sqlsrv:Server='.$this->host.';Database='.$this->db, $this->user, $this->pwd); break;
+    case 'pdo.pg': $this->pdo = new PDO('pgsql:host='.$this->host.';dnname='.$this->db, $this->user, $this->pwd); break;
+    case 'pdo.sqlite': $this->pdo = new PDO('sqlite:'.$this->host, $this->user, $this->pwd); break;
+    case 'pdo.ibase': $this->pdo = new PDO('firebird:dbname='.$this->host, $this->user, $this->pwd); break;
+    case 'pdo.oci': $this->pdo = new PDO('oci:dbname='.$this->host, $this->user, $this->pwd); break;
+    default: die('PDO interface ['.$this->type.'] is not supported');
     }
-    return false;
+    $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return true;
   }
   catch (PDOException $e)
   {
-    $this->error = $e->getMessage();
+    $this->error = 'Unable to connect: '.$e->getMessage();
     $this->pdo = null;
     echo '<p class="small error">'.$this->error.'</p>';
     return false;
@@ -58,7 +60,7 @@ private function PDOconnect()
 }
 
 private function Connect()
-{  
+{
   switch($this->type)
   {
   case 'mysql4':
@@ -158,14 +160,17 @@ public function Exec($sql,$bShowError=true)
   {
       try
       {
+        return $this->pdo->exec($sql); // Returns the number of affected rows. With CREATE TABLE, returns false if table exists
+        /* !!!! if error notification works, remove this
         $n =  $this->pdo->exec($sql); // Returns the number of affected rows. With CREATE TABLE, returns false if table exists
         if ( $n===false )
         {
-          $this->error = 'Unable to execute: '.$sql; 
+          $this->error = 'Unable to execute: '.$sql;
           if ( $bShowError ) echo '<p class="small error">'.$this->error.'</p>';
           return false;
         }
         return $n;
+        */
       }
       catch (PDOException $e)
       {
@@ -211,7 +216,7 @@ public function Getrow()
       foreach($row as $strKey=>$oValue)
       {
         if ( is_string($oValue) ) {
-        if ( strlen($oValue)==1 ) {
+        if ( strlen($oValue)===1 ) {
         $row[$strKey] = trim($oValue);
         }}
       }
@@ -225,7 +230,7 @@ public function Getrow()
     $arr = array();
     foreach($row as $strKey=>$oValue)
     {
-      if ( substr($strKey,1,1)=='.') $strKey = strtolower(substr($strKey,2));
+      if ( substr($strKey,1,1)==='.') $strKey = strtolower(substr($strKey,2));
       $arr[$strKey]=$oValue;
     }
     $row = $arr;
