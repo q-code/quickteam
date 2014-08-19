@@ -68,7 +68,7 @@ public static function Login($username='',$password='',$bRemember=FALSE)
 
 public static function IsStaff()
 {
-  return (sUser::Role()=='M' || sUser::Role()=='A');
+  return (sUser::Role()==='M' || sUser::Role()==='A');
 }
 
 // --------
@@ -81,16 +81,16 @@ public static function CanView($level='V5',$offlinestop=true)
   // $level user role that can access the page: U, M, A or Vi(where i=public access level)
   // $offlinestop stop when application off-line
 
-  if ( sUser::Role()=='A' )
+  if ( sUser::Role()==='A' )
   {
   if ( $_SESSION[QT]['board_offline']=='1' ) $_SESSION['pagedialog'] = 'W|Board is offline but Administrators can make some actions';
   return true;
   }
-  if ( $level=='U' && sUser::Role()=='V') return false;
+  if ( $level=='U' && sUser::Role()==='V') return false;
   if ( $level=='M' && !sUser::IsStaff() ) return false;
   if ( $level=='A' && sUser::Role()!='A' ) return false;
   if ( strlen($level)==2 ) { $strPAL=substr($level,-1,1); } else { $strPAL='5'; }
-  if ( sUser::Role()=='V' && $_SESSION[QT]['visitor_right']<$strPAL ) return false;
+  if ( sUser::Role()==='V' && $_SESSION[QT]['visitor_right']<$strPAL ) return false;
   if ( $_SESSION[QT]['board_offline']=='1' && $offlinestop ) return false;
   return true;
 }

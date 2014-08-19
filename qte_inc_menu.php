@@ -20,7 +20,7 @@ $strPageMenu .= '
 <option value="">&nbsp;</option>
 <optgroup label="Action">
 ';
-if ( $oSEC->status==1 && sUser::Role()=='M' )
+if ( $oSEC->status==1 && sUser::Role()==='M' )
 {
 $strPageMenu .= '<option value="add" disabled="disabled">'.$L['User_man'].'...</option>'.PHP_EOL;
 }
@@ -29,7 +29,7 @@ else
 $strPageMenu .= '<option value="add">'.$L['User_man'].'...</option>'.PHP_EOL;
 }
 $arr = memGet('sys_statuses');
-if ( sUser::Role()=='A' ) $strPageMenu .= '<option value="new">'.$L['User_add'].'...</option>';
+if ( sUser::Role()==='A' ) $strPageMenu .= '<option value="new">'.$L['User_add'].'...</option>';
 $strPageMenu .= '
 <option value="email">'.$L['Emails'].'...</option>
 </optgroup>
@@ -210,7 +210,7 @@ case 'qte_adm_users.php':
   $strUserform  = '
   <form id="adduser" style="margin:5px 0 15px 0" method="post" action="'.$oVIP->selfurl.'" onsubmit="return ValidateForm(this);">
   <table class="t-data">
-  <tr class="t-data"><td class="headfirst">'.$L['Role'].'</td><td><select name="role" size="1"><option value="U"'.QSEL.'>'.$L['Userrole_U'].'</option><option value="M">'.$L['Userrole_M'].'</option>'.(sUser::Role()=='A' ? '<option value="A">'.$L['Userrole_A'].'</option>' : '').'</select></td></tr>
+  <tr class="t-data"><td class="headfirst">'.$L['Role'].'</td><td><select name="role" size="1"><option value="U"'.QSEL.'>'.$L['Userrole_U'].'</option><option value="M">'.$L['Userrole_M'].'</option>'.(sUser::Role()==='A' ? '<option value="A">'.$L['Userrole_A'].'</option>' : '').'</select></td></tr>
   <tr class="t-data"><td class="headfirst">'.$L['Username'].'</td><td><input id="title" name="title" type="text" size="15" maxlength="24" value="'.(isset($_POST['title']) ? $_POST['title'] : '').'" onfocus="document.getElementById(\'formerror\').innerHTML=\'\';" /></td></tr>
   <tr class="t-data"><td class="headfirst">'.$L['Password'].'</td><td><input id="pass" name="pass" type="text" size="15" maxlength="32"  value="'.(isset($_POST['pass']) ? $_POST['pass'] : '').'" /></td></tr>
   <tr class="t-data"><td class="headfirst">'.$L['Email'].'</td><td><input id="mail" name="mail" type="email" size="30" maxlength="255"  value="'.(isset($_POST['mail']) ? $_POST['mail'] : '').'" /></td></tr>

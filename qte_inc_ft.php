@@ -162,7 +162,7 @@ if ( $arrMenu['f'] ) {
   echo '<a href="',Href($arrMenu['u']),'"',(strstr($arrMenu['s'],$oVIP->selfurl) ? ' onclick="return false;"' : ''),'>',$arrMenu['n'],'</a>';
   }
 }}
-if ( sUser::Role()=='A' ) echo ' &middot; <a href="',Href('qte_adm_index.php'),'">['.L('Administration').']</a>';
+if ( sUser::Role()==='A' ) echo ' &middot; <a href="',Href('qte_adm_index.php'),'">['.L('Administration').']</a>';
 
 echo '</div>
 <div class="footerright">powered by <a href="http://www.qt-cute.org">QT-cute</a> <span title="',QTEVERSION,'">v',substr(QTEVERSION,0,3),'</span></div>

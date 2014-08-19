@@ -92,7 +92,7 @@ $arrMenus[]=array('h'=>true, 'f'=>true, 'n'=>$_SESSION[QT]['home_name'], 'u'=>$_
 $arrMenus[]=array('h'=>false,'f'=>true, 'n'=>L('Legal'), 'u'=>'qte_privacy.php');
 //$arrMenus[]=array('h'=>false,'f'=>true, 'n'=>L('FAQ'), 'u'=>'qte_faq.php');
 $arrMenus[]=array('h'=>true, 'f'=>false,'n'=>ObjTrans('index','i'), 'u'=>'qte_index.php', 's'=>'qte_index.php qte_section.php qte_calendar.php qte_privacy.php', 'secondary'=>true);
-$arrMenus[]=array('h'=>true, 'f'=>true, 'n'=>L('Search'), 'u'=>( $_SESSION[QT]['board_offline']=='1' || (sUser::Role()=='V' && $_SESSION[QT]['visitor_right']<3) ? '' : 'qte_search.php'),'s'=>'qte_search.php');
+$arrMenus[]=array('h'=>true, 'f'=>true, 'n'=>L('Search'), 'u'=>( $_SESSION[QT]['board_offline']=='1' || (sUser::Role()==='V' && $_SESSION[QT]['visitor_right']<3) ? '' : 'qte_search.php'),'s'=>'qte_search.php');
 if ( cVIP::CanViewStats() )
 {
 $arrMenus[]=array('h'=>false,'f'=>true,'n'=>L('Statistics'), 'u'=>($_SESSION[QT]['board_offline']=='1' ? '' : 'qte_stats.php'));

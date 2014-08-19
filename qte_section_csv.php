@@ -68,7 +68,7 @@ if ( $oSEC->type==1 && !sUser::IsStaff() )
   // exit
   $oHtml->PageMsg(NULL,$L['R_staff']);
 }
-if ( $oSEC->type==2 && sUser::Role()=='V' )
+if ( $oSEC->type==2 && sUser::Role()==='V' )
 {
   // exit
   $oHtml->PageMsg(NULL,$L['R_user']);
@@ -113,7 +113,7 @@ if ( $s>=0 )
   {
     $oHtml->PageMsg(NULL,$L['R_staff']);
   }
-  if ( $oSEC->type==2 && sUser::Role()=='V' )
+  if ( $oSEC->type==2 && sUser::Role()==='V' )
   {
     $oHtml->PageMsg(NULL,$L['R_user']);
   }

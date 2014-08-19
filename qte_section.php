@@ -68,7 +68,7 @@ if ( $s>=0 )
   {
     $oHtml->PageMsg(NULL,$L['R_staff']);
   }
-  if ( $oSEC->type==2 && sUser::Role()=='V' )
+  if ( $oSEC->type==2 && sUser::Role()==='V' )
   {
     $oHtml->PageMsg(NULL,$L['R_user']);
   }
@@ -367,7 +367,7 @@ while($row=$oDB->Getrow())
 
   echo $table->GetTDrow().PHP_EOL;
 
-  if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
+  if ( $strAlt==='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
   ++$intRow; if ( $intRow>=$_SESSION[QT]['items_per_page'] ) break;
 }
 

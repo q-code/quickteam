@@ -109,7 +109,7 @@ echo '&nbsp;</td></tr>',PHP_EOL;
 
 echo '<tr><td class="headfirst">',ObjTrans('field','username'),'</td><td>',$oItem->username,'&nbsp;</td>';
 echo '<td>';
-if ( sUser::Role()=='A' || (sUser::Id()==$id && QTE_CHANGE_USERNAME) ) {
+if ( sUser::Role()==='A' || (sUser::Id()==$id && QTE_CHANGE_USERNAME) ) {
 if ( $id>1 ) {
   echo '<a class="small" href="'.Href('qte_user_rename.php').'?id=',$id,'">',$L['Change_name'],'...</a>';
 }}
@@ -119,7 +119,7 @@ echo '<tr>';
 echo '<td class="headfirst">',$L['Password'],'</td>';
 echo '<td>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</td>';
 echo '<td>';
-if ( sUser::Role()=='A' || sUser::Id()==$id ) {
+if ( sUser::Role()==='A' || sUser::Id()==$id ) {
   echo '<a class="small" href="'.Href('qte_user_pwd.php').'?id=',$id,'">',$L['Change_password'],'...</a>';
 }
 echo '&nbsp;</td></tr>',PHP_EOL;
@@ -128,7 +128,7 @@ echo '<tr>';
 echo '<td class="headfirst">',$L['Secret_question'],'</td>';
 echo '<td>',(empty($oItem->secret_a) ? $L['N'] : $L['Y']),'</td>';
 echo '<td>';
-if ( sUser::Role()=='A' || sUser::Id()==$id ) {
+if ( sUser::Role()==='A' || sUser::Id()==$id ) {
   echo '<a class="small" href="'.Href('qte_user_question.php').'?id=',$id,'">',$L['Secret_question'],'...</a>';
 }
 echo '&nbsp;</td></tr>',PHP_EOL;
@@ -137,7 +137,7 @@ echo '<tr>';
 echo '<td class="headfirst">',$L['Picture'],'</td>';
 echo '<td>',(empty($oItem->picture) ? $L['None'] : $L['Y']),'</td>';
 echo '<td>';
-if ( sUser::Role()=='A' || sUser::Id()==$id ) {
+if ( sUser::Role()==='A' || sUser::Id()==$id ) {
   echo '<a class="small" href="'.Href('qte_user_img.php').'?id=',$id,'">',$L['Change_picture'],'...</a>';
 }
 echo '&nbsp;</td></tr>',PHP_EOL;

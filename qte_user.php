@@ -252,9 +252,9 @@ echo '
 switch($tt)
 {
 case 't': include 'qte_user_t.php'; break;
-case 'd': if ( sUser::Role()=='V' ) { include 'qte_user_na.php'; } else { include 'qte_user_d.php'; } break;
+case 'd': if ( sUser::Role()==='V' ) { include 'qte_user_na.php'; } else { include 'qte_user_d.php'; } break;
 case 'm': include 'qte_user_m.php'; break;
-case 's': if ( sUser::Role()=='V' ) { include 'qte_user_na.php'; } else { include 'qte_user_s.php'; } break;
+case 's': if ( sUser::Role()==='V' ) { include 'qte_user_na.php'; } else { include 'qte_user_s.php'; } break;
 default:  include 'qte_user_p.php';
 }
 

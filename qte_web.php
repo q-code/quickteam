@@ -74,7 +74,7 @@ if ( $oSEC->type==1 && !sUser::IsStaff() )
   $oVIP->exitname = ObjTrans('index','i');
   $oHtml->PageMsg(NULL,$L['R_staff'],0,'95%','msgboxtitle','msgbox',$qte_root);
 }
-if ( $oSEC->type==2 && sUser::Role()=='V' )
+if ( $oSEC->type==2 && sUser::Role()==='V' )
 {
   // exit
   $oVIP->selfname = $L['Section'];
@@ -259,7 +259,7 @@ while($row=$oDB->Getrow())
   $table->SetTDcontent($arrRendered,false); // populate all td  (without creating extra td)
   echo $table->GetTDrow().PHP_EOL;
 
-  if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
+  if ( $strAlt==='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
 
 
 }

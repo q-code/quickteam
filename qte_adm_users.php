@@ -276,7 +276,7 @@ if ( $intCount!=0 )
     //$table->td['id']->content       = $row['id'];
     $table->td['username']->content = $row['username'];
     echo $table->GetTDrow().PHP_EOL;
-    if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
+    if ( $strAlt==='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
     ++$intRow; if ( $intRow>=$intIPP ) break;
 
   }

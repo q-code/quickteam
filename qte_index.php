@@ -24,8 +24,8 @@ $oVIP->selfurl = 'qte_index.php';
 // SECURITY
 // --------
 
-if ( $_SESSION[QT]['board_offline']=='1' ) { EchoPage(99); return; }
-if ( $_SESSION[QT]['visitor_right']<1 && sUser::Role()=='V' ) { $oHtml->PageMsg(11); return; }
+if ( $_SESSION[QT]['board_offline']==='1' ) { EchoPage(99); return; }
+if ( $_SESSION[QT]['visitor_right']<1 && sUser::Role()==='V' ) { $oHtml->PageMsg(11); return; }
 
 // --------
 // INITIALIZE
@@ -99,7 +99,7 @@ foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
       $table->td[2]->content = (empty($str) ? '&nbsp;' : AsImg($str,'logo',$oSEC->name,'section','','qte_section.php?s='.$oSEC->id));
       $table->td[3]->content = $oSEC->members;
       echo $table->GetTDrow().PHP_EOL;
-      if ( $strAlt=='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
+      if ( $strAlt==='r1' ) { $strAlt='r2'; } else { $strAlt='r1'; }
     }
     echo '</tbody>',PHP_EOL;
     echo '</table>',PHP_EOL;
@@ -108,7 +108,7 @@ foreach(memGet('sys_domains') as $intDomid=>$strDomtitle)
 
 // No public section
 
-if ( $intSec==0 ) echo '<p>',( sUser::Role()=='V' ? $L['E_no_public_section'] : $L['E_no_visible_section'] ),'</p>';
+if ( $intSec===0 ) echo '<p>',( sUser::Role()==='V' ? $L['E_no_public_section'] : $L['E_no_visible_section'] ),'</p>';
 
 // --------
 // HTML END

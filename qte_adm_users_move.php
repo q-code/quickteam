@@ -56,7 +56,7 @@ $showsectionstatus = 'all'; if ( isset($_POST['showsectionstatus']) ) $showsecti
 $strMoveInfo = '';
 
 $oSEC = new cSection($s);
-if ( $oSEC->status==1 && sUser::Role()=='M' ) die(Error(13));
+if ( $oSEC->status==1 && sUser::Role()==='M' ) die(Error(13));
 
 // --------
 // SUBMITTED
