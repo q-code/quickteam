@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 
 // --------
 // INITIALISE

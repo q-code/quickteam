@@ -16,11 +16,11 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die(Error(13));
 
-include Translate('@_adm.php');
-include Translate('@_reg.php');
+include Translate(APP.'_adm.php');
+include Translate(APP.'_reg.php');
 
 // ---------
 // INITIALISE

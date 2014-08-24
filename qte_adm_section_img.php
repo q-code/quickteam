@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 $id = -1;
 QThttpvar('id','int'); if ( $id<0 ) die('Missing parameter id...');
@@ -25,7 +25,7 @@ QThttpvar('id','int'); if ( $id<0 ) die('Missing parameter id...');
 // INITIALISE
 // --------
 
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 if ( !isset($_SESSION['temp_key']) ) $_SESSION['temp_key']='';
 if ( !isset($_SESSION['temp_ext']) ) $_SESSION['temp_ext']='';

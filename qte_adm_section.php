@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 // ---------
@@ -25,7 +25,7 @@ if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 $s = -1; QThttpvar('s','int'); if ( $s<0 ) die('Missing parameters');
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $oVIP->selfurl  = 'qte_adm_section.php?s='.$s;
 $oVIP->selfname = '<span class="upper">'.$L['Adm_content'].'</span><br />'.$L['Section_upd'];

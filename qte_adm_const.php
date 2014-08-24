@@ -3,7 +3,7 @@
 // QT 3.0 build:20130817
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die('Access denied');
 $oVIP->selfurl=APP.'_adm_const.php';
 $oVIP->selfname='PHP constants';

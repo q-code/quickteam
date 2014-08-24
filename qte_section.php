@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('V2') ) { $oHtml->PageMsg(11); return; }
 if ( isset($_POST['Maction']) &&  $_POST['Maction']=='email' ) $oHtml->Redirect('qte_email.php?'.GetUri('group,page'),L('Emails'));
 

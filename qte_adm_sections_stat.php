@@ -16,9 +16,9 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 // ---------
 // INITIALISE

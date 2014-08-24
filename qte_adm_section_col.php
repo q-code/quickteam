@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 // ---------
@@ -112,7 +112,7 @@ function Changelist($arr,$action,$value='N')
 
 $s = -1; QThttpvar('s','int',true,true,false); if ( $s<0 ) die('missing section id...');
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $oSEC = new cSection($s);
 $oItem = new cItem(1);

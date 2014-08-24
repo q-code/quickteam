@@ -16,7 +16,7 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die('Access is restricted to administrators only');
 
 // INITIALISE

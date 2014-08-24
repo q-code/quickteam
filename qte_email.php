@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::IsStaff() ) die($L['R_staff']);
 
 $s = ''; // section $s can be '*' or [int] (after argument checking only [int] is allowed)
@@ -33,7 +33,7 @@ if ( $label=='1' ) $label=true;
 // ---------
 // Note: This returns pages of 100 items ($_SESSION[QT]['items_per_page'] replaced by 100)
 
-include Translate('@_email.php');
+include Translate(APP.'_email.php');
 
 $strFlds  = ' u.id,u.title,u.firstname,u.midname,u.lastname,u.username,u.alias,u.privacy,u.emails';
 $strFrom  = ' FROM '.TABUSER.' u INNER JOIN '.TABS2U.' l ON l.userid=u.id';

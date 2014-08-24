@@ -141,7 +141,7 @@ public function Query($sql,$bShowError=true)
   default: die('db_type ['.$this->type.'] not supported.');
   }
 
-  if ( isset($this->stats) ) ++$this->stats['num'];
+  if ( isset($this->stats) ) { ++$this->stats['num']; $this->stats['end']=(float)vsprintf('%d.%06d', gettimeofday()); }
   if ( !$this->qry ) return $this->Halt($bShowError); // puts error message in $this->error, echos error message, and returns false
   return true; // success
 }

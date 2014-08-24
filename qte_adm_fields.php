@@ -15,7 +15,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['E_admin']);
 
 // ------------
@@ -74,7 +74,7 @@ function SetFields($arrFields)
 // INITIALISE
 // ---------
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 include 'bin/qte_lang.php'; // this creates $arrLang
 

@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('U') ) die(Error(11));
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css"/>';
 $id = -1; QThttpvar('id','int'); if ( $id<0 ) die('Missing id...');
@@ -26,7 +26,7 @@ $id = -1; QThttpvar('id','int'); if ( $id<0 ) die('Missing id...');
 // --------
 
 include 'bin/class/qt_class_smtp.php';
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 $oVIP->selfurl = 'qte_unregister.php';
 $oVIP->selfname = $L['Unregister'];

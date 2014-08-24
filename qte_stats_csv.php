@@ -3,7 +3,7 @@
 // QuickTeam 3.0 build:20140608
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('V4') ) { $oHtml->PageMsg(11); return; }
 
 // --------

@@ -17,7 +17,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( $_SESSION[QT]['board_offline']=='1' ) { EchoPage(99); return; }
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
 $oHtml->scripts = array();

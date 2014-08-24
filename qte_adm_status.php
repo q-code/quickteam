@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 // ---------
@@ -25,7 +25,7 @@ if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 $id = '-1'; QThttpvar('id','str'); if ( $id=='-1' ) die('Missing id...');
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $oVIP->selfurl = 'qte_adm_status.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';

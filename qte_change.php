@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 include 'bin/class/qt_class_smtp.php';
 
 // ---------
@@ -33,7 +33,7 @@ $ok = ''; // submitted
 QThttpvar('a d s u v ids ok','str int int int str str str');
 if ( !empty($ids) ) $ids = explode(',',$ids);
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $bCmdok = false;
 $strMails = '';
@@ -201,7 +201,7 @@ case 'deletedomain':
 
   // delete domain $s and move content to destination $d
 
-  require_once 'bin/class/qte_class_dom.php';
+  require 'bin/class/qte_class_dom.php';
   if ( $d>-1 ) cDomain::MoveItems($s,$d); // Set $error in case of db failure
   if ( empty($error) ) cDomain::Drop($s); // Set $error in case of db failure
 
@@ -217,7 +217,7 @@ case 'pwdreset':
   if ( !sUser::IsStaff() ) die($L['R_staff']);
   if ( $u<0 ) die('Wrong id in '.$oVIP->selfurl);
 
-  include Translate('@_reg.php');
+  include Translate(APP.'_reg.php');
 
   $oVIP->selfname = $L['Reset_pwd'];
   $oVIP->exiturl  = Href('qte_user.php').'?id='.$u;
@@ -466,7 +466,7 @@ case 'userrole':
 
   if ( !sUser::IsStaff() ) die($L['R_staff']);
   if ( $u<2 ) die('Wrong parameters: user 0 and 1 cannot be changed');
-  include Translate('@_reg.php');
+  include Translate(APP.'_reg.php');
 
   $oVIP->selfname = $L['Change_role'];
   $oVIP->exiturl  = Href('qte_user.php').'?id='.$u.'&amp;tt=s';
@@ -524,7 +524,7 @@ case 'deleteuser':
   if ( !sUser::IsStaff() ) die($L['R_staff']);
   if ( $u<2 ) die('Wrong parameters: user 0 and 1 cannot be deleted');
 
-  include Translate('@_reg.php');
+  include Translate(APP.'_reg.php');
 
   $oVIP->selfname = $L['User_del'];
   if ( $v=='qte_adm_users' ) $oVIP->exiturl='qte_adm_users.php';

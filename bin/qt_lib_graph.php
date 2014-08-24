@@ -3,7 +3,7 @@
 /* ============
  * qt_lib_graph.php
  * ------------
- * version: 4.0 build:20121117
+ * version: 4.1 build:20140823
  * This is a library of public class
  * ------------
  * QTdataset()
@@ -30,7 +30,7 @@ function QTtablechart($arrHeader=array(),$arrSeries=array(),$arrSeriesColor=arra
   if ( !isset($arrClasses['tr']) ) $arrClasses['tr']='t-data';
   if ( !isset($arrClasses['th']) ) $arrClasses['th']='th_o';
   if ( !isset($arrClasses['td']) ) $arrClasses['td']='td_o';
-  if ( count($arrHeader)==0 && count($arrSeries)==0 )
+  if ( count($arrHeader)===0 && count($arrSeries)===0 )
   {
     $arrHeader=array('A','B','C');
     $arrSeries=array('Serie1'=>array(1,2,3),'Serie2'=>array(4,5,6),'Serie3'=>array(7,8,9));
@@ -38,28 +38,28 @@ function QTtablechart($arrHeader=array(),$arrSeries=array(),$arrSeriesColor=arra
 
   // Header ($arrHeader includes column names, but not the serie name nor the serie color)
 
-  echo '<table class="'.$arrClasses['table'].'">',PHP_EOL;
-  echo '<tr class="'.$arrClasses['tr'].'">',PHP_EOL;
-  echo '<td class="'.$arrClasses['th'].'" style="width:85px">',(empty($strSubtitle) ? '&nbsp;' : $strSubtitle),'</td>';
+  echo '<table class="',$arrClasses['table'],'">',PHP_EOL;
+  echo '<tr class="',$arrClasses['tr'],'">',PHP_EOL;
+  echo '<td class="',$arrClasses['th'],'" style="width:85px">',(empty($strSubtitle) ? '&nbsp;' : $strSubtitle),'</td>';
   if ( count($arrSeriesColor)>0 ) echo '<td class="'.$arrClasses['th'].'" style="width:14px">&nbsp;</td>';
   foreach ($arrHeader as $strHeader) echo '<td class="'.$arrClasses['th'].'" style="text-align:center;">',$strHeader,'</td>';
-  echo N,'</tr>',PHP_EOL;
+  echo PHP_EOL,'</tr>',PHP_EOL;
 
   // Series
 
   foreach ($arrSeries as $strSerie=>$arrValues)
   {
-    echo '<tr class="'.$arrClasses['tr'].'">',PHP_EOL;
-    echo '<td class="'.$arrClasses['th'].'">',$strSerie,'</td>',PHP_EOL;
+    echo '<tr class="',$arrClasses['tr'],'">',PHP_EOL;
+    echo '<td class="',$arrClasses['th'],'">',$strSerie,'</td>',PHP_EOL;
     if ( count($arrSeriesColor)>0 )
     {
-    echo '<td class="'.$arrClasses['th'].'"><div style="margin:0 auto;',(empty($arrSeriesColor[$strSerie]) ? '' : 'background-color:'.$arrSeriesColor[$strSerie].';'),'width:8px;height:10px">&nbsp;</div></td>',PHP_EOL;
+    echo '<td class="',$arrClasses['th'],'"><div style="margin:0 auto;',(empty($arrSeriesColor[$strSerie]) ? '' : 'background-color:'.$arrSeriesColor[$strSerie].';'),'width:8px;height:10px">&nbsp;</div></td>',PHP_EOL;
     }
     foreach ($arrValues as $strValue)
     {
-    echo '<td class="'.$arrClasses['td'].'" style="text-align:center;">',$strValue,'</td>',PHP_EOL;
+    echo '<td class="',$arrClasses['td'],'" style="text-align:center;">',$strValue,'</td>',PHP_EOL;
     }
-    echo N,'</tr>',PHP_EOL;
+    echo PHP_EOL,'</tr>',PHP_EOL;
   }
 
   echo '</table>',PHP_EOL;
@@ -94,12 +94,8 @@ function QTarraymerge($arrK=array('A','B','C','D','E'),$arrV=array(100,20,30,50,
 function QTarrayzero($arr)
 {
   // Change empty (or null) values to 0 in the array
-
   if ( !is_array($arr) ) die('QTarrayzero: Arg #1 must be an array');
-  foreach($arr as $strKey=>$oValue)
-  {
-    if ( empty($oValue) ) $arr[$strKey]=0;
-  }
+  foreach($arr as $strKey=>$oValue) if ( empty($oValue) ) $arr[$strKey]=0;
   return $arr;
 }
 
@@ -109,12 +105,12 @@ function QTroof($arr)
 {
   // Returns 5,10,20,30,50,100,200,500,1000 or n000 ABOVE the maximum value in the serie.
   // $arr can a a single number
-
   if ( is_numeric($arr) ) $arr = array($arr);
   if ( !is_array($arr) ) die('QTroof: Arg #1 must be an array');
-
   $intTop = 5;
   $i = max($arr);
+  if ( $i>1000 ) return (floor($i/1000)+1)*1000;
+  if ( $i>500 ) return 1000;
   if ( $i>5 ) $intTop = 10;
   if ( $i>10 ) $intTop = 20;
   if ( $i>20 ) $intTop = 30;
@@ -122,8 +118,6 @@ function QTroof($arr)
   if ( $i>50 ) $intTop = 100;
   if ( $i>100 ) $intTop = 200;
   if ( $i>200 ) $intTop = 500;
-  if ( $i>500 ) $intTop = 1000;
-  if ( $i>1000 ) $intTop = (floor($i/1000)+1)*1000;
   return $intTop;
 }
 
@@ -134,9 +128,7 @@ function QTcumul($arr,$d=0)
   // Cumulate the values in the array: 1,2,3,2,1 becomes 1,3,6,8,9
   // $d defines the number of decimals
   // Note: Result is an array of float values
-
   if ( !is_array($arr) ) die ('QTcumul: Arg #1 must be an array');
-
   $arrC = array();
   $i=0;
   foreach($arr as $strKey=>$aValue)
@@ -155,11 +147,9 @@ function QTpercent($arr,$d=0,$b=true)
   // $d defines the number of decimals
   // $b set TRUE to get a percent value (e.g.: 50 in unit %). Use FALSE to get de ratio (e.g.: 0.5)
   // Note: Result is an array of float values
-
   if ( !is_array($arr) ) die ('QTpercent: Arg #1 must be an array');
   if ( !is_int($d) ) die ('QTpercent: Arg #2 must be an integer');
   if ( !$b && $d<1 ) $d=1; // ratio must have at least 1 decimal
-
   $arrP = array();
   $intTotal = array_sum($arr);
   foreach($arr as $strKey=>$oValue)
@@ -183,9 +173,9 @@ function QTtrend($i,$j,$bPercent=false,$d=0)
   if ( !isset($i) ) return 0;
   if ( !isset($j) ) return 0;
   $i = $i-$j;
-  if ( $bPercent && $i!=0 )
+  if ( $bPercent && $i!==0 )
   {
-    if ( $j==0 ) $j=1;
+    if ( $j===0 ) $j=1;
     $i = round( ($i/$j)*100,$d );
   }
   return $i;
@@ -243,7 +233,7 @@ function QTbarchart($arrValues=array('A'=>100,'B'=>20,'C'=>30,'D'=>50,'E'=>0),$i
   echo '<tr class="qtgraph_bar">',PHP_EOL;
   foreach($arrPercmaxs as $iPercent)
   {
-    $intPx = intval($iPercent*$intHeight); if ( $intPx==0 ) $intPx=1;
+    $intPx = (int)($iPercent*$intHeight); if ( $intPx===0 ) $intPx=1;
     echo '<td class="qtgraph_bar" style="width:',$intColwidth,'px; height:',$intHeight,'px;">';
     echo '<img class="qtgraph_bar color',$strColor,'" src="bin/qt_lib_graph.gif" style="width:',$intColwidth,'px;height:',$intPx,'px;" />';
     echo '</td>',PHP_EOL;
@@ -408,17 +398,17 @@ function QTpchart(
 
   // Initialise the graph. --- ATTENTION 255,255,255 color is transparent in the image ---
 
-  $intWidth = (count($arrS)==1 ? 380 : 600);
+  $intWidth = (count($arrS)===1 ? 380 : 600);
   $oChart = new pChart($intWidth,230);
   switch($intColor)
   {
-  case 1:  if ( count($arrS)==1 ) { $oChart->setColorPalette(0,0,0,102);   } else { $oChart->setColorPalette(0,0,175,255);   $oChart->setColorPalette(1,0,0,102);   } break;
-  case 2:  if ( count($arrS)==1 ) { $oChart->setColorPalette(0,153,0,153); } else { $oChart->setColorPalette(0,241,184,255); $oChart->setColorPalette(1,153,0,153); } break;
-  default: if ( count($arrS)==1 ) { $oChart->setColorPalette(0,0,153,153); } else { $oChart->setColorPalette(0,0,231,183);   $oChart->setColorPalette(1,0,153,153); } break;
+  case 1:  if ( count($arrS)===1 ) { $oChart->setColorPalette(0,0,0,102);   } else { $oChart->setColorPalette(0,0,175,255);   $oChart->setColorPalette(1,0,0,102);   } break;
+  case 2:  if ( count($arrS)===1 ) { $oChart->setColorPalette(0,153,0,153); } else { $oChart->setColorPalette(0,241,184,255); $oChart->setColorPalette(1,153,0,153); } break;
+  default: if ( count($arrS)===1 ) { $oChart->setColorPalette(0,0,153,153); } else { $oChart->setColorPalette(0,0,231,183);   $oChart->setColorPalette(1,0,153,153); } break;
   }
   $oChart->setFontProperties('pChart/Fonts/tahoma.ttf',8);
   $oChart->setGraphArea(40,35,$intWidth-20,195);
-  if ( $ch['value']=='p' ) { $intRoof=(QTroof($intMax)>50 ? 100 : 50); } else { $intRoof=QTroof($intMax); }
+  if ( $ch['value']==='p' ) { $intRoof=(QTroof($intMax)>50 ? 100 : 50); } else { $intRoof=QTroof($intMax); }
   $oChart->setFixedScale(0,$intRoof);
   $oChart->drawFilledRoundedRectangle(7,7,$intWidth-7,223,5,240,240,240);
   $oChart->drawGraphArea(254,254,254,true);
@@ -430,7 +420,7 @@ function QTpchart(
   $oChart->drawTreshold(0,143,55,72,TRUE,TRUE);
 
   // Draw the line/bar graph
-  if ( $ch['type']=='l' || $ch['type']=='L' )
+  if ( $ch['type']==='l' || $ch['type']==='L' )
   {
   $oChart->drawFilledLineGraph($DataSet->GetData(),$DataSet->GetDataDescription(),40,TRUE);
   $oChart->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,254,254,254);
@@ -441,7 +431,7 @@ function QTpchart(
   }
 
   // Trends label
-  if ( $ch['type']=='B' || $ch['type']=='L' )
+  if ( $ch['type']==='B' || $ch['type']==='L' )
   {
     $series = array_keys($arrS); // the serie id
     if ( count($series)>1 )
@@ -459,7 +449,7 @@ function QTpchart(
   $oChart->setFontProperties('pChart/Fonts/tahoma.ttf',10);
   $oChart->drawTitle(40,25,$strTitle,50,50,50);
   $oChart->setFontProperties('pChart/Fonts/tahoma.ttf',9);
-  if ( count($arrS)==1 )
+  if ( count($arrS)===1 )
   {
   $oChart->drawLegend($intWidth-70,15,$DataSet->GetDataDescription(),240,240,240,-1,-1,-1,0,0,0,false);
   }

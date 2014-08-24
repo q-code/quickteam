@@ -17,7 +17,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('U') ) die(Error(11));
 $id = -1; QThttpvar('id','int'); if ($id<0) die('Missing parameters');
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';

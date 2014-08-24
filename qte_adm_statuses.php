@@ -17,14 +17,14 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die($L['R_admin']);
 
 // ---------
 // INITIALISE
 // ---------
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $oVIP->selfurl = 'qte_adm_statuses.php';
 $oVIP->exiturl = 'qte_adm_statuses.php';

@@ -16,7 +16,7 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('V0') ) die('Access denied');
 
 // INITIALISE
@@ -28,7 +28,7 @@ $ok='';
 QThttpvar('a p s ok','str str str str');
 if ( empty($a) ) die('Missing argument');
 
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 $oVIP->selfurl = 'qte_reset_pwd.php';
 $oVIP->selfname = $L['Forgotten_pwd'];

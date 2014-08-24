@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( $_SESSION[QT]['picture']=='0' ) die(Error(10));
 if ( !sUser::CanView('U') ) die(Error(11));
 $id = -1; QThttpvar('id','int'); if ( $id<0 ) die('Missing parameter id...');
@@ -26,7 +26,7 @@ if ( sUser::Role()!='A' ) { if (sUser::Id()!=$id) die($L['R_user']); }
 // INITIALISE
 // --------
 
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 if ( !isset($_SESSION['temp_key']) ) $_SESSION['temp_key']= "";
 if ( !isset($_SESSION['temp_ext']) ) $_SESSION['temp_ext']= "";

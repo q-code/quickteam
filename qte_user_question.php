@@ -16,14 +16,14 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
 if ( !sUser::CanView('U') ) die($L['E_member']);
 
 // INITIALISE
 
 include 'bin/class/qt_class_smtp.php';
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 $id = -1;
 if ( isset($_GET['id']) ) $id = intval(strip_tags($_GET['id']));

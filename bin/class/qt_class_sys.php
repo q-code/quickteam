@@ -26,7 +26,7 @@ function memcacheCreate(&$warning)
     if ( class_exists('Memcache') )
     {
     $memcache = new Memcache;
-    if ( !$memcache->connect(MEMCACHE_HOST,MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in qte_init...'; $memcache=false; }
+    if ( !$memcache->connect(MEMCACHE_HOST,MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in '.APP.'_init...'; $memcache=false; }
     }
     else
     {

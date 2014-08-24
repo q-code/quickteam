@@ -16,8 +16,8 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
-include Translate('@_adm.php');
+require 'bin/qte_init.php';
+include Translate(APP.'_adm.php');
 
 if ( sUser::Role()!='A' ) die(Error(13));
 
@@ -81,7 +81,7 @@ if ( isset($_POST['add_dom']) )
 
   if ( empty($error) )
   {
-    require_once 'bin/class/qte_class_dom.php';
+    require 'bin/class/qte_class_dom.php';
     cDomain::Create($oGP->e,null); // Set $error in case of db failure
   }
   $_SESSION['pagedialog'] = (empty($error) ? 'O|'.$L['S_insert'] : 'E|'.$error);

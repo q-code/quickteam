@@ -16,7 +16,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('V4') ) { $oHtml->PageMsg(11); return; }
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
 
@@ -59,7 +59,7 @@ function InputFormat($strField,$aValue,$bCanBeList=false,$intSize=30,$intMaxleng
 // INITIALISE
 // --------
 
-include Translate('@_reg.php');
+include Translate(APP.'_reg.php');
 
 $oVIP->selfurl = 'qte_user.php';
 $oVIP->selfname = $L['Profile'];

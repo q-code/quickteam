@@ -26,7 +26,7 @@ function QTmail($strTo,$strSubject,$strMessage,$strCharset='utf-8',$strSMTP='')
 
     if ( substr($_SESSION[QT]['smtp_host'],0,4)=='pop3' )
     {
-    require_once 'bin/class/class.pop3.php';
+    require 'bin/class/class.pop3.php';
     $pop = new POP3();
     $pop->Authorise($_SESSION[QT]['smtp_host'], $_SESSION[QT]['smtp_port'], 30, $_SESSION[QT]['smtp_username'], $_SESSION[QT]['smtp_password'], 1);
     }

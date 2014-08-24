@@ -15,10 +15,10 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( sUser::Role()!='A' ) die(Error(13));
-require_once 'bin/class/qte_class_dom.php';
-include Translate('@_adm.php');
+require 'bin/class/qte_class_dom.php';
+include Translate(APP.'_adm.php');
 
 // INITIALISE
 

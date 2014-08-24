@@ -17,7 +17,7 @@
  */
 
 session_start();
-require_once('bin/qte_init.php');
+require 'bin/qte_init.php';
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_profile.css" />';
 $oHtml->scripts = array();
 
@@ -25,7 +25,7 @@ $oHtml->scripts = array();
 // INITIALISE
 // --------
 
-include(GetLang().'qte_reg.php');
+include GetLang().'qte_reg.php';
 
 $c='2'; QThttpvar('c','str');
 
@@ -41,13 +41,13 @@ if ( isset($_POST['ok']) )
 {
   if ( !isset($_POST['agreed']) )
   {
-    include('qte_inc_hd.php');
+    include 'qte_inc_hd.php';
     $oHtml->Msgbox($oVIP->selfname,array(),array('id'=>'login_header'),array('id'=>'login'));
     $strFile=GetLang().'sys_not_agree.txt';
-    if ( file_exists($strFile) ) { include($strFile); } else { echo 'Rules not agreed...'; }
+    if ( file_exists($strFile) ) { include $strFile; } else { echo 'Rules not agreed...'; }
     echo '<p><a href="',Href(),'?c='.$c.'">',$L['Register'],'</a></p>';
     $oHtml->Msgbox(END);
-    include('qte_inc_ft.php');
+    include 'qte_inc_ft.php';
     Exit;
   }
   $oHtml->Redirect('qte_form_reg.php?c='.$c,$L['Register']);
@@ -58,12 +58,12 @@ if ( isset($_POST['ok']) )
 // HTML START
 // --------
 
-include('qte_inc_hd.php');
+include 'qte_inc_hd.php';
 
 echo '
 <div class="scrollmessage">';
 $strFile = GetLang().'sys_rules.txt';
-if ( file_exists($strFile) ) { include($strFile); } else { echo "Missing file:<br />$strFile"; }
+if ( file_exists($strFile) ) { include $strFile; } else { echo "Missing file:<br />$strFile"; }
 echo '</div>
 ';
 echo '
@@ -92,4 +92,4 @@ echo'
 // HTML END
 // --------
 
-include('qte_inc_ft.php');
+include 'qte_inc_ft.php';

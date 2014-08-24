@@ -23,7 +23,7 @@ $qte_root = $qte_web_path;
 
 // include ini
 
-require_once $qte_root.'bin/qte_init.php';
+require $qte_root.'bin/qte_init.php';
 if ( !sUser::CanView('V2') ) die(Error(11));
 
 // ---------

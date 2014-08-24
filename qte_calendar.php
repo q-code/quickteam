@@ -17,7 +17,7 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !cVIP::CanViewCalendar() ) { $oHtml->PageMsg(11); return; }
 $oHtml->links['css'] = '<link rel="stylesheet" type="text/css" href="'.$_SESSION[QT]['skin_dir'].'/qte_calendar.css" />';
 

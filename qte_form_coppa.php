@@ -17,8 +17,8 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
-include Translate('@_coppa.php');
+require 'bin/qte_init.php';
+include Translate(APP.'_coppa.php');
 
 include APP.'_adm_inc_hd.php';
 

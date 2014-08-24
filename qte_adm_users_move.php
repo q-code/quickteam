@@ -17,14 +17,14 @@
  */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 if ( !sUser::CanView('M') ) die(Error(12));
 
 // ---------
 // INITIALISE
 // ---------
 
-include Translate('@_adm.php');
+include Translate(APP.'_adm.php');
 
 $oVIP->selfurl = 'qte_adm_users_move.php';
 $oVIP->selfname = $L['User_man'];

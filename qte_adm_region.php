@@ -16,10 +16,10 @@
 */
 
 session_start();
-require_once 'bin/qte_init.php';
+require 'bin/qte_init.php';
 include 'bin/qte_lang.php'; $arrLangDir = QTarrget($arrLang,2); // this creates an array with only the [iso]directories
-include Translate('@_adm.php');
-include Translate('@_zone.php');
+include Translate(APP.'_adm.php');
+include Translate(APP.'_zone.php');
 
 if ( sUser::Role()!='A' ) die(Error(13));
 
@@ -42,9 +42,9 @@ if ( isset($_POST['ok']) )
   $_SESSION[QT]['language'] = (isset($arrLangDir[$_POST['dfltlang']]) ? $arrLangDir[$_POST['dfltlang']] : 'english');
 
   // change language
-  include Translate('@_main.php');
-  include Translate('@_adm.php');
-  include Translate('@_zone.php');
+  include Translate(APP.'_main.php');
+  include Translate(APP.'_adm.php');
+  include Translate(APP.'_zone.php');
   $oVIP->selfname = $L['Adm_region'];
   $oVIP->exitname = $oVIP->selfname;
 
