@@ -150,7 +150,7 @@ if ( empty($q) && $intCount<$oSEC->members ) $strPager = '<span class="small">'.
 $bMap=false;
 if ( UseModule('map') )
 {
-  include Translate('@m_map.php');
+  include Translate('qtem_map.php');
   include 'qtem_map_lib.php';
   if ( QTgcanmap((empty($q) ? $s : 'S'),sUser::Role()) ) $bMap=true;
   if ( $bMap ) $oHtml->links[]='<link rel="stylesheet" type="text/css" href="qtem_map.css" />';

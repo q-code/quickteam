@@ -140,6 +140,7 @@ if ( !empty($a) )
 // --------
 
 $arrDomains = GetDomains();
+
 if ( count($arrDomains)>50 ) {
   $warning='You have too much domains. Try to remove unused domains.'; $_SESSION['pagedialog'] = 'W|'.$warning;
 }

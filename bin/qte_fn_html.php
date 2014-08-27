@@ -1,45 +1,39 @@
-<?php // QuickTeam 3.0 build:20140612
+<?php // QuickTicket 3.0 build:20140823
 
-function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAll='')
+function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAll='',$textsize=24)
 {
-  // attention $selected is type-sensitive (uses '*' or [int])
-  // if $strAll is not empty, the list includes in first position an 'all' option having the value '*' and the label $strAll
+  // Attention $selected is type-sensitive. To pre-select an option provide an [int] (because section-ids are [int]). '*' is also possible when $strAll is used.
+  // If $strAll is not empty, the list includes in first position an 'all' option having the value '*' and the label $strAll.
+  // To remove some section(s) from this list, use $arrReject and provide an array of id's [int]. Providing one id [int] is also possible.
   if ( is_int($arrReject) || is_string($arrReject) ) $arrReject = array((int)$arrReject);
   if ( is_int($arrDisabled) || is_string($arrDisabled) ) $arrDisabled = array((int)$arrDisabled);
   QTargs('Sectionlist',array($arrReject,$arrDisabled,$strAll),array('arr','arr','str'));
-
   $str = '';
-  $arrSections = memGet('sys_sections');
-
-  if ( !empty($strAll) ) $str ='<option value="*"'.($selected==='*' ? QSEL : '').(in_array('*',$arrDisabled,true) ? ' disabled="disabled"': '').'>'.(strlen($strAll)>20 ? substr($strAll,0,19).'...' : $strAll).'</option>';
-
-  if ( is_array($arrSections) && isset($arrSections[0]) )
+  $arr = memGet('sys_sections');
+  if ( !empty($strAll) ) $str ='<option value="*"'.($selected==='*' ? QSEL : '').(in_array('*',$arrDisabled,true) ? QDIS : '').'>'.QTtrunc($strAll,$textsize).'</option>';
+  if ( is_array($arr) )
   {
-
     // reject
-    $arr = arrSections;
     if ( count($arrReject)>0 ) { foreach($arrReject as $id) if ( isset($arr[$id]) ) unset($arr[$id]); }
-
     // format
     $arrDomains = memGet('sys_domains');
     if ( count($arr)>3 && count($arrDomains)>1 )
     {
-      $arr = GetSections(sUser::Role(),-2,$arrReject);// get all sections at once (grouped by domain)
+      $arr = SectionsByDomain(sUser::Role(),$arr); // Uses sections groupped by domain. Empty domain are skipped
       foreach ($arrDomains as $intDom=>$strDom)
       {
-        if ( isset($arr[$intDom]) ) {
-        if ( count($arr[$intDom])>0 ) {
-          $str .= '<optgroup label="'.(strlen($strDom)>20 ? substr($strDom,0,19).'...' : $strDom).'">';
-          foreach($arr[$intDom] as $id=>$row) $str .= '<option value="'.$id.'"'.($id===$selected ? QSEL : '').(in_array($id,$arrDisabled,true) ? ' disabled="disabled"': '').'>'.(strlen($row['title'])>20 ? substr($row['title'],0,19).'...' : $row['title']).'</option>';
-          $str .= '</optgroup>';
-        }}
+        if ( isset($arr[$intDom]) )
+        {
+        $str .= '<optgroup label="'.QTtrunc($strDom,$textsize).'">';
+        foreach($arr[$intDom] as $id=>$row) $str .= '<option value="'.$id.'"'.($id===$selected ? QSEL : '').(in_array($id,$arrDisabled,true) ? QDIS : '').'>'.QTtrunc($row['title'],$textsize).'</option>';
+        $str .= '</optgroup>';
+        }
       }
     }
     else
     {
-      foreach($arr as $id=>$strSection) $str .= '<option value="'.$id.'"'.($id===$selected ? QSEL : '').(in_array($id,$arrDisabled,true) ? ' disabled="disabled"': '').'>'.$strSection.'</option>';
+      foreach($arr as $id=>$row) $str .= '<option value="'.$id.'"'.($id===$selected ? QSEL : '').(in_array($id,$arrDisabled,true) ? QDIS : '').'>'.QTtrunc($row['title'],$textsize).'</option>';
     }
-
   }
   return $str;
 }
@@ -51,9 +45,9 @@ function EchoPage($content='Page not defined')
 if ( !is_string($content) && !is_int($content) ) die('EchoPage: invalid argument');
 
 global $oVIP,$oHtml,$L;
-$oVIP->selfurl='qte_index.php';
-$oVIP->exiturl='qte_index.php';
-include 'qte_inc_hd.php';
+$oVIP->selfurl=APP.'_index.php';
+$oVIP->exiturl=APP.'_index.php';
+include APP.'_inc_hd.php';
 
 if ( is_int($content) )
 {
@@ -74,7 +68,7 @@ else
   echo $content;
 }
 
-include 'qte_inc_ft.php';
+include APP.'_inc_ft.php';
 }
 
 // --------
@@ -117,6 +111,26 @@ function HtmlLettres($baseUrl='',$strGroup='all',$strAll='All',$strClass='lettre
   $strGroups .= '</div>';
 
   return $strGroups;
+}
+
+// --------
+
+function HtmlCsvLink($strUrl,$intCount=20,$intPage=1)
+{
+  if ( empty($strUrl) ) return '';
+  if ( $intCount<=$_SESSION[QT]['items_per_page'] )
+  {
+  return '<a href="'.$strUrl.'&amp;size=all&amp;n='.$intCount.'" class="a_csv" title="'.L('H_Csv').'">'.L('Csv').'</a>';
+  }
+  else
+  {
+  $strCsv = '<a href="'.$strUrl.'&amp;size=p'.$intPage.'&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">('.strtolower(L('Page')).')</span></a>';
+  if ( $intCount<=1000 )                   $strCsv .= ' &middot; <a href="'.$strUrl.'&amp;size=all&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">('.strtolower(L('All')).')</span></a>';
+  if ( $intCount>1000 && $intCount<=2000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&amp;size=m1&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">(1-1000)</span></a> &middot; <a href="'.$strUrl.'&amp;size=m2&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">(1000-'.$intCount.')</span></a>';
+  if ( $intCount>2000 && $intCount<=5000 ) $strCsv .= ' &middot; <a href="'.$strUrl.'&amp;size=m5&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">(1-5000)</span></a>';
+  if ( $intCount>5000 )                    $strCsv .= ' &middot; <a href="'.$strUrl.'&amp;size=m5&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">(1-5000)</span></a> &middot; <a href="'.$strUrl.'&amp;size=m10&amp;n='.$intCount.'" class="csv" title="'.L('H_Csv').'">'.L('Csv').' <span class="small">(5000-10000)</span></a>';
+  }
+  return $strCsv;
 }
 
 // --------
@@ -193,19 +207,21 @@ foreach($arrTabs as $key=>$oTab)
 
   if ( $intCol>=count($arrTabs) )
   {
-    $strOuts = '<ul>'.PHP_EOL.$strOut.'</ul>'.$strOuts;
+    $strOuts = '<ul>'.$strOut.'</ul>'.PHP_EOL.$strOuts;
     break;
   }
   if ( $intCol>=$intMax )
   {
-    $strOuts = '<ul>'.PHP_EOL.$strOut.'</ul>'.$strOuts;
+    $strOuts = '<ul>'.$strOut.'</ul>'.PHP_EOL.$strOuts;
     $intCol=0;
   }
 }
 
 return '
-<!-- tab header -->
-<div class="tab">'.$strOuts.'</div>
+<!-- tab header begin -->
+<div class="tab">
+'.$strOuts.'
+</div>
 <!-- tab header end -->
 ';
 

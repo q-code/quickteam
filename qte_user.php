@@ -90,7 +90,7 @@ $strPosition='';
 $bMap=false;
 if ( $tt=='p' && UseModule('map') )
 {
-  include Translate('@m_map.php');
+  include Translate('qtem_map.php');
   include 'qtem_map_lib.php';
   $bMap=true;
   if ( $_SESSION[QT]['editing'] || !QTgemptycoord($oItem) ) $oHtml->links[]='<link rel="stylesheet" type="text/css" href="qtem_map.css" />';

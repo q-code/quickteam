@@ -1,6 +1,6 @@
 <?php
 
-// QT re-usable component 1.2 build:20140805
+// QT re-usable component 1.2 build:20140825
 
 // ========
 
@@ -26,7 +26,7 @@ function memcacheCreate(&$warning)
     if ( class_exists('Memcache') )
     {
     $memcache = new Memcache;
-    if ( !$memcache->connect(MEMCACHE_HOST,MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon. Turn this option to false in '.APP.'_init...'; $memcache=false; }
+    if ( !$memcache->connect(MEMCACHE_HOST,MEMCACHE_PORT) ) { $warning='Unable to contact memcache daemon ['.MEMCACHE_HOST.' port '.MEMCACHE_PORT.']. Turn this option to false in '.APP.'_init...'; $memcache=false; }
     }
     else
     {
@@ -34,6 +34,7 @@ function memcacheCreate(&$warning)
     $memcache=false;
     }
   }
+  
   return $memcache;
 }
 function memGet($key,$default=false)
@@ -55,11 +56,11 @@ function memSet($key,$obj,$timeout=300)
 }
 function memcacheGet($key)
 {
-  global $memcache; return ($memcache) ? $memcache->get($key) : false;
+  global $memcache; return $memcache ? $memcache->get($key) : false;
 }
 function memcacheSet($key,$obj,$timeout=300)
 {
-  global $memcache; return ($memcache) ? $memcache->set($key,$obj,false,$timeout) : false;
+  global $memcache; return $memcache ? $memcache->set($key,$obj,false,$timeout) : false;
 }
 function memcacheQuery($key,$sql,$timeout=300)
 {
@@ -83,17 +84,22 @@ function memcacheQuery($key,$sql,$timeout=300)
   }
   return $cache;
 }
-function memcacheQueryCount($key,$sql,$timeout=300)
+function memcacheQueryCount($key,$sql,$timeout=300,$field=false)
 {
+  // This returns a db count [int] from memcache, or put the value in cache if not yet cached.
+  // When running the query, this function uses the first column (as int).
+  // An other column can be fetched ($field). Note that if $field cannot be found, the first column is used.
   if ( empty($key) ) $key = md5(APP.$sql);
-  if ( ($cache=memcacheGet($key))===false )
+  $cache=memcacheGet($key);
+  if ( $cache===false )
   {
-    $cache = false;
     global $oDB;
     if ( $oDB->Query($sql) )
     {
-    $cache = (int)$oDB->Getrow();
-    memcacheSet($key,$cache,$timeout);
+      $arr = $oDB->Getrow();
+      $cache = (int)reset($arr); // first column
+      if ( $field && isset($arr[$field]) ) $cache = (int)$arr[$field];
+      memcacheSet($key,$cache,$timeout);
     }
   }
   return $cache;

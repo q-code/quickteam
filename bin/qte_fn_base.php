@@ -578,13 +578,11 @@ function GetSections($strRole='V',$intDomain=-1,$arrReject=array(),$strExtra='',
   if ( $intDomain>=0 ) { $strWhere = 's.domainid='.$intDomain; } else { $strWhere = 's.domainid>=0'; }
   if ( $strRole==='V' || $strRole==='U' ) $strWhere .= ' AND s.type<>"1"';
   if ( !empty($strExtra) ) $strWhere .= ' AND '.$strExtra;
-  $arrSections = array();
-  
+  $arr = array();
   global $oDB;
   $oDB->Query('SELECT s.* FROM '.TABSECTION.' s INNER JOIN '.TABDOMAIN.' d ON s.domainid=d.id WHERE '.$strWhere.' ORDER BY '.$strOrder);
   while($row=$oDB->Getrow())
   {
-    $arr = array();
     $id = (int)$row['id'];
     // if reject
     if ( in_array($id,$arrReject,true) ) continue;
@@ -593,17 +591,9 @@ function GetSections($strRole='V',$intDomain=-1,$arrReject=array(),$strExtra='',
     // search translation
     $str = ObjTrans('sec','s'.$id,false);
     if ( !empty($str) ) $arr[$id]['title']=$str;
-    // compile sections
-    if ( $intDomain==-2 )
-    {
-    $arrSections = SectionsByDomain($strRole,$arr);
-    }
-    else
-    {
-    $arrSections[$id] = $arr[$id];
-    }
   }
-  return $arrSections;
+  if ( $intDomain==-2 ) $arr = SectionsByDomain($strRole,$arr);
+  return $arr;
 }
 
 // --------
