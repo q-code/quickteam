@@ -7,11 +7,11 @@ if ( !isset($_POST['v']) ) { echo ' '; exit; }
 if ( !isset($_POST['f']) ) $_POST['f']='name';
 if ( get_magic_quotes_gpc() ) $_POST['v'] = stripslashes($_POST['v']);
 
-if ( strlen($_POST['v'])==0 ) { echo ' '; exit; }
+if ( $_POST['v'])==='' ) { echo ' '; exit; }
 
-if ( strlen($_POST['v'])<4 )
+if ( !isset($_POST['v'][3]) )
 {
-  if ( isset($_POST['e1']) ) { echo $_POST['e1']; } else { echo 'Minium 4 characters'; }
+  echo isset($_POST['e1']) ? $_POST['e1'] : 'Minium 4 characters';
 }
 else
 {

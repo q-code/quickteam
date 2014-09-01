@@ -221,11 +221,11 @@ function QTasTag($arr,$valSelected='',$arrAttr=array(),$strTag='option',$arrDisa
       if ( isset($arrAttr['name']) ) $strName=$arrAttr['name'];
     $strClass='';
       if ( isset($arrAttr['class']) ) $strClass=$arrAttr['class'];
-      if ( isset($arrAttr['classS']) ) { if ( strlen($valSelected)>0 && $valSelected==$strKey ) $strClass=$arrAttr['classS']; }
+      if ( isset($arrAttr['classS']) ) { if ( isset($valSelected[0]) && $valSelected==$strKey ) $strClass=$arrAttr['classS']; }
       if ( isset($arrAttr['current']) && isset($arrAttr['classC']) ) { if ( $arrAttr['current']==$strKey ) $strClass=$arrAttr['classC']; }
     $strStyle='';
       if ( isset($arrAttr['style']) ) $strStyle=$arrAttr['style'];
-      if ( isset($arrAttr['styleS']) ) { if ( strlen($valSelected)>0 && $valSelected==$strKey ) $strStyle=$arrAttr['styleS']; }
+      if ( isset($arrAttr['styleS']) ) { if ( isset($valSelected[0]) && $valSelected==$strKey ) $strStyle=$arrAttr['styleS']; }
       if ( isset($arrAttr['current']) && isset($arrAttr['styleC']) ) { if ( $arrAttr['current']==$strKey ) $strStyle=$arrAttr['styleC']; }
     switch($strTag)
     {

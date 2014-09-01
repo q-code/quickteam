@@ -88,7 +88,7 @@ default: $oDB->Query('SELECT u.id,u.username,u.firstname,u.lastname,u.role,u.'.$
 }
 while($row=$oDB->Getrow())
 {
-  if ( strlen($row[$v])==8 )
+  if ( strlen($row[$v])===8 )
   {
     $strM = substr($row[$v],4,2); $intM = intval($strM);
     $strD = substr($row[$v],6,2); $intD = intval($strD);

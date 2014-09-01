@@ -19,7 +19,7 @@ case 'kwd':
 	$infofield = 'ufield'; // replaces infofield by ufield
 	$oVIP->selfname = $L['Search_by_key'];
 	if ( empty($v) ) $error = $L['Keywords'].' '.Error(1);
-	if ( strlen($v)>64 ) die('Invalid argument #v');
+	if ( isset($v[64]) ) die('Invalid argument #v');
   $arrSections = memGet('sys_sections');
   $oSEC->descr = '"'.$v.'"'.($s>=0 ? ' '.L('In_section').' "'.$arrSections[$s].'"' : '');
 
@@ -32,7 +32,7 @@ case 'kwd':
 case 'sta':
 	$oVIP->selfname = $L['Search_by_status'];
 	if ( empty($v) ) $error = $L['Status'].' '.Error(1);
-	if ( strlen($v)>64 ) die('Invalid argument #v');
+  if ( isset($v[64]) ) die('Invalid argument #v');
   $arrSections = memGet('sys_sections');
 	$oSEC->descr = $L['Status'].' "'.cVIP::GetStatusName($v).'"'.($s>=0 ? ' '.L('In_section').' "'.$arrSections[$s].'"' : '');
 

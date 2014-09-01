@@ -1,6 +1,6 @@
 <?php // QuickTicket 3.0 build:20140823
 
-function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAll='',$textsize=24)
+function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAll='',$textsize=30)
 {
   // Attention $selected is type-sensitive. To pre-select an option provide an [int] (because section-ids are [int]). '*' is also possible when $strAll is used.
   // If $strAll is not empty, the list includes in first position an 'all' option having the value '*' and the label $strAll.

@@ -258,10 +258,7 @@ function GetKeywords($arrFields)
     $str = str_replace('\'',' ',$str);
     $str = str_replace('  ',' ',$str);
     $arr = explode(' ',$str);
-    foreach ($arr as $str)
-    {
-     if ( strlen($str)>=2 ) $arrKeys[$strField][] = $str;
-    }
+    foreach ($arr as $str) if ( isset($str[1]) ) $arrKeys[$strField][]=$str; // minimum 2 char
     $arrKeys[$strField] = array_unique($arrKeys[$strField]);
   }
   return $arrKeys;

@@ -209,18 +209,9 @@ public function Getrow()
   case 'mysql': $row = mysql_fetch_assoc($this->qry); break; // php 5.0.3
   case 'sqlsrv':$row = sqlsrv_fetch_array($this->qry,SQLSRV_FETCH_ASSOC); break;
   case 'mssql':
-    $row = mssql_fetch_assoc($this->qry);
+    $row = mssql_fetch_assoc($this->qry); if ($row===false) return false;
     // this fix a known bug in mssql_fetch_assoc that add a space to empty string
-    if ( is_array($row) )
-    {
-      foreach($row as $strKey=>$oValue)
-      {
-        if ( is_string($oValue) ) {
-        if ( strlen($oValue)===1 ) {
-        $row[$strKey] = trim($oValue);
-        }}
-      }
-    }
+    foreach($row as $key=>$val) if ( is_string($val) && strlen($val)===1 ) $row[$key] = trim($val);
     break;
   case 'pg': $row = pg_fetch_assoc($this->qry); break;// php 4.3.0
   case 'ibase': $row = ibase_fetch_assoc($this->qry); break;// php 4.3.0
@@ -228,22 +219,18 @@ public function Getrow()
     $row = sqlite_fetch_array($this->qry,SQLITE_ASSOC);// php 5.0
     if ( $row===false ) return false;
     $arr = array();
-    foreach($row as $strKey=>$oValue)
+    foreach($row as $key=>$val)
     {
-      if ( substr($strKey,1,1)==='.') $strKey = strtolower(substr($strKey,2));
-      $arr[$strKey]=$oValue;
+      if ( substr($key,1,1)==='.') $key = strtolower(substr($key,2));
+      $arr[$key]=$val;
     }
     $row = $arr;
     break;
   case 'db2': $row = db2_fetch_assoc($this->qry); break; // php unknown version
   case 'oci':
-    $row = oci_fetch_assoc($this->qry);
-    if ( $row===false ) return false;
+    $row = oci_fetch_assoc($this->qry); if ( $row===false ) return false;
     $arr = array();
-    foreach($row as $strKey=>$oValue)
-    {
-      $arr[strtolower($strKey)]=$oValue;
-    }
+    foreach($row as $key=>$val) $arr[strtolower($key)]=$val;
     $row = $arr;
     break;
   case 'mysql4': $row = mysql_fetch_assoc($this->qry); break; // php 4.0.3

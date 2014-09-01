@@ -13,7 +13,7 @@ if ( isset($_POST['ok']) )
     if ( empty($error) && isset($_POST[$strField]) )
     {
     if ( get_magic_quotes_gpc() ) { $str = stripslashes($_POST[$strField]); } else { $str = $_POST[$strField]; }
-    $oItem->$strField = QTconv($str,'3',QTE_CONVERT_AMP); if ( strlen($oItem->$strField)>255) $oItem->$strField = substr($oItem->$strField,255);
+    $oItem->$strField = QTconv($str,'3',QTE_CONVERT_AMP); if ( isset($oItem->$strField[255])  ) $oItem->$strField = substr($oItem->$strField,255);
     }
   }
 
@@ -47,7 +47,7 @@ if ( isset($_POST['ok']) )
   if ( empty($error) && isset($_POST['www']) )
   {
     $str = trim($_POST['www']);  if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
-    $str = QTconv($str,'2'); if ( strlen($str)>255) $str = substr($str,0,255);
+    $str = QTconv($str,'2'); if ( isset($str[255]) ) $str = substr($str,0,255);
     if ( !empty($oItem->www) && substr($oItem->www,0,4)!='http' ) { $oItem->www=''; $error=ObjTrans('field','www').' '.$L['E_invalid']; }
     if ( $oItem->www=='http://' || $oItem->www=='https://' ) $oItem->www='';
   }

@@ -47,9 +47,9 @@ if ( isset($_GET['dir']) )   $strDirec = strip_tags($_GET['dir']);
 if ( isset($_GET['page']) )  $intPage = intval(strip_tags($_GET['page']));
 
 // security check 2 (no long argument)
-if ( strlen($strGroup)>4 ) die('Invalid argument #group');
-if ( strlen($strOrder)>12 ) die('Invalid argument #order');
-if ( strlen($strDirec)>4 ) die('Invalid argument #dir');
+if ( isset($strGroup[4]) ) die('Invalid argument #group'); // more than 4 char
+if ( isset($strOrder[12]) ) die('Invalid argument #order');
+if ( isset($strDirec[4]) ) die('Invalid argument #dir');
 
 // web setting
 if ( !isset($qte_web_team) ) die('Missing team id...');

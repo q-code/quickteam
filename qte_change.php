@@ -54,7 +54,7 @@ case 'deletesection':
   if ( sUser::Role()!='A' ) die($L['R_admin']);
   if ( $s<1 ) die('Wrong id in '.$oVIP->selfurl);
 
-  $oVIP->selfname = $L['Section_del'];
+  $oVIP->selfname = $L['Section'];
   $oVIP->exiturl  = 'qte_adm_sections.php';
   $oVIP->exitname = '&laquo; '.$L['Sections'];
 
@@ -127,7 +127,7 @@ case 'deletedomain':
   if ( sUser::Role()!='A' ) die($L['R_admin']);
   if ( $s<1 ) die('Wrong id in '.$oVIP->selfurl); // note $s is the domainid and $d is the destination domainid
 
-  $oVIP->selfname = $L['Domain_del'];
+  $oVIP->selfname = $L['Domain'];
   $oVIP->exiturl  = 'qte_adm_sections.php';
   $oVIP->exitname = '&laquo; '.$L['Sections'];
 
@@ -155,13 +155,11 @@ case 'deletedomain':
     // list of domain destination
     if ( count($arrTeams)>0 )
     {
-      $arrDest = array(); // array_diff_key() not supported in php<5.1
-      foreach ($arrDomains as $intKey => $strValue) { if ( $intKey!=$s ) $arrDest[$intKey] = $strValue; }
-
+      unset($arrDomains[$s]);
       $strDest = '<tr class="tr">
       <td class="headfirst">'.$L['Sections'].'</td>
       <td>
-      <select name="d" size="1" class="small">'.QTasTag($arrDest,'',array('format'=>$L['Move_to'].': %s')).'</select>
+      <select name="d" size="1" class="small">'.QTasTag(QTtruncarray($arrDomains,25),'',array('format'=>$L['Move_to'].': %s')).'</select>
       </td>
       </tr>';
     }
@@ -581,7 +579,7 @@ case 'status_del':
 
   if ( $v=='Z' ) die('Wrong id in '.$oVIP->selfurl);
 
-  $oVIP->selfname = $L['Status_del'];
+  $oVIP->selfname = $L['Status'];
   $oVIP->exiturl  = 'qte_adm_statuses.php';
   $oVIP->exitname = '&laquo; '.$L['Statuses'];
 

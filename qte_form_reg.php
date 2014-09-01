@@ -55,8 +55,8 @@ if ( isset($_POST['ok']) )
   {
     if ( $_SESSION[QT]['register_safe']!='none' )
     {
-    if ( trim($_POST['code'])=='' )  $error = $L['Type_code'];
-    if ( strlen($_POST['code'])!=6 ) $error = $L['Type_code'];
+    if ( trim($_POST['code'])==='' )  $error = $L['Type_code'];
+    if ( strlen($_POST['code'])!==6 ) $error = $L['Type_code'];
     }
   }
 

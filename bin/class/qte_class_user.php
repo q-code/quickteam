@@ -89,7 +89,8 @@ public static function CanView($level='V5',$offlinestop=true)
   if ( $level=='U' && sUser::Role()==='V') return false;
   if ( $level=='M' && !sUser::IsStaff() ) return false;
   if ( $level=='A' && sUser::Role()!='A' ) return false;
-  if ( strlen($level)==2 ) { $strPAL=substr($level,-1,1); } else { $strPAL='5'; }
+  $strPAL='5';
+  if ( isset($level[1]) ) $strPAL=$level[1]; // use second char, otherwize 5
   if ( sUser::Role()==='V' && $_SESSION[QT]['visitor_right']<$strPAL ) return false;
   if ( $_SESSION[QT]['board_offline']=='1' && $offlinestop ) return false;
   return true;

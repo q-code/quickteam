@@ -52,9 +52,9 @@ if ( isset($_GET['page']) ) $intPage = intval(strip_tags($_GET['page']));
 if ( isset($_GET['view']) ) $_SESSION[QT]['viewmode'] = strip_tags($_GET['view']);
 
 // security check 2 (no long argument)
-if ( strlen($strGroup)>4 ) die('Invalid argument #group');
-if ( strlen($strOrder)>12 ) die('Invalid argument #order');
-if ( strlen($strDirec)>4 ) die('Invalid argument #dir');
+if ( isset($strGroup[4]) ) die('Invalid argument #group');
+if ( isset($strOrder[12]) ) die('Invalid argument #order');
+if ( isset($strDirec[4]) ) die('Invalid argument #dir');
 
 $intLimit = ($intPage-1)*100;
 
@@ -199,7 +199,7 @@ $arrEmailsUsers = array(); // store email->fullname <email> (if email exists). T
 $i=0;
 while ( $row=$oDB->Getrow() )
 {
-  if ( strlen($row['emails'])>5 )
+  if ( isset($row['emails'][5]) )
   {
     $oItem = new cItem($row,true);  // privatise
     $arrUsersEmails[] = $oItem->fullname.'&nbsp;&nbsp;<a class="small" href="mailto:'.strip_tags($oItem->emails).'" title="'.$oItem->fullname.'">'.$oItem->emails.'</a>'.(strstr($oItem->privacy,'emails') ? ' <span class="small">('.$L['Hidden'].')</span>' : '');

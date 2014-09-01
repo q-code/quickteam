@@ -352,8 +352,7 @@ function UserFirstLastName($oItem,$sep=' ',$alt='unknown',$size=32,$eol='...',$b
 	// return Fist+Last name. If empty $alt allows returning formatted Username.
 	$str = trim($firstname.$sep.$lastname);
 	if ( empty($str) && !empty($alt) ) $str = '('.$alt.')';
-	if ( strlen($str)>$size ) $str = substr($str,0,$size).$eol;
-	return $str;
+	return QTtrunc($str,$size,$eol);
 }
 
 function UserPicture($oItem,$Url=false,$bNullImage=true,$class="userpicture")
@@ -546,21 +545,12 @@ function GetDomains()
   global $oDB;
   $arr = array();
   $oDB->Query('SELECT id,title FROM '.TABDOMAIN.' ORDER BY vorder');
-  while ( $row = $oDB->Getrow() )
-  {
-    $arr[$row['id']] = $row['title'];
-  }
+  while( $row=$oDB->Getrow() ) $arr[(int)$row['id']] = $row['title'];
   // search translation
   $arrL = cLang::Get('domain',QTiso(),'*');
-  if ( count($arrL)>0)
+  if ( count($arrL)>0 )
   {
-    foreach ($arr as $id => $str)
-    {
-      if ( array_key_exists('d'.$id,$arrL) )
-      {
-      if ( !empty($arrL['d'.$id]) ) $arr[$id]=$arrL['d'.$id];
-      }
-    }
+  foreach($arr as $id=>$str) if ( !empty($arrL['d'.$id]) ) $arr[$id]=$arrL['d'.$id];
   }
   return $arr;
 }

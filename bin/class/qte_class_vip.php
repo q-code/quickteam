@@ -333,7 +333,7 @@ public static function SysCount($strObject='members',$strWhere='')
     $arr['newuserid'] = intval($row['countid']);
       $oDB->Query('SELECT username,firstname,lastname FROM '.TABUSER.' WHERE id='.$row['countid'] );
       $row = $oDB->Getrow();
-    $arr['newusername'] =  $row['firstname'].' '.$row['lastname']; if ( strlen($arr['newusername'])<3 ) $arr['newusername'] = $row['username'];
+    $arr['newusername'] =  $row['firstname'].' '.$row['lastname']; if ( !isset($arr['newusername'][2]) ) $arr['newusername'] = $row['username']; // if length name <3, reset
     return $arr;
     break;
   case 'brithdays':

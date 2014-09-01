@@ -37,7 +37,7 @@ $size = strip_tags($_GET['size']);
 $intCount = (int)$_GET['n'];
 
 if ( empty($size) || $intCount <= $_SESSION[QT]['items_per_page'] ) $size='all';
-if ( strlen($size)>6 || strlen($size)<2 ) die('Invalid argument');
+if ( !isset($size[0]) || isset($size[6]) ) die('Invalid argument'); // length between 1 and 6
 if ( substr($size,0,1)!='p' && substr($size,0,1)!='m' && $size!='all') die('Invalid argument');
 if ( substr($size,0,1)=='p' )
 {
@@ -90,7 +90,7 @@ $intLen = $_SESSION[QT]['items_per_page'];
 
 // security check 1
 
-if ( isset($_GET['group']) ) $strGroup = strip_tags($_GET['group']); if ( strlen($strGroup)>4 ) die('Invalid argument #group');
+if ( isset($_GET['group']) ) $strGroup = strip_tags($_GET['group']); if ( isset($strGroup[4]) ) die('Invalid argument #group');
 if ( isset($_GET['page']) ) { $intLimit = ((int)$_GET['page']-1)*$intLen; $intPage = (int)$_GET['page']; }
 if ( isset($_GET['order']) ) $strOrder = strip_tags($_GET['order']);
 if ( isset($_GET['dir']) ) $strDirec = strip_tags($_GET['dir']);

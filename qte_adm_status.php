@@ -136,7 +136,7 @@ echo '<table class="hidden">
 <tr>
 <td style="width:20px">',$id,'</td>
 <td style="width:30px">',AsImg($_SESSION[QT]['skin_dir'].'/'.$arrStatuses[$id]['icon'],'-',$arrStatuses[$id]['statusdesc'],'ico i-status'),'</td>
-<td style="width:100px;padding:3px 10px 3px 10px;text-align:center;background-color:',(strlen($arrStatuses[$id]['color'])>1 ? $arrStatuses[$id]['color'] : 'transparent'),'; border-style:solid; border-color:#dddddd; border-width:1px">',$arrStatuses[$id]['statusname'],'</td>
+<td style="width:100px;padding:3px 10px 3px 10px;text-align:center;background-color:',(isset($arrStatuses[$id]['color'][1]) ? $arrStatuses[$id]['color'] : 'transparent'),'; border-style:solid; border-color:#dddddd; border-width:1px">',$arrStatuses[$id]['statusname'],'</td>
 <td>&nbsp;</td>
 </tr>
 </table>

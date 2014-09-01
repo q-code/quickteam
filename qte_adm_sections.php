@@ -76,7 +76,7 @@ if ( isset($_POST['neworder']) )
 if ( isset($_POST['add_dom']) )
 {
 
-  $oGP = new cGetPost($_POST['title'],64);
+  $oGP = new cGetPost($_POST['domain'],64);
   if ( empty($oGP->e) ) $error = $L['Domain'].'/'.$L['Section'].' '.Error(1);
 
   if ( empty($error) )
@@ -92,7 +92,7 @@ if ( isset($_POST['add_dom']) )
 
 if ( isset($_POST['add_sec']) )
 {
-  $oGP = new cGetPost($_POST['title'],64);
+  $oGP = new cGetPost($_POST['section'],64);
   if ( empty($oGP->e) ) $error = $L['Domain'].'/'.$L['Section'].' '.Error(1);
 
   // Add section
@@ -141,31 +141,25 @@ if ( !empty($a) )
 
 $arrDomains = GetDomains();
 
-if ( count($arrDomains)>50 ) {
-  $warning='You have too much domains. Try to remove unused domains.'; $_SESSION['pagedialog'] = 'W|'.$warning;
-}
+$intDomains = count($arrDomains);
+$bSortableDomains = ($intDomains>1 && $intDomains<11);
+if ( $intDomains>10 ) { $warning='You have too much domains. Try to remove unused domains.'; $_SESSION['pagedialog'] = 'W|'.$warning; }
+
 $arrSections = GetSections('A',-2); // Optimisation: get all sections at once (grouped by domain)
 if ( count($arrSections)>100 ) {
   $warning='You have too much sections. Try to remove unused sections.'; $_SESSION['pagedialog'] = 'W|'.$warning;
 }
 
 $oHtml->scripts[] = '<script type="text/javascript">
-function ValidateForm(theForm)
-{
-if (theForm.title.value.length==0) { alert(qtHtmldecode("'.$L['Missing'].': '.$L['Domain'].'/'.$L['Section'].'")); return false; }
-return null;
-}
 function ToggleForms()
 {
 if ( document.getElementById("adddomain").style.display=="none" )
 {
 document.getElementById("adddomain").style.display="block";
-document.getElementById("addsection").style.display="block";
 }
 else
 {
 document.getElementById("adddomain").style.display="none";
-document.getElementById("addsection").style.display="none";
 }
 }
 function orderbox(b)
@@ -223,37 +217,34 @@ $oHtml->scripts_end[] = '<script type="text/javascript">ToggleForms();</script>
 include APP.'_adm_inc_hd.php';
 
 echo '
-<p style="text-align:right"><a id="toggleforms" href="qte_adm_sections.php" onclick="ToggleForms(); return false;">',$L['Add'],' ',$L['Domain'],'/',$L['Section'],'...</a>
- | <a href="qte_adm_sections_stat.php">',$L['Update_stats'],'...</a></p>
-</p>
+<p style="text-align:right"><a id="toggleforms" href="qte_adm_sections.php" onclick="ToggleForms(); return false;">',$L['Add'],' ',$L['Domain'],'/',$L['Section'],'...</a> | <a href="qte_adm_sections_stat.php">',$L['Update_stats'],'...</a></p>
+
 <div id="adddomain">
-<form method="post" action="qte_adm_sections.php" onsubmit="return ValidateForm(this);">
-<table>
+<form method="post" action="qte_adm_sections.php">
+<table class="t-sec">
 <tr>
-<td style="width:120px;"><label for="domain">',$L['Domain_add'],'</label></td>
-<td><input id="domain" name="title" type="text" size="30" maxlength="64"/></td>
-<td style="text-align:right"><input id="add_dom" name="add_dom" type="submit" value="',$L['Add'],'"/></td>
+<th colspan="3">',$L['Add'],'</th>
+</tr>
+<tr>
+<td class="colgroup col1"><label for="domain">',$L['Domain'],'</label></td>
+<td class="colgroup col2"><input id="domain" name="domain" type="text" size="30" maxlength="64"/></td>
+<td class="colgroup col3"><input id="add_dom" name="add_dom" type="submit" value="',$L['Add'],'"/></td>
+</tr>
+<tr>
+<td class="col1"><label for="section">',$L['Section'],'</label></td>
+<td class="col2"><input id="section" name="section" type="text" size="30" maxlength="64"/> ',L('in_domain'),' <select name="indomain" size="1">',QTasTag(QTtruncarray($arrDomains)),'</select></td>
+<td class="col3"><input name="add_sec" type="submit" value="',$L['Add'],'"/></td>
 </tr>
 </table>
 </form>
 </div>
-<div id="addsection">
-<form method="post" action="qte_adm_sections.php" onsubmit="return ValidateForm(this);">
-<table>
-<tr>
-<td style="width:120px;"><label for="section">',$L['Section_add'],'</label></td>
-<td><input id="section" name="title" type="text" size="30" maxlength="64" class="small"/> <span class="small">',L('in_domain'),'</span> <select name="indomain" size="1" class="small">',QTasTag($arrDomains),'</select></td>
-<td style="text-align:right"><input name="add_sec" type="submit" value="',$L['Add'],'"/></td>
-</tr>
-</table>
-</form>
-</div>
+
 ';
-if ( !isset($_POST['title']) ) echo '<script type="text/javascript">ToggleForms();</script>';
+if ( !isset($_POST['domain']) && !isset($_POST['section']) ) echo '<script type="text/javascript">ToggleForms();</script>';
 
 echo '
 <table class="t-sec">
-<tr class="t-sec">
+<tr>
 <th class="handler">&nbsp;</th>
 <th style="text-align:left" colspan="2">',$L['Domain'],'/',$L['Section'],'</th>
 <th>',$L['Userrole_M'],'</th>
@@ -264,10 +255,9 @@ echo '
 ';
 
 $i=0;
-$bSortableDomains = count($arrDomains)>1;
 foreach($arrDomains as $intDomain=>$strDomain)
 {
-  echo '<tr class="t-sec">',PHP_EOL;
+  echo '<tr>',PHP_EOL;
   echo '<td class="colgroup handler">',($bSortableDomains ? '<span class="draghandler" title="'.L('Move').'" onmousedown="orderbox(true); return false;">&nbsp;</span>' : '&nbsp;'),'</td>',PHP_EOL;
   echo '<td class="colgroup" colspan="2">',$strDomain,'</td>',PHP_EOL;
   echo '<td class="colgroup">&nbsp;</td>',PHP_EOL;
@@ -279,7 +269,7 @@ foreach($arrDomains as $intDomain=>$strDomain)
   if ( count($arrDomains)>1 )
   {
     if ( $i>0 ) $strUp = '<a class="popup_ctrl" href="qte_adm_sections.php?d='.$intDomain.'&amp;a=d_up"><img class="ctrl" src="admin/ico_up.gif" alt="up" title="'.L('Up').'"/></a>';
-    if ( $i<count($arrDomains)-1 ) $strDw = '<a class="popup_ctrl" href="qte_adm_sections.php?d='.$intDomain.'&amp;a=d_down"><img class="ctrl" src="admin/ico_dw.gif" alt="dw" title="'.L('Down').'"/></a>';
+    if ( $i<$intDomains-1 ) $strDw = '<a class="popup_ctrl" href="qte_adm_sections.php?d='.$intDomain.'&amp;a=d_down"><img class="ctrl" src="admin/ico_dw.gif" alt="dw" title="'.L('Down').'"/></a>';
   }
   echo $strUp.'&nbsp;'.$strDw;
   echo '</td>',PHP_EOL;
@@ -303,7 +293,7 @@ foreach($arrDomains as $intDomain=>$strDomain)
       echo '<tr class="t-sec hover" id="sec_'.$oSEC->id.'">';
       echo '<td class="handler">',($bSortable ? '<span class="draghandler" title="'.L('Move').'">&nbsp;</span>' : '&nbsp;'),'</td>',PHP_EOL;
       echo '<td class="c-icon">',AsImg($oSEC->GetIcon(),'S',$L['Ico_section_'.$oSEC->type.'_'.$oSEC->status],'i-sec'),'</td>';
-      echo '<td><a class="bold" href="qte_adm_section.php?d=',$intSecid,'&amp;s=',$oSEC->id,'">',$oSEC->name,'</a><br /><span class="small">',$L['Section_type'][$oSEC->type],($oSEC->status=='1' ? '<br><span class="small">('.$L['Section_status'][1].')</span>' : ''),'</span></td>';
+      echo '<td><a class="bold" href="qte_adm_section.php?d=',$intSecid,'&amp;s=',$oSEC->id,'">',$oSEC->name,'</a><br /><span class="small">',$L['Section_type'][$oSEC->type],($oSEC->status=='1' ? ' ('.$L['Section_status'][1].')' : ''),'</span></td>';
       echo '<td>',$oSEC->modname,'</td>';
       echo '<td class="c-action"><a class="small" href="qte_adm_section.php?s=',$oSEC->id,'">',$L['Edit'],'</a>';
       echo ' &middot; ',($intSecid==0 ? '<span class="disabled">'.$L['Delete'].'</span>' : '<a class="small" href="qte_change.php?a=deletesection&amp;s='.$intSecid.'">'.$L['Delete'].'</a>'),'</td>';
@@ -330,7 +320,7 @@ echo '</table>
 
 // DOMAIN ORDER TOOL
 
-if ( count($arrDomains)>1 )
+if ( $bSortableDomains )
 {
 
 echo '
@@ -338,7 +328,7 @@ echo '
 <p class="top">Reorder domains<br/>(drag and drop to reorder)</p>
 <ul id="domorder">
 ';
-foreach($arrDomains as $intDomain=>$strDomain) echo '<li id="dom_'.$intDomain.'" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>',(strlen($strDomain)>20 ? substr($strDomain,0,19).'...' : $strDomain),'</li>',PHP_EOL;
+foreach($arrDomains as $intDomain=>$strDomain) echo '<li id="dom_'.$intDomain.'" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>',QTtrunc($strDomain,24),'</li>',PHP_EOL;
 echo '</ul>
 <form id="form_order" method="post" action="qte_adm_sections.php">
 <p class="bottom"><input type="hidden" name="neworder" id="neworder" value="" /><input type="submit" id="neworder_save" name="neworder_save" value="',L('Save'),'" /><input type="button" name="neworder_cancel" value="',L('Cancel'),'" onclick="orderbox(false);"/></p>

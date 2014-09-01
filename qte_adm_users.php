@@ -58,9 +58,9 @@ if ( isset($_GET['dir']) ) $strDirec = strtolower(strip_tags($_GET['dir']));
 if ( isset($_GET['cat']) ) $strCateg = strip_tags($_GET['cat']);
 
 // security check 2 (no long argument)
-if ( strlen($strGroup)>7 ) die('Invalid argument #group');
-if ( strlen($strOrder)>12 ) die('Invalid argument #order');
-if ( strlen($strDirec)>4 ) die('Invalid argument #dir');
+if ( isset($strGroup[7]) ) die('Invalid argument #group');
+if ( isset($strOrder[12]) ) die('Invalid argument #order');
+if ( isset($strDirec[4]) ) die('Invalid argument #dir');
 
 $intLimit = ($intPage-1)*25;
 
@@ -174,8 +174,9 @@ switch($strGroup)
     $arrOr = array();
     foreach($arr as $str)
     {
-    $arrOr[] = FirstCharCase('firstname','u',strlen($str)).'="'.strtoupper($str).'"';
-    $arrOr[] = FirstCharCase('lastname','u',strlen($str)).'="'.strtoupper($str).'"';
+    $i = strlen($str);
+    $arrOr[] = FirstCharCase('firstname','u',$i).'="'.strtoupper($str).'"';
+    $arrOr[] = FirstCharCase('lastname','u',$i).'="'.strtoupper($str).'"';
     }
     $strWhere = ' WHERE id>0 AND ('.implode(' OR ',$arrOr).')';
     break;

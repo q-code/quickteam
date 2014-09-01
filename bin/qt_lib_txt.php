@@ -9,6 +9,7 @@ This is a library of public functions
 Requires a function GetSetting() that can provide an application settings
 ------------
 QTtrunc
+QTtruncarray
 QTdateclean
 QTdatestr
 QTbbc
@@ -25,12 +26,20 @@ QTcompact
 QThttpvar
 */
 
-// Truncate long text and add '...'
+// Truncate long text and add '...' 
 
-function QTtrunc($str,$max=24,$end='...')
+function QTtrunc($str,$max=30,$end='...')
 {
-  if ( is_string($str) && is_int($max) && isset($str[$max]) ) return substr($str,0,$max-2).$end;
+  if ( is_string($str) && is_int($max) && isset($str[$max]) ) return substr($str,0,$max-3).$end;
   return $str;
+}
+
+// Truncate each long text in an array (note: array of array are not processed)
+
+function QTtruncarray($arr,$max=30,$end='...')
+{
+  if ( is_array($arr) && is_int($max) ) foreach($arr as $key=>$val) $arr[$key]=QTtrunc($val,$max,$end);
+  return $arr;
 }
 
 // Format datetime to a [string] YYYYMMDD{HHMMSS} (maximum 14 char)
@@ -354,7 +363,7 @@ function QTconv($str,$to='1',$bConvAmp=false,$bDroptags=true)
     $str = $arr[0].$arr[1].$arr[2];
     break;
   }
-  if ( strlen($str)>4000 ) $str = substr($str,0,4000);
+  if ( isset($str[4000]) ) $str = substr($str,0,4000);
   return trim($str);
 }
 
@@ -381,8 +390,8 @@ function QTislogin($str,$intMin=4,$intMax=24)
   if ( strstr($str,'>') ) return false;
   if ( strstr($str,'"') ) return false;
   if ( strstr($str,"'") ) return false;
-  if ( strlen($str)>$intMax ) return false;
-  if ( strlen($str)<$intMin ) return false;
+  if ( isset($str[$intMax]) ) return false; //length > $intMax
+  if ( !isset($str[$intMin-1]) ) return false; //length < $intMin
   return true;
 }
 function QTispassword($str,$intMin=4,$intMax=24)
@@ -461,7 +470,7 @@ function QTcompact($str,$max=200,$nl="\r\n")
 {
   if ( !is_string($str) ) die('QTcompact: arg #1 must be a string');
   if ( empty($str) ) return $str;
-  if ($max>0 && strlen($str)>$max ) $str=substr($str,0,$max).' ...';
+  if ( $max>5 ) QTtrunc($str,$max);
   $str = str_replace("\r\n\r\n\r\n",$nl,$str);
   $str = str_replace("\r\n\r\n",$nl,$str);
   if ( strpos($str,'[')!==FALSE )

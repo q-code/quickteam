@@ -293,8 +293,7 @@ class cMsg
       if ( isset($arr[1]) ) $this->fulltext = str_replace('"','',$arr[1]);
       if ( isset($arr[2]) ) $this->items = (int)$arr[2];
       if ( $this->items>1 ) $this->fulltext .= ' ('.$this->items.')';
-      $this->text = $this->fulltext;
-      if ( strlen($this->text)>64 ) $this->text = substr($this->text,0,60).'...';
+      $this->text = QTtrunc($this->fulltext,64);
     }
     return $this->text;
   }
