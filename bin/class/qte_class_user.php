@@ -1,6 +1,6 @@
 <?php
 
-// QTE 3.0 build:20140608
+// QTE 3.0 build:20141222
 // DisplayName is the {firstname lastname} (32 char). If empty firstname lastname, it uses "(username)"
 
 class sUser

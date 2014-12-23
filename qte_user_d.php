@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 $bCanUpload = false;
 if ( $_SESSION[QT]['editing'] ) {

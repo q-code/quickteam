@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 define('APP', 'qte'); // application file prefix (this is required and cannot be changed)
 if ( !isset($qte_root) ) $qte_root='';
@@ -23,7 +23,7 @@ define('TABCHILD', $qte_prefix.'qtechild');
 define('TABINDEX', $qte_prefix.'qteindex');
 define('TABDOC', $qte_prefix.'qtedoc');
 define('TABLANG', $qte_prefix.'qtelang');
-define('QTEVERSION', '3.0 build:20140608');
+define('QTEVERSION', '3.0 build:20141222');
 define('QSEL', ' selected="selected"');
 define('QCHE', ' checked="checked"');
 define('QDIS', ' disabled="disabled"');
@@ -56,7 +56,8 @@ define('QTE_URLREWRITE', false);
 // This can NOT be activated if you application folder contains html pages (they will not be accessible anymore when urlrewriting is acticated)
 
 define('MEMCACHE_HOST', 'localhost');    // Memcache allow storing frequently used values in memcache server (instead of runnning sql requests)
-define('MEMCACHE_PORT', 11211);          // memcahce port (integer). Default port is 11211.
+define('MEMCACHE_PORT', 11211);          // memcache port (integer). Default port is 11211.
+define('MEMCACHE_FAILOVER', true);       // Use session as failover for memcached values.
 // If memcache is not available on your server use false as host. Ex: define('MEMCACHE_HOST', false);
 // otherwise define your host name. Ex: define('MEMCACHE_HOST', 'localhost');
 

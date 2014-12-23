@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 if ( empty($_GET['term']) ) { echo json_encode(array(array('rItem'=>'','rInfo'=>'configuration error'))); return; }
 

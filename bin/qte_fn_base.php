@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 // --------
 // HIGH LEVEL
@@ -69,7 +69,6 @@ function ObjTrans($strType,$strId,$generate=true,$intMax=0,$strTrunc='...')
     case 'index': $str = (is_string($generate) ? $generate : GetSetting('index_name','Index')); break;
     case 'domain':
     case 'sec':
-    case 'field':
     case 'tab': $str = (is_string($generate) ? $generate : ucfirst($strType.' '.$strId)); break;
     case 'ffield': $str = (is_string($generate) ? $generate : '%s'); break;
     case 'secdesc':
@@ -87,13 +86,13 @@ function ObjTrans($strType,$strId,$generate=true,$intMax=0,$strTrunc='...')
 
 function LimitSQL($strState,$strOrder,$intStart=0,$intLength=50)
 {
-	global $oDB;
-	$strOrder = trim($strOrder); if ( substr($strOrder,-3,3)!='ASC' && substr($strOrder,-4,4)!='DESC' ) $strOrder .= ' ASC';
-	switch($oDB->type)
-	{
+  global $oDB;
+  $strOrder = trim($strOrder); if ( substr($strOrder,-3,3)!=='ASC' && substr($strOrder,-4,4)!=='DESC' ) $strOrder .= ' ASC';
+  switch($oDB->type)
+  {
     case 'pdo.mysql': return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
-		case 'pdo.sqlsrv':
-    case 'sqlsrv': return ($intStart==0 ? "SELECT TOP $intLength $strState ORDER BY $strOrder" : "WITH OrderedRows AS (SELECT ROW_NUMBER() OVER (ORDER BY $strOrder) AS RowNumber, $strState) SELECT * FROM OrderedRows WHERE RowNumber BETWEEN ".($intStart+1)." AND ".($intStart+$intLength)); break;
+    case 'pdo.sqlsrv':
+    case 'sqlsrv': return ($intStart===0 ? "SELECT TOP $intLength $strState ORDER BY $strOrder" : "WITH OrderedRows AS (SELECT ROW_NUMBER() OVER (ORDER BY $strOrder) AS RowNumber, $strState) SELECT * FROM OrderedRows WHERE RowNumber BETWEEN ".($intStart+1)." AND ".($intStart+$intLength)); break;
     case 'pdo.pg':
     case 'pg': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
     case 'pdo.ibase':
@@ -101,11 +100,11 @@ function LimitSQL($strState,$strOrder,$intStart=0,$intLength=50)
     case 'pdo.sqlite':
     case 'sqlite': return "SELECT $strState ORDER BY $strOrder LIMIT $intLength OFFSET $intStart"; break;
     case 'pdo.db2':
-    case 'db2': return ($intStart==0 ? "SELECT $strState ORDER BY $strOrder FETCH FIRST $intLength ROWS ONLY" : "SELECT * FROM (SELECT ROW_NUMBER() OVER() AS RN, $strState) AS cols WHERE RN BETWEEN ($intStart+1) AND ($intStart+1+$intLength)"); break;
+    case 'db2': return ($intStart===0 ? "SELECT $strState ORDER BY $strOrder FETCH FIRST $intLength ROWS ONLY" : "SELECT * FROM (SELECT ROW_NUMBER() OVER() AS RN, $strState) AS cols WHERE RN BETWEEN ($intStart+1) AND ($intStart+1+$intLength)"); break;
     case 'pdo.oci':
-    case 'oci': return ($intStart==0 ? "SELECT * FROM (SELECT $strState ORDER BY $strOrder) WHERE ROWNUM<$intLength" : "SELECT * FROM (SELECT a.*, rownum RN FROM (SELECT $strState ORDER BY $strOrder) a WHERE rownum<$intStart+1+$intLength) WHERE rn>=$intStart"); break;
+    case 'oci': return ($intStart===0 ? "SELECT * FROM (SELECT $strState ORDER BY $strOrder) WHERE ROWNUM<$intLength" : "SELECT * FROM (SELECT a.*, rownum RN FROM (SELECT $strState ORDER BY $strOrder) a WHERE rownum<$intStart+1+$intLength) WHERE rn>=$intStart"); break;
     default: return 'SELECT '.$strState.' ORDER BY '.$strOrder.' LIMIT '.$intStart.','.$intLength; break;
-	}
+  }
 }
 
 function FirstCharCase($strField,$strCase='u',$len=1)

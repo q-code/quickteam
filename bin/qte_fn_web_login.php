@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 /*
 

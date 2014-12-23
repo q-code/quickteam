@@ -12,7 +12,7 @@
 * @package    QuickTeam
 * @author     Philippe Vandenberghe <info@qt-cute.org>
 * @copyright  2014 The PHP Group
-* @version    3.0 build:20140608
+* @version    3.0 build:20141222
 */
 
 session_start();
@@ -93,17 +93,17 @@ if ( isset($_POST['ok']) )
     }
     $str = trim($_POST['adminfax']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
-      if ( strlen($str)>255 ) $str = substr($str,0,255);
+      if ( isset($str[255]) ) $str = substr($str,0,255);
       $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_fax"');
       $_SESSION[QT]['admin_fax'] = $str;
     $str = trim($_POST['adminname']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
-      if ( strlen($str)>255 ) $str = substr($str,0,255);
+      if ( isset($str[255]) ) $str = substr($str,0,255);
       $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_name"');
       $_SESSION[QT]['admin_name'] = $str;
     $str = trim($_POST['adminaddr']); if ( get_magic_quotes_gpc() ) $str = stripslashes($str);
       $str = QTconv($str,'3',false);
-      if ( strlen($str)>255 ) $str = substr($str,0,255);
+      if ( isset($str[255]) ) $str = substr($str,0,255);
       $oDB->Exec('UPDATE '.TABSETTING.' SET setting="'.addslashes($str).'" WHERE param="admin_addr"');
       $_SESSION[QT]['admin_addr'] = $str;
 

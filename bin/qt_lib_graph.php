@@ -3,7 +3,7 @@
 /* ============
  * qt_lib_graph.php
  * ------------
- * version: 4.1 build:20140823
+ * version: 4.1 build:20141222
  * This is a library of public class
  * ------------
  * QTdataset()

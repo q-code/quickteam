@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 session_start();
 
@@ -113,18 +113,18 @@ echo '<form method="post" name="install" action="qte_setup_1.php">
 <td>',$L['Database_type'],'</td>
 <td><select name="qte_dbsystem">
 <optgroup label="PDO">
-<option value="pdo.mysql"',($qte_dbsystem=='pdo.mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next</option>
-<option value="pdo.sqlsrv"',($qte_dbsystem=='pdo.sqlsrv' ? ' selected="selected"' : ''),'>SQL sever (or Express)</option>
-<option value="pdo.pg"',($qte_dbsystem=='pdo.pg' ? ' selected="selected"' : ''),'>PostgreSQL</option>
+<option value="pdo.mysql"',($qte_dbsystem==='pdo.mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next</option>
+<option value="pdo.sqlsrv"',($qte_dbsystem==='pdo.sqlsrv' ? ' selected="selected"' : ''),'>SQL sever (or Express)</option>
+<option value="pdo.pg"',($qte_dbsystem==='pdo.pg' ? ' selected="selected"' : ''),'>PostgreSQL</option>
 </optgroup>
 <optgroup label="Legacy">
-<option value="mysql"',($qte_dbsystem=='mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next</option>
-<option value="sqlsrv"',($qte_dbsystem=='sqlsrv' ? ' selected="selected"' : ''),'>SQL server (or Express)</option>
-<option value="pg"'.($qte_dbsystem=='pg' ? 'selected="selected"' : ''),'>PostgreSQL</option>
-<option value="ibase"'.($qte_dbsystem=='ibase' ? 'selected="selected"' : ''),'>FireBird</option>
-<option value="sqlite"'.($qte_dbsystem=='sqlite' ? 'selected="selected"' : ''),'>SQLite</option>
-<option value="db2"',($qte_dbsystem=='db2' ? ' selected="selected"' : ''),'>IBM DB2</option>
-<option value="oci"',($qte_dbsystem=='oci' ? ' selected="selected"' : ''),'>Oracle</option>
+<option value="mysql"',($qte_dbsystem==='mysql' ? ' selected="selected"' : ''),'>MySQL 5 or next</option>
+<option value="sqlsrv"',($qte_dbsystem==='sqlsrv' ? ' selected="selected"' : ''),'>SQL server (or Express)</option>
+<option value="pg"'.($qte_dbsystem==='pg' ? 'selected="selected"' : ''),'>PostgreSQL</option>
+<option value="ibase"'.($qte_dbsystem==='ibase' ? 'selected="selected"' : ''),'>FireBird</option>
+<option value="sqlite"'.($qte_dbsystem==='sqlite' ? 'selected="selected"' : ''),'>SQLite</option>
+<option value="db2"',($qte_dbsystem==='db2' ? ' selected="selected"' : ''),'>IBM DB2</option>
+<option value="oci"',($qte_dbsystem==='oci' ? ' selected="selected"' : ''),'>Oracle</option>
 </optgroup>
 </select></td>
 </tr>

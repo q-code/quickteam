@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 // mandatory: id, the user id. Can start with 'user'.
 // mandatory: dir, the photo repository.

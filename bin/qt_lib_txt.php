@@ -3,7 +3,7 @@
 /*
 qt_lib_txt.php
 ------------
-version: 5.2 build:20140820
+version: 5.2 build:20141222
 This is a library of public functions
 -------------
 Requires a function GetSetting() that can provide an application settings
@@ -31,14 +31,15 @@ QThttpvar
 function QTtrunc($str,$max=30,$end='...')
 {
   if ( is_string($str) && is_int($max) && isset($str[$max]) ) return substr($str,0,$max-3).$end;
+  if ( is_array($str) ) return QTtruncarray($str,$max,$end);
   return $str;
 }
 
-// Truncate each long text in an array (note: array of array are not processed)
+// Truncate each long text in an array. Only array of string are processed (array of array, or array of int are returned unchanged)
 
 function QTtruncarray($arr,$max=30,$end='...')
 {
-  if ( is_array($arr) && is_int($max) ) foreach($arr as $key=>$val) $arr[$key]=QTtrunc($val,$max,$end);
+  if ( is_array($arr) && is_int($max) ) foreach($arr as $key=>$str) if ( is_string($str) && isset($str[$max]) ) $arr[$key]=substr($str,0,$max-3).$end;
   return $arr;
 }
 

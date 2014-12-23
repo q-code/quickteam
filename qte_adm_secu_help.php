@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam version 3.0 build:20140608
+// QuickTeam version 3.0 build:20141222
 
 session_start();
 require 'bin/qte_init.php';

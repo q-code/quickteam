@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 // CONSTRAINT:
 // users can be outside section (i.e. new user not yet in section)

@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 // --------
 // HTML start
@@ -56,7 +56,7 @@ echo '<body>
 // 1 CONFIG
 // --------
 
-echo '<p style="margin:0;text-align:right">QuickTeam v3.0 build:20140608</p>';
+echo '<p style="margin:0;text-align:right">QuickTeam v3.0 build:20141222</p>';
 
 echo '<h1>Checking your configuration</h1>';
 
@@ -390,7 +390,6 @@ echo '</p>
 echo '
 <!-- END BODY MAIN -->
 </div>
-</table>
 
 <p class="footer">powered by <a href="http://www.qt-cute.org" class="footer_copy">QT-cute</a></p>
 

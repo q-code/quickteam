@@ -1,6 +1,6 @@
 <?php
 
-// QT re-usable component 1.2 build:20140825
+// QT re-usable component 1.2 build:20141222
 
 // ========
 
@@ -43,7 +43,7 @@ function memGet($key,$default=false)
   if ( $obj===false )
   {
     // Check session if not in memcache
-    if ( isset($_SESSION[QT][$key]) ) return $_SESSION[QT][$key];
+    if ( MEMCACHE_FAILOVER && isset($_SESSION[QT][$key]) ) return $_SESSION[QT][$key];
     // Regenerate when not in memory
     $obj = cVIP::SysInit($key,$default);
     memSet($key,$obj);
@@ -52,7 +52,7 @@ function memGet($key,$default=false)
 }
 function memSet($key,$obj,$timeout=300)
 {
-  if ( memcacheSet($key,$obj,$timeout)===false ) $_SESSION[QT][$key]=$obj;
+  if ( memcacheSet($key,$obj,$timeout)===false && MEMCACHE_FAILOVER ) $_SESSION[QT][$key]=$obj;
 }
 function memcacheGet($key)
 {

@@ -9,11 +9,10 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   Team
  * @package    QuickTeam
  * @author     Philippe Vandenberghe <info@qt-cute.org>
  * @copyright  2014 The PHP Group
- * @version    3.0 build:20140608
+ * @version    3.0 build:20141222
  */
 
 session_start();
@@ -31,14 +30,14 @@ include GetLang().'qte_reg.php';
 $c='2'; QThttpvar('c','str');
 
 $oVIP->selfurl = 'qte_register.php';
-$oVIP->selfname = $L['Register'];
-$oVIP->exitname = '&laquo; '.$L['Register'];
+$oVIP->selfname = L('Register');
+$oVIP->exitname = '&laquo; '.L('Register');
 
 // --------
-// EXECUTE FORM
+// EXECUTE FORM (the not-agreed message can also be triggered by a timeout from the registration form)
 // --------
 
-if ( isset($_POST['ok']) )
+if ( isset($_POST['ok']) || isset($_GET['timeout']) )
 {
   if ( !isset($_POST['agreed']) )
   {
@@ -51,6 +50,7 @@ if ( isset($_POST['ok']) )
     include 'qte_inc_ft.php';
     Exit;
   }
+  $_SESSION[QT]['regv'] = time()+120; // validity of the aggrement 2 minutes (will be extended in the registration form)
   $oHtml->Redirect('qte_form_reg.php?c='.$c,$L['Register']);
 }
 

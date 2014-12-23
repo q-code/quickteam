@@ -11,7 +11,7 @@
  *
  * @package    QuickTeam
  * @author     Philippe Vandenberghe <info@qt-cute.org>
- * @version    3.0 build:20140612
+ * @version    3.0 build:20141222
  */
 
 session_start();
@@ -232,8 +232,7 @@ echo '
 ';
 
 echo '<table  class="t-data">
-<colgroup span="5"><col width="30"></col><col width="90"></col><col width="140"></col><col width="130"></col><col></col></colgroup>
-<tr class="tr">
+<tr>
 <td class="blanko" colspan="2">&nbsp;</td>
 <td class="blanko" style="text-align:left" colspan="3">',implode(' &middot; ',$arrStr),'</td>
 </tr>
@@ -351,8 +350,8 @@ foreach (array('username','status') as $strKey)
   echo '<td class="cbx"><input type="checkbox" ',QCHE,' disabled="disabled" onchange="bEdited=true;"/><input type="hidden" id="',$strKey,'" name="',$strKey,'" value="1"/></td>',PHP_EOL;
   echo '<td class="key">'.$strKey,'</td>',PHP_EOL;
   echo '<td class="val">'.$strField,'</td>',PHP_EOL;
-  echo '<td class="val"><input type="input" id="R_',$strKey,'" name="R_',$strKey,'" value="',QTconv($strField,'I'),'" size="20" maxlength="32" class="small" onchange="bEdited=true;"/></td>',PHP_EOL;
-  echo '<td class="val"><input type="input" id="F_',$strKey,'" name="F_',$strKey,'" value="" size="30" maxlength="32" class="small" onchange="bEdited=true;" style="visibility:hidden"/></td>',PHP_EOL;
+  echo '<td class="val"><input type="input" id="R_',$strKey,'" name="R_',$strKey,'" value="',QTconv($strField,'I'),'" size="20" maxlength="32" onchange="bEdited=true;"/></td>',PHP_EOL;
+  echo '<td class="val"><input type="input" id="F_',$strKey,'" name="F_',$strKey,'" value="" size="30" maxlength="32" onchange="bEdited=true;" style="visibility:hidden"/></td>',PHP_EOL;
   echo '</tr>',PHP_EOL;
 }
 

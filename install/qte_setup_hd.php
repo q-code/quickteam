@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 echo '<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en">
@@ -27,5 +27,5 @@ echo '<!DOCTYPE html>
 
 <!-- BODY MAIN -->
 <div class="body">
-<p style="margin:0 0 20px 0;text-align:right">',$L['Installation'],' v3.0 build:20140608</p>
+<p style="margin:0 0 20px 0;text-align:right">',$L['Installation'],' v3.0 build:20141222</p>
 ';

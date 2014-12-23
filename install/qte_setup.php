@@ -1,6 +1,6 @@
 <?php
 
-// QuickTeam 3.0 build:20140608
+// QuickTeam 3.0 build:20141222
 
 session_start();
 $strAppl = 'QuickTeam';
@@ -22,20 +22,20 @@ include 'qte_lang_'.$_SESSION['qte_setup_lang'].'.php';
 // Basic check
 // --------
 
-  $bFolder = false;
-  if ( is_dir('../document') ) {
-  if ( is_dir('../document/section') ) {
-  if ( is_readable('../document/section') ) {
-  if ( is_writable('../document/section') ) {
-    $bFolder=true;
-  }}}}
+$bFolder = false;
+if ( is_dir('../document') ) {
+if ( is_dir('../document/section') ) {
+if ( is_readable('../document/section') ) {
+if ( is_writable('../document/section') ) {
+  $bFolder=true;
+}}}}
 
-  $bConfig = false;
-  if ( file_exists('../bin/config.php') ) {
-  if ( is_readable('../bin/config.php') ) {
-  if ( is_writable('../bin/config.php') ) {
-    $bConfig=true;
-  }}}
+$bConfig = false;
+if ( file_exists('../bin/config.php') ) {
+if ( is_readable('../bin/config.php') ) {
+if ( is_writable('../bin/config.php') ) {
+  $bConfig=true;
+}}}
 
 // --------
 // Html start

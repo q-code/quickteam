@@ -1,4 +1,4 @@
-<?php // QuickTicket 3.0 build:20140823
+<?php // QuickTicket 3.0 build:20141222
 
 function Sectionlist($selected=-1,$arrReject=array(),$arrDisabled=array(),$strAll='',$textsize=30)
 {

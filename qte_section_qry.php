@@ -1,4 +1,4 @@
-<?php // QTE 3.0 build:20140608
+<?php // QTE 3.0 build:20141222
 
 // Uri extra arguments
 

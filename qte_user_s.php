@@ -1,4 +1,4 @@
-<?php // QuickTeam 3.0 build:20140608
+<?php // QuickTeam 3.0 build:20141222
 
 if ( $_SESSION[QT]['editing'] ) if ( !sUser::IsStaff() ) $_SESSION[QT]['editing']=false;
 
